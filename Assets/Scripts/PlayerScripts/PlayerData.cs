@@ -1,7 +1,7 @@
 using UnityEngine;
 
 //класс в котором хранятся все данные игрока
-public class PlayerData
+public class PlayerData : MonoBehaviour
 {
-
+    
 }
