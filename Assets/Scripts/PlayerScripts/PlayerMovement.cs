@@ -1,16 +1,17 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static PlayerDataStructures;
 
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField] private float playerSpeed = 10; //обычная скорость
-    [SerializeField] private float playerSprintMult = 1.3f; //модификатор ускорения
-    [SerializeField] private float playerJumpSpeed = 15; //скорость прыжка
-    [SerializeField] private float playerDashSpeed = 50; //скорость рывка
+    // [SerializeField] private float playerSpeed = 10; //обычная скорость
+    // [SerializeField] private float playerSprintMult = 1.3f; //модификатор ускорения
+    // [SerializeField] private float playerJumpSpeed = 15; //скорость прыжка
+    // [SerializeField] private float playerDashSpeed = 50; //скорость рывка
     [SerializeField] private float dashDuration = 0.13f; //длительность дэша
-    [SerializeField] private float dashCooldown = 1f; //кулдаун рывка
-    [SerializeField] private float gravityScale = 10f; //множитель гравитации
+    // [SerializeField] private float playerdashCooldown = 1f; //кулдаун рывка
+    // [SerializeField] private float playergravityScale = 10f; //множитель гравитаци
 
     [Header("GroundCheck Settings")]
     [SerializeField] private Transform groundCheck; //местоположение объекта для проверки земли под ногами
@@ -27,12 +28,21 @@ public class PlayerMovement : MonoBehaviour
     private float dashDirection = 0; //-1 влево, 1 вправо
     private float dashTimer = 0f; //таймер для рывка
     private float dashCooldownTimer = 0f; //таймер кулдауна для рывка
-    private bool isDashing = false; //флал для рывка
+    private bool isDashing = false; //флаг для рывка
+
+    private float playerSpeed = 0;
+    private float playerSprintMult = 0;
+    private float playerJumpSpeed = 0;
+    private float playerDashSpeed = 0;
+    private float playerdashCooldown = 0;
+    private float playergravityScale = 0;
+
+
 
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        rb2d.gravityScale = gravityScale; //устанавливаем гравитацию
+        rb2d.gravityScale = playergravityScale; //устанавливаем гравитацию
 
         if (groundCheck == null)
             Debug.LogError("GroundCheck object not assigned to " + gameObject.name);
@@ -111,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isDashing = true;
         dashTimer = dashDuration;
-        dashCooldownTimer = dashCooldown;
+        dashCooldownTimer = playerdashCooldown;
         rb2d.gravityScale = 0.2f; // отключаем гравитацию во время рывка
         //Debug.Log("Dash started!");
     }
@@ -140,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isDashing = false;
         dashTimer = 0f;
-        rb2d.gravityScale = gravityScale; // Восстанавливаем гравитацию
+        rb2d.gravityScale = playergravityScale; // Восстанавливаем гравитацию
         //Debug.Log("Dash ended!");
     }
 
@@ -158,10 +168,35 @@ public class PlayerMovement : MonoBehaviour
     {
         if (groundCheck != null)
         {
-            bool isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, 
+            bool isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius,
                 groundLayer);
             Gizmos.color = isGrounded ? Color.green : Color.red;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
     }
+
+    #region EventsMetods
+    // Метод для обработки изменений модификаторов движения
+    public void OnMovementModifiersChanged(MovementModifiersData data)
+    {
+        UpdateMovementValues(data);
+    }
+
+    // Обновляем локальные переменные из данных PlayerData
+    private void UpdateMovementValues(MovementModifiersData data)
+    {
+        playerSpeed = data.playerSpeed;
+        playerSprintMult = data.sprintMultiplier;
+        playerJumpSpeed = data.jumpHeight;
+        playerDashSpeed = data.dashSpeed;
+        playerdashCooldown = data.dashCooldown;
+        playergravityScale = data.gravityScale;
+
+        // Обновляем гравитацию в реальном времени
+        if (rb2d != null && !isDashing)
+        {
+            rb2d.gravityScale = playergravityScale;
+        }
+    }
+    #endregion
 }
