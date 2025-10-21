@@ -185,12 +185,12 @@ public class PlayerMovement : MonoBehaviour
     // Обновляем локальные переменные из данных PlayerData
     private void UpdateMovementValues(MovementModifiersData data)
     {
-        playerSpeed = data.playerSpeed;
-        playerSprintMult = data.sprintMultiplier;
-        playerJumpSpeed = data.jumpHeight;
-        playerDashSpeed = data.dashSpeed;
-        playerdashCooldown = data.dashCooldown;
-        playergravityScale = data.gravityScale;
+        playerSpeed = data.PlayerSpeed;
+        playerSprintMult = data.SprintMultiplier;
+        playerJumpSpeed = data.JumpHeight;
+        playerDashSpeed = data.DashSpeed;
+        playerdashCooldown = data.DashCooldown;
+        playergravityScale = data.GravityScale;
 
         // Обновляем гравитацию в реальном времени
         if (rb2d != null && !isDashing)

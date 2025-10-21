@@ -32,8 +32,8 @@ public class PlayerInitializer : MonoBehaviour
     //подключает элементы к событиям
     private void SubscribeToEvents()
     {
-        PlayerData.OnMovementModifiersChanged += playerMovement.OnMovementModifiersChanged;
-        PlayerData.OnDataInitialized += OnDataInitialized;
+        playerData.OnMovementModifiersChanged += playerMovement.OnMovementModifiersChanged;
+        playerData.OnDataInitialized += OnDataInitialized;
     }
 
     //запускает событие с передачей всех данных в PlayerData
@@ -51,7 +51,7 @@ public class PlayerInitializer : MonoBehaviour
     //удаляет подписки
     private void OnDestroy()
     {
-        PlayerData.OnMovementModifiersChanged -= playerMovement.OnMovementModifiersChanged;
-        PlayerData.OnDataInitialized -= OnDataInitialized;
+        playerData.OnMovementModifiersChanged -= playerMovement.OnMovementModifiersChanged;
+        playerData.OnDataInitialized -= OnDataInitialized;
     }
 }
