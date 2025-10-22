@@ -1,13 +1,14 @@
 using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MannaBarController : MonoBehaviour
 {
     [Header("Manna Settings")]
-    [SerializeField] private float manna = 50;
-    [SerializeField] private float maxManna = 100f;
-    [SerializeField] private float regenMannaPerSecond = 1f;
+    [SerializeField] private float manna = 1;
+    [SerializeField] private float maxManna = 1;
+    [SerializeField] private float regenMannaPerSecond = 0;
 
     private float fromMannaToSliderCoefficient = 0.01f;
     private const float WidthPerManna = 3.4f;
@@ -36,6 +37,29 @@ public class MannaBarController : MonoBehaviour
         UpdateSlider();
         ChangeMaxManna(maxManna);
     }
+    
+    public void SetManna(float value)
+    {
+        if (value > manna)
+        {
+            AddManna(value - manna);
+        } else if (value < manna)
+        {
+            ReduceManna(manna - value);
+        }
+    }
+
+    public void SetMaxManna(float value)
+    {
+        if (value > maxManna)
+        {
+            IncreaseMaxManna(value - maxManna);
+        }
+        else if (value < maxManna)
+        {
+            DecreaseMaxManna(maxManna - value);
+        }
+    }
 
     public void AddManna(float value)
     {
@@ -43,6 +67,14 @@ public class MannaBarController : MonoBehaviour
             throw new ArgumentOutOfRangeException(nameof(value), "Manna value cannot be negative");
 
         manna = Mathf.Min(manna + value, maxManna);
+    }
+    
+    public void ReduceManna(float value)
+    {
+        if (value < 0)
+            throw new ArgumentOutOfRangeException(nameof(value), "Manna value cannot be negative");
+
+        manna = Mathf.Max(manna - value, 0);
     }
 
     public void IncreaseRegenManna(float value)
@@ -76,7 +108,8 @@ public class MannaBarController : MonoBehaviour
         if (value >= maxManna)
         {
             // TODO
-            // тут персонаж должен умирать
+            // тоже пока не знаю нужно ли обрабатывать случай когда манна уйдет в 0
+            return;
         }
         
         ChangeMaxManna(maxManna - value);
@@ -87,14 +120,6 @@ public class MannaBarController : MonoBehaviour
         maxManna = newHP;
         rect.sizeDelta = new Vector2(newHP * WidthPerManna, rect.sizeDelta.y);
         fromMannaToSliderCoefficient = 1 / newHP;
-    }
-
-    public void ReduceManna(float value)
-    {
-        if (value < 0)
-            throw new ArgumentOutOfRangeException(nameof(value), "Manna value cannot be negative");
-
-        manna = Mathf.Max(manna - value, 0);
     }
 
     public bool IsZeroHp() => manna <= 0;

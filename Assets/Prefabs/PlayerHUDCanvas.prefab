@@ -103,9 +103,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 903873af0149d0243aca3ff1c9361b63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 100
-  maxHp: 100
-  regenHpPerSecond: 1
+  hp: 1
+  maxHp: 1
+  regenHpPerSecond: 0
 --- !u!1 &481758777904070697
 GameObject:
   m_ObjectHideFlags: 0
@@ -869,9 +869,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08847cf7e07425947991c1bc14f9fefa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stamina: 100
-  maxStamina: 100
-  regenStaminaPerSecond: 1
+  stamina: 1
+  maxStamina: 1
+  regenStaminaPerSecond: 0
 --- !u!1 &6604691847549462204
 GameObject:
   m_ObjectHideFlags: 0
@@ -1125,9 +1125,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1061b03657e8894085a11082145a18b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manna: 100
-  maxManna: 100
-  regenMannaPerSecond: 1
+  manna: 1
+  maxManna: 1
+  regenMannaPerSecond: 0
 --- !u!1 &7616086527473908107
 GameObject:
   m_ObjectHideFlags: 0
@@ -1173,6 +1173,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2668207617334160378}
+  - component: {fileID: 6430657872918712114}
   m_Layer: 5
   m_Name: Bars
   m_TagString: Untagged
@@ -1202,6 +1203,22 @@ RectTransform:
   m_AnchoredPosition: {x: 195.34, y: -50}
   m_SizeDelta: {x: 340.67, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6430657872918712114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8147087953097261319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2952ce4af634296b5a274b3c84ada10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthSlider: {fileID: 8393489055326352081}
+  manaSlider: {fileID: 6648392316416399981}
+  staminaSlider: {fileID: 7495030085489349396}
+  enableLogging: 0
 --- !u!1 &8268404617322605515
 GameObject:
   m_ObjectHideFlags: 0

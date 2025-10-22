@@ -5,9 +5,9 @@ using UnityEngine.UI;
 public class HPBarController : MonoBehaviour
 {
     [Header("HP Settings")]
-    [SerializeField] private float hp = 50;
-    [SerializeField] private float maxHp = 100f;
-    [SerializeField] private float regenHpPerSecond = 1f;
+    [SerializeField] private float hp = 1;
+    [SerializeField] private float maxHp = 1;
+    [SerializeField] private float regenHpPerSecond = 0;
 
     private float fromHpToSliderCoefficient = 0.01f;
     private const float WidthPerHp = 3.4f;
@@ -29,12 +29,35 @@ public class HPBarController : MonoBehaviour
     {
         UpdateSlider();
     }
-
+    
     private void FixedUpdate()
     {
         AddHp(regenHpPerSecond * Time.fixedDeltaTime);
         UpdateSlider();
         ChangeMaxHp(maxHp);
+    }
+    
+    public void SetHp(float value)
+    {
+        if (value > hp)
+        {
+            AddHp(value - hp);
+        } else if (value < hp)
+        {
+            ReduceHp(hp - value);
+        }
+    }
+
+    public void SetMaxHp(float value)
+    {
+        if (value > maxHp)
+        {
+            IncreaseMaxHP(value - maxHp);
+        }
+        else if (value < maxHp)
+        {
+            DecreaseMaxHP(maxHp - value);
+        }
     }
 
     public void AddHp(float value)
@@ -44,7 +67,16 @@ public class HPBarController : MonoBehaviour
 
         hp = Mathf.Min(hp + value, maxHp);
     }
+    
+    public void ReduceHp(float value)
+    {
+        if (value < 0)
+            throw new ArgumentOutOfRangeException(nameof(value), "HP value cannot be negative");
 
+        hp = Mathf.Max(hp - value, 0);
+    }
+    
+    
     public void IncreaseRegenHp(float value)
     {
         if (value < 0)
@@ -52,7 +84,7 @@ public class HPBarController : MonoBehaviour
         
         regenHpPerSecond = Mathf.Max(0, regenHpPerSecond + value);
     }
-
+    
     public void DecreaseRegenHp(float value)
     {
         if (value < 0)  
@@ -77,6 +109,7 @@ public class HPBarController : MonoBehaviour
         {
             // TODO
             // тут персонаж должен умирать
+            return;
         }
         
         ChangeMaxHp(maxHp - value);
@@ -88,15 +121,7 @@ public class HPBarController : MonoBehaviour
         rect.sizeDelta = new Vector2(newHP * WidthPerHp, rect.sizeDelta.y);
         fromHpToSliderCoefficient = 1 / newHP;
     }
-
-    public void ReduceHp(float value)
-    {
-        if (value < 0)
-            throw new ArgumentOutOfRangeException(nameof(value), "HP value cannot be negative");
-
-        hp = Mathf.Max(hp - value, 0);
-    }
-
+    
     public bool IsZeroHp() => hp <= 0;
 
     private void UpdateSlider()
