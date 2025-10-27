@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using static PlayerDataStructures;
 
@@ -8,9 +9,9 @@ public class PlayerData : MonoBehaviour
 {
     #region События
     // События для уведомления других систем
-    public static event Action<ResourceData> OnResourceChanged;
-    public static event Action<MovementModifiersData> OnMovementModifiersChanged;
-    public static event Action OnDataInitialized;
+    public event Action<ResourceData> OnResourceChanged;
+    public event Action<MovementModifiersData> OnMovementModifiersChanged;
+    public event Action OnDataInitialized;
     #endregion
 
     #region Инспекторные поля - базовые значения
@@ -28,7 +29,7 @@ public class PlayerData : MonoBehaviour
     [SerializeField] private float baseGravityScale = 10f;
 
     [Header("Debug Settings")]
-    [SerializeField] private bool debugMode = false; // Новый параметр для отладки
+    [SerializeField] private bool debugMode; // Новый параметр для отладки
     #endregion
 
     #region Текущие значения ресурсов
@@ -49,8 +50,6 @@ public class PlayerData : MonoBehaviour
         {
             Debug.Log("PlayerData initialized with debug mode ON");
         }
-
-        BroadcastAllData();
     }
 
     private void InitializeResources()
@@ -72,61 +71,57 @@ public class PlayerData : MonoBehaviour
     #endregion
 
     #region Методы для работы с ресурсами
-    public void SetHealth(float value)
+    //type - тип ресурса, который нужно изменить, valueType - мы берём максимальное или актуальное значение для изменения
+    //isAddition - мы добавляем значение(true) или изменяем на конкретное(false).
+    public void ChangeValueResource(float value, ResourceType type, ResourceValueType valueType, bool isAddition = false)
     {
-        float oldValue = currentHealth;
-        currentHealth = Mathf.Clamp(value, 0, maxHealth);
-        if (Math.Abs(oldValue - currentHealth) > 0.01f)
+        switch (type)
         {
-            if (debugMode)
-            {
-                Debug.Log($"Health changed: {oldValue} -> {currentHealth}");
-            }
-            BroadcastResourceChange(currentHealth, maxHealth, ResourceType.Health);
+            case ResourceType.Health:
+                if (valueType == ResourceValueType.Maximum)
+                {
+                    this.maxHealth = isAddition ? this.maxHealth + value : value;
+                }
+                else
+                {
+                    this.currentHealth = isAddition ? this.currentHealth + value : value;
+                    this.currentHealth = Mathf.Clamp(this.currentHealth, 0, maxHealth);
+                }
+                if (debugMode)
+                    Debug.Log($"Health changed: {this.currentHealth} -> {this.maxHealth}");
+                BroadcastResourceChange(this.currentHealth, this.maxHealth, ResourceType.Health);
+                break;
+            
+            case ResourceType.Mana:
+                if (valueType == ResourceValueType.Maximum)
+                {
+                    this.maxMana = isAddition ? this.maxMana + value : value;
+                }
+                else
+                {
+                    this.currentMana = isAddition ? this.currentMana + value : value;
+                    this.currentMana = Mathf.Clamp(this.currentMana, 0, maxMana);
+                }
+                if (debugMode)
+                    Debug.Log($"Mana changed: {this.currentMana} -> {this.maxMana}");
+                BroadcastResourceChange(this.currentMana, maxMana, ResourceType.Mana);
+                break;
+            
+            case ResourceType.Stamina:
+                if (valueType == ResourceValueType.Maximum)
+                {
+                    this.maxStamina =  isAddition ? this.maxStamina + value : value;
+                }
+                else
+                {
+                    this.currentStamina = isAddition ? this.currentStamina + value : value;
+                    this.currentStamina = Mathf.Clamp(this.currentStamina, 0, maxStamina);
+                }
+                if (debugMode)
+                    Debug.Log($"Stamina changed: {this.currentStamina} -> {this.maxStamina}");
+                BroadcastResourceChange(this.currentStamina, maxStamina, ResourceType.Stamina);
+                break;
         }
-    }
-
-    public void ModifyHealth(float amount)
-    {
-        SetHealth(currentHealth + amount);
-    }
-
-    public void SetMana(float value)
-    {
-        float oldValue = currentMana;
-        currentMana = Mathf.Clamp(value, 0, maxMana);
-        if (Math.Abs(oldValue - currentMana) > 0.01f)
-        {
-            if (debugMode)
-            {
-                Debug.Log($"Mana changed: {oldValue} -> {currentMana}");
-            }
-            BroadcastResourceChange(currentMana, maxMana, ResourceType.Mana);
-        }
-    }
-
-    public void ModifyMana(float amount)
-    {
-        SetMana(currentMana + amount);
-    }
-
-    public void SetStamina(float value)
-    {
-        float oldValue = currentStamina;
-        currentStamina = Mathf.Clamp(value, 0, maxStamina);
-        if (Math.Abs(oldValue - currentStamina) > 0.01f)
-        {
-            if (debugMode)
-            {
-                Debug.Log($"Stamina changed: {oldValue} -> {currentStamina}");
-            }
-            BroadcastResourceChange(currentStamina, maxStamina, ResourceType.Stamina);
-        }
-    }
-
-    public void ModifyStamina(float amount)
-    {
-        SetStamina(currentStamina + amount);
     }
     #endregion
 
@@ -179,9 +174,9 @@ public class PlayerData : MonoBehaviour
     [ContextMenu("Set All Resources to Max")]
     public void DebugSetAllToMax()
     {
-        SetHealth(maxHealth);
-        SetMana(maxMana);
-        SetStamina(maxStamina);
+        ChangeValueResource(maxHealth, ResourceType.Health, ResourceValueType.Current);
+        ChangeValueResource(maxMana, ResourceType.Mana, ResourceValueType.Current);
+        ChangeValueResource(maxStamina, ResourceType.Stamina, ResourceValueType.Current);
         Debug.Log("All resources set to max values");
     }
 
@@ -203,6 +198,15 @@ public class PlayerData : MonoBehaviour
             OnResourceChanged?.Invoke(new ResourceData(currentHealth, maxHealth, ResourceType.Health));
             Debug.Log($"Health data broadcasted: {currentHealth}/{maxHealth}");
         }
+    }
+
+    [ContextMenu("DebugLog Actual Recources")]
+    public void DebugLogRecources()
+    {
+        if (debugMode)
+        {
+            Debug.Log($"Actual Recources: Health: {this.currentHealth} Mana: {this.currentMana} Stamina: {this.currentStamina}");
+        }    
     }
     #endregion
 }

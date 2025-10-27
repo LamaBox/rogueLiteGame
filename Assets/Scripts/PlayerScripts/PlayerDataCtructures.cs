@@ -7,15 +7,15 @@ public static class PlayerDataStructures
     //Структура для основных ресурсов - хп, мана, выносливость
     public readonly struct ResourceData
     {
-        public readonly float current;
-        public readonly float max;
-        public readonly ResourceType type; // Добавляем тип
+        public readonly float Current;
+        public readonly float Max;
+        public readonly ResourceType Type; // Добавляем тип
         
         public ResourceData(float current, float max, ResourceType type)
         {
-            this.current = current;
-            this.max = max;
-            this.type = type;
+            this.Current = current;
+            this.Max = max;
+            this.Type = type;
         }
     }
 
@@ -25,26 +25,32 @@ public static class PlayerDataStructures
         Mana,
         Stamina,
     }
+
+    public enum ResourceValueType
+    {
+        Maximum,
+        Current,
+    }
     
     public readonly struct MovementModifiersData
     {
-        public readonly float playerSpeed;
-        public readonly float sprintMultiplier;
-        public readonly float jumpHeight;
-        public readonly float dashSpeed;
-        public readonly float dashCooldown;
-        public readonly float gravityScale;
+        public readonly float PlayerSpeed;
+        public readonly float SprintMultiplier;
+        public readonly float JumpHeight;
+        public readonly float DashSpeed;
+        public readonly float DashCooldown;
+        public readonly float GravityScale;
 
         public MovementModifiersData(float moveSpeed, float sprintMultiplier, float jumpHeight,
                                      float dashSpeed, float dashCooldown,
                                      float gravityScale)
         {
-            this.playerSpeed = moveSpeed;
-            this.sprintMultiplier = sprintMultiplier;
-            this.jumpHeight = jumpHeight;
-            this.dashSpeed = dashSpeed;
-            this.dashCooldown = dashCooldown;
-            this.gravityScale = gravityScale;
+            this.PlayerSpeed = moveSpeed;
+            this.SprintMultiplier = sprintMultiplier;
+            this.JumpHeight = jumpHeight;
+            this.DashSpeed = dashSpeed;
+            this.DashCooldown = dashCooldown;
+            this.GravityScale = gravityScale;
         }
     }
 }
