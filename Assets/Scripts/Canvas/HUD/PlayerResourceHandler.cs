@@ -15,6 +15,8 @@ namespace Canvas.HUD
         [Header("Debug")]
         [SerializeField] private bool enableLogging = false;
         
+        [SerializeField] private PlayerData playerData;
+        
         private HPBarController hPBarController;
         private MannaBarController mannaBarController;
         private StaminaController staminaController;
@@ -52,14 +54,14 @@ namespace Canvas.HUD
         
         private void OnEnable()
         {
-            PlayerData.OnResourceChanged += HandleResourceChanged;
+            playerData.OnResourceChanged += HandleResourceChanged;
             if (enableLogging)
                 Debug.Log("Subscribed to PlayerData.OnResourceChanged");
         }
 
         private void OnDisable()
         {
-            PlayerData.OnResourceChanged -= HandleResourceChanged;
+            playerData.OnResourceChanged -= HandleResourceChanged;
             if (enableLogging)
                 Debug.Log("Unsubscribed from PlayerData.OnResourceChanged");
         }
@@ -67,9 +69,9 @@ namespace Canvas.HUD
         private void HandleResourceChanged(ResourceData resourceData)
         {
             if (enableLogging)
-                Debug.Log($"Resource event received: {resourceData.type} = {resourceData.current}/{resourceData.max}");
+                Debug.Log($"Resource event received: {resourceData.Type} = {resourceData.Current}/{resourceData.Max}");
 
-            switch (resourceData.type)
+            switch (resourceData.Type)
             {
                 case ResourceType.Health:
                     UpdateHealthUI(resourceData);
@@ -83,7 +85,7 @@ namespace Canvas.HUD
             }
 
             if (enableLogging)
-                Debug.Log($"Resource event processed: {resourceData.type}");
+                Debug.Log($"Resource event processed: {resourceData.Type}");
         }
 
         private void UpdateHealthUI(ResourceData healthData)
@@ -94,8 +96,8 @@ namespace Canvas.HUD
                 return;
             }
 
-            float curHp = healthData.current;
-            float maxHp = healthData.max;
+            float curHp = healthData.Current;
+            float maxHp = healthData.Max;
             hPBarController.SetHp(curHp);
             hPBarController.SetMaxHp(maxHp);
             
@@ -111,8 +113,8 @@ namespace Canvas.HUD
                 return;
             }
 
-            float curMana = manaData.current;
-            float maxMana = manaData.max;
+            float curMana = manaData.Current;
+            float maxMana = manaData.Max;
             mannaBarController.SetManna(curMana);
             mannaBarController.SetMaxManna(maxMana);
             
@@ -128,8 +130,8 @@ namespace Canvas.HUD
                 return;
             }
 
-            float curStamina = staminaData.current;
-            float maxStamina = staminaData.max;
+            float curStamina = staminaData.Current;
+            float maxStamina = staminaData.Max;
             staminaController.SetStamina(curStamina);
             staminaController.SetMaxStamina(maxStamina);
             
