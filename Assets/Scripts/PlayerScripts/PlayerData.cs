@@ -12,6 +12,7 @@ public class PlayerData : MonoBehaviour
     public event Action<ResourceData> OnResourceChanged;
     public event Action<MovementModifiersData> OnMovementModifiersChanged;
     public event Action OnDataInitialized;
+    public event Action<AttackModifiersData> OnAttackModifiersChanged; 
     #endregion
 
     #region Инспекторные поля - базовые значения
@@ -28,6 +29,12 @@ public class PlayerData : MonoBehaviour
     [SerializeField] private float baseDashCooldown = 2f;
     [SerializeField] private float baseGravityScale = 10f;
 
+    [Header(("Base Attack Stats"))] 
+    [SerializeField] private float baseDamage = 10f;
+    [SerializeField] private float baseAttackSpeed = 1f;
+    [SerializeField] private float baseAttackRange = 1.5f;
+    
+    
     [Header("Debug Settings")]
     [SerializeField] private bool debugMode; // Новый параметр для отладки
     #endregion
@@ -66,7 +73,9 @@ public class PlayerData : MonoBehaviour
         BroadcastResourceChange(currentMana, maxMana, ResourceType.Mana);
         BroadcastResourceChange(currentStamina, maxStamina, ResourceType.Stamina);
         OnMovementModifiersChanged?.Invoke(GetCurrentMovementModifiers());
+        OnAttackModifiersChanged?.Invoke(GetCurrentAttackModifiers());
         OnDataInitialized?.Invoke();
+        
     }
     #endregion
 
@@ -149,6 +158,11 @@ public class PlayerData : MonoBehaviour
             baseGravityScale
         );
     }
+
+    private AttackModifiersData GetCurrentAttackModifiers()
+    {
+        return new AttackModifiersData(baseDamage, baseAttackSpeed, baseAttackRange);
+    }
     #endregion
 
     #region Вспомогательные методы
@@ -207,6 +221,16 @@ public class PlayerData : MonoBehaviour
         {
             Debug.Log($"Actual Recources: Health: {this.currentHealth} Mana: {this.currentMana} Stamina: {this.currentStamina}");
         }    
+    }
+    
+    [ContextMenu("Broadcast Attack Data Only")]
+    public void DebugBroadcastAttack()
+    {
+        if (debugMode)
+        {
+            OnAttackModifiersChanged?.Invoke(GetCurrentAttackModifiers());
+            Debug.Log("Attack data broadcasted");
+        }
     }
     #endregion
 }
