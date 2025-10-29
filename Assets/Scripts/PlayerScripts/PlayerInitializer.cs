@@ -5,6 +5,7 @@ public class PlayerInitializer : MonoBehaviour
     [Header("Player Components")]
     [SerializeField] private PlayerData playerData;
     [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private PlayerAttack playerAttack;
 
     private void Awake()
     {
@@ -27,12 +28,18 @@ public class PlayerInitializer : MonoBehaviour
             Debug.LogError("PlayerMovement component not found on " + gameObject.name);
             return;
         }
+        if (playerAttack == null)
+        {
+            Debug.LogError("PlayerAttack component not found on " + gameObject.name);
+            return;
+        }
     }
 
     //подключает элементы к событиям
     private void SubscribeToEvents()
     {
         playerData.OnMovementModifiersChanged += playerMovement.OnMovementModifiersChanged;
+        playerData.OnAttackModifiersChanged += playerAttack.OnAttackModifiersChanged;
         playerData.OnDataInitialized += OnDataInitialized;
     }
 
@@ -52,6 +59,7 @@ public class PlayerInitializer : MonoBehaviour
     private void OnDestroy()
     {
         playerData.OnMovementModifiersChanged -= playerMovement.OnMovementModifiersChanged;
+        playerData.OnAttackModifiersChanged -= playerAttack.OnAttackModifiersChanged;
         playerData.OnDataInitialized -= OnDataInitialized;
     }
 }

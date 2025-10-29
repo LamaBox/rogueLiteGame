@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+
 public static class PlayerDataStructures
 {
     // Структуры только для передачи данных через события
@@ -30,6 +31,20 @@ public static class PlayerDataStructures
     {
         Maximum,
         Current,
+    }
+    
+    public readonly struct AttackModifiersData
+    {
+        public readonly float Damage;
+        public readonly float AttackSpeed;
+        public readonly float AttackRange;
+
+        public AttackModifiersData(float damage, float attackSpeed, float attackRange)
+        {
+            this.Damage = damage;
+            this.AttackSpeed = attackSpeed;
+            this.AttackRange = attackRange;
+        }
     }
     
     public readonly struct MovementModifiersData

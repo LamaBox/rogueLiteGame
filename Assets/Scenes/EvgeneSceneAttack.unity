@@ -699,7 +699,7 @@ MonoBehaviour:
   baseGravityScale: 10
   baseDamage: 10
   baseAttackSpeed: 1
-  baseAttackRange: 1.5
+  baseAttackRange: 1
   debugMode: 1
 --- !u!114 &1426346313
 MonoBehaviour:
@@ -730,8 +730,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 20
   attackSpeed: 1
-  attackRange: 1.5
-  attackPoint: {fileID: 0}
+  attackRange: 1
+  attackPoint: {fileID: 1803066320}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 0
