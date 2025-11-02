@@ -5,7 +5,8 @@ using UnityEngine.InputSystem;
 public class SpellCastListener : MonoBehaviour
 {
     [Header("Настройки слушателя")]
-    public float spawnOffset = 1f;
+    [SerializeField]
+    private float spawnOffset = 1f;
     
     private float lastNonZeroDirection = 1f;
     private Keyboard keyboard;

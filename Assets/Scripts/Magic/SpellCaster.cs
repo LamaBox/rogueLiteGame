@@ -5,10 +5,17 @@ using System.Collections;
 public class SpellCaster : MonoBehaviour
 {
     [Header("Настройки заклинаний")]
-    public SpellData[] availableSpells;
+    [SerializeField]
+    private SpellData[] availableSpells;
     
     [Header("Текущее заклинание")]
-    public int currentSpellIndex = 0;
+    [SerializeField]
+    private int currentSpellIndex = 0;
+
+    [Header("Перезарядка")]
+    [SerializeField]
+    private float spellCooldown = 1f; // Общее время перезарядки
+    private float currentCooldown = 0f; // Текущее оставшееся время перезарядки
     
     private bool canCast = true;
 
@@ -25,11 +32,15 @@ public class SpellCaster : MonoBehaviour
     void Start()
     {
         mouse = Mouse.current;
+        currentCooldown = 0f; // Инициализируем перезарядку
     }
 
     void Update()
     {
         if (mouse == null) return;
+
+        // Обновление перезарядки
+        UpdateCooldown();
 
         // Обработка прокрутки колесика - накапливаем значение
         Vector2 scroll = mouse.scroll.ReadValue();
@@ -43,10 +54,28 @@ public class SpellCaster : MonoBehaviour
             scrollAccumulator = 0f; // Сбрасываем аккумулятор
         }
 
-        // Обработка ПКМ
+        // Обработка ПКМ (теперь проверяем canCast)
         if (mouse.rightButton.wasPressedThisFrame && canCast && availableSpells.Length > 0)
         {
             CastSpell();
+        }
+    }
+
+    void UpdateCooldown()
+    {
+        if (currentCooldown > 0f)
+        {
+            currentCooldown -= Time.deltaTime;
+            
+            // Если перезарядка закончилась
+            if (currentCooldown <= 0f)
+            {
+                currentCooldown = 0f;
+                canCast = true;
+                
+                if (debugMode)
+                    Debug.Log("Перезарядка завершена, можно кастовать заклинания");
+            }
         }
     }
 
@@ -70,7 +99,7 @@ public class SpellCaster : MonoBehaviour
 
     void CastSpell()
     {
-        if (availableSpells.Length == 0) return;
+        if (availableSpells.Length == 0 || !canCast) return;
 
         SpellData selectedSpell = availableSpells[currentSpellIndex];
         
@@ -82,8 +111,37 @@ public class SpellCaster : MonoBehaviour
 
         OnSpellCast?.Invoke(spellData);
         
+        // Запускаем перезарядку
+        StartCooldown();
+        
         if (debugMode)
             Debug.Log($"Создано событие создания заклинания: {availableSpells[currentSpellIndex].spellName}");
+    }
+
+    void StartCooldown()
+    {
+        canCast = false;
+        currentCooldown = spellCooldown;
+        
+        if (debugMode)
+            Debug.Log($"Начата перезарядка: {spellCooldown} секунд");
+    }
+
+    // Метод для получения информации о перезарядке (может пригодиться для UI)
+    public float GetCooldownProgress()
+    {
+        if (spellCooldown <= 0f) return 1f;
+        return 1f - (currentCooldown / spellCooldown);
+    }
+
+    public bool IsOnCooldown()
+    {
+        return !canCast;
+    }
+
+    public float GetRemainingCooldown()
+    {
+        return currentCooldown;
     }
 }
 
