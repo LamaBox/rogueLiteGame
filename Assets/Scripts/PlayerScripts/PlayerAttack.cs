@@ -54,16 +54,16 @@ public class PlayerAttack : MonoBehaviour
         // Находим всех врагов в радиусе
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange);
 
-        //foreach (Collider2D enemy in hitEnemies)
-        //{
-        //    if (enemy.CompareTag("Enemy"))
-        //    {
-        //        // enemy.GetComponent<EnemyHealth>()?.TakeDamage(damage);
-        //        
-        //        // Для дебага:
-        //        Debug.Log($"Hit enemy: {enemy.name} with {damage} damage (commented out)");
-        //    }
-        //}
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            if (enemy.CompareTag("Enemy"))
+            {
+                enemy.GetComponent<BotBase>()?.TakeDamage(damage);
+                
+                // Для дебага:
+                Debug.Log($"Hit enemy: {enemy.name} with {damage} damage (commented out)");
+            }
+        }
         Debug.Log("Совершил атаку");
     }
     
