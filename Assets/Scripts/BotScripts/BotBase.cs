@@ -52,7 +52,8 @@ public class BotBase : MonoBehaviour
 
         if (CurrentHealth == 0) //смерть
         {
-            Destroy(this.gameObject);
+            Debug.Log($"{nameof(this.gameObject)} Bot is dead");
+            CurrentHealth = MaxHealth;
         }
     }
 
