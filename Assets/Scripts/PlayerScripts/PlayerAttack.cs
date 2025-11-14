@@ -21,11 +21,11 @@ public class PlayerAttack : MonoBehaviour
     
     void Start()
     {
-        if (attackPoint == null)
-        {
-            attackPoint = transform;
-            Debug.LogWarning("AttackPoint not assigned. Using player transform as attack origin.");
-        }
+        // if (attackPoint == null)
+        // {
+        //     attackPoint = transform;
+        //     Debug.LogWarning("AttackPoint not assigned. Using player transform as attack origin.");
+        // }
     }
     
     void Update()

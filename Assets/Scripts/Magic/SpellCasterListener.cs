@@ -51,7 +51,7 @@ public class SpellCastListener : MonoBehaviour
 
         GameObject spell = Instantiate(spellData.spellPrefab, spawnPos, rotation);
         
-        if (spell.GetComponent<FireballController>() != null)
-            Debug.Log($"Заклинание создано в направлении: {(lastNonZeroDirection > 0 ? "вправо" : "влево")}");
+        // if (spell.GetComponent<FireballController>() != null)
+        //     Debug.Log($"Заклинание создано в направлении: {(lastNonZeroDirection > 0 ? "вправо" : "влево")}");
     }
 }
