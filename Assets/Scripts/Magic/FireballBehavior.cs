@@ -29,11 +29,8 @@ namespace Magic
         [SerializeField] private float explosionSize = 3f;
         
         [Header("Настройки урона")]
-        [Tooltip("Урон от прямого попадания файербола (-1 = не наносит урон)")]
-        [SerializeField] private float damage = -1f;
-        
-        [Tooltip("Множитель урона при взрыве (-1 = не наносит урон)")]
-        [SerializeField] private float explosionDamageMultiplier = -1f;
+        [Tooltip("Урон от прямого попадания файербола")]
+        [SerializeField] private float damage = 20f;
         
         [Tooltip("Флаг, указывающий что файербол уже взорвался")]
         [SerializeField] private bool hasExploded = false;
@@ -155,8 +152,19 @@ namespace Magic
         void OnTriggerEnter2D(Collider2D other)
         {
             // Не взрываемся во время каста
-            if (!isCasting && !hasExploded)
+            if (!isCasting && !hasExploded && !other.CompareTag("Player"))
             {
+                if (other.CompareTag("Enemy"))
+                {
+                    // Наносим урон врагу
+                    BotBase enemyBot = other.GetComponent<BotBase>();
+                    if (enemyBot != null)
+                    {
+                        enemyBot.TakeDamage(damage);
+                        Debug.Log($"{name} нанес {damage} урона врагу {other.name}");
+                    }
+                }
+        
                 StartCoroutine(ExplodeRoutine());
             }
         }
@@ -184,7 +192,7 @@ namespace Magic
         
         public float GetCastProgress()
         {
-            return isCasting ? 0f : 1f; // Можно расширить для плавного прогресса
+            return isCasting ? 0f : 1f;
         }
     }
 }
