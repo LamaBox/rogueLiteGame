@@ -19,6 +19,8 @@ GameObject:
   - component: {fileID: 7445071285931882722}
   - component: {fileID: 5858552554444834908}
   - component: {fileID: 2720376694852620043}
+  - component: {fileID: 685851473024584054}
+  - component: {fileID: 5553597972708106522}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -407,7 +409,6 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  animator: {fileID: 0}
 --- !u!114 &7445071285931882722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -466,6 +467,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &685851473024584054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071408416926523717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba68b9027fa4331a3a6aa9c902f03bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  availableSpells:
+  - spellName: Fireball
+    spellPrefab: {fileID: 8994849344751811872, guid: 44ab4247c68c2b64b844da366685c1c8, type: 3}
+  currentSpellIndex: 0
+  spellCooldown: 1
+  debugMode: 0
+--- !u!114 &5553597972708106522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071408416926523717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45c7e99b88c60dc40b078b106f12b0b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnOffset: 1
 --- !u!1 &2654698922897046685
 GameObject:
   m_ObjectHideFlags: 0
@@ -492,7 +524,7 @@ Transform:
   m_GameObject: {fileID: 2654698922897046685}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.93, y: 0, z: 0}
+  m_LocalPosition: {x: -0.93, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -609,7 +641,7 @@ Transform:
   m_GameObject: {fileID: 3602344068825198187}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.93, y: 0, z: 0}
+  m_LocalPosition: {x: -0.93, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
