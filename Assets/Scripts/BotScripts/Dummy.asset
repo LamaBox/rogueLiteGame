@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Dummy
   m_EditorClassIdentifier: 
   botName: Dummy
-  maxHealth: 1000
+  maxHealth: 100
   damage: 0
   moveSpeed: 20
   attackSpeed: 0

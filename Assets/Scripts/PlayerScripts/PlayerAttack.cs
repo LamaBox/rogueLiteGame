@@ -12,9 +12,18 @@ public class PlayerAttack : MonoBehaviour
     [Header("Attack Direction")]
     [SerializeField] private Transform attackPoint; // точка, откуда идёт атака
     [SerializeField] private LayerMask enemyLayer;
+    
+    [Header("Attack Visual")]
+    [SerializeField] private SpriteRenderer attackVisual;
+    private float visualAttackTimer = 0f;
 
     private float attackTimer = 0f;
     private bool canAttack = true;
+
+    public bool GetCanAttack()
+    {
+        return canAttack;
+    }
 
     // Событие: атака выполнена
     public event System.Action OnAttackPerformed;
@@ -36,6 +45,14 @@ public class PlayerAttack : MonoBehaviour
             if (attackTimer <= 0f)
                 canAttack = true;
         }
+        
+        // Скрываем визуализацию, если таймер атаки закончился
+        if (attackVisual != null && attackVisual.enabled && visualAttackTimer <= 0f)
+        {
+            attackVisual.enabled = false;
+        }
+        else if (attackVisual.enabled)
+            visualAttackTimer -= Time.deltaTime;
     }
 
     public void OnAttackInput(InputAction.CallbackContext context)
@@ -48,6 +65,14 @@ public class PlayerAttack : MonoBehaviour
     {
         canAttack = false;
         attackTimer = 1f / attackSpeed;
+        
+        // Показываем визуализацию
+        if (attackVisual != null)
+        {
+            visualAttackTimer = 0.5f;
+            attackVisual.transform.localScale = Vector3.one * attackRange * 2f; // масштабируем под радиус
+            attackVisual.enabled = true;
+        }
         
         OnAttackPerformed?.Invoke();
         
