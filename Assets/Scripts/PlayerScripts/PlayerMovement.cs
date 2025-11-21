@@ -37,6 +37,20 @@ public class PlayerMovement : MonoBehaviour
     private float playerdashCooldown = 0;
     private float playergravityScale = 0;
 
+    public bool GetIsDashing()
+    {
+        return isDashing;
+    }
+
+    public bool GetSpeedUp()
+    {
+        return speedUp;
+    }
+
+    public float GetAxis()
+    {
+        return axis;
+    }
 
 
     void Start()
@@ -73,6 +87,13 @@ public class PlayerMovement : MonoBehaviour
         {
             float currentSpeed = speedUp ? playerSpeed * playerSprintMult : playerSpeed;
             rb2d.linearVelocityX = axis * currentSpeed;
+        }
+        if (axis != 0f)
+        {
+            // Меняем масштаб по X, чтобы "перевернуть" спрайт
+            Vector3 scale = transform.localScale;
+            scale.x = -(Mathf.Sign(axis) * Mathf.Abs(scale.x));
+            transform.localScale = scale;
         }
     }
 

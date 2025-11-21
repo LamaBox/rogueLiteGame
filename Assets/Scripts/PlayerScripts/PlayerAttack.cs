@@ -20,6 +20,11 @@ public class PlayerAttack : MonoBehaviour
     private float attackTimer = 0f;
     private bool canAttack = true;
 
+    public bool GetCanAttack()
+    {
+        return canAttack;
+    }
+
     // Событие: атака выполнена
     public event System.Action OnAttackPerformed;
     
