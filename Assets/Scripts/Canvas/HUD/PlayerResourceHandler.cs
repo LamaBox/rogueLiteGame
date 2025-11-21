@@ -52,19 +52,19 @@ namespace Canvas.HUD
                 Debug.LogWarning("No stamina slider reference");
         }
         
-        private void OnEnable()
-        {
-            playerData.OnResourceChanged += HandleResourceChanged;
-            if (enableLogging)
-                Debug.Log("Subscribed to PlayerData.OnResourceChanged");
-        }
-
-        private void OnDisable()
-        {
-            playerData.OnResourceChanged -= HandleResourceChanged;
-            if (enableLogging)
-                Debug.Log("Unsubscribed from PlayerData.OnResourceChanged");
-        }
+        // private void OnEnable()
+        // {
+        //     playerData.OnResourceChanged += HandleResourceChanged;
+        //     if (enableLogging)
+        //         Debug.Log("Subscribed to PlayerData.OnResourceChanged");
+        // }
+        //
+        // private void OnDisable()
+        // {
+        //     playerData.OnResourceChanged -= HandleResourceChanged;
+        //     if (enableLogging)
+        //         Debug.Log("Unsubscribed from PlayerData.OnResourceChanged");
+        // }
         
         private void HandleResourceChanged(ResourceData resourceData)
         {
