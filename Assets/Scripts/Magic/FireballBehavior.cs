@@ -29,7 +29,7 @@ namespace Magic
         [SerializeField] private float explosionSize = 3f;
         
         [Header("Настройки урона")]
-        [Tooltip("Урон от прямого попадания файербола")]
+        [Tooltip("Урон от прямого попадания файерболапеш")]
         [SerializeField] private float damage = 20f;
         
         [Tooltip("Флаг, указывающий что файербол уже взорвался")]
