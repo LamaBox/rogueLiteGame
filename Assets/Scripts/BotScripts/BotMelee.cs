@@ -105,6 +105,25 @@ public class BotMelee : BotBase
     {
         if (_isAttacking) return; // уже атакуем
 
+        // Поворот в сторону игрока перед атакой
+        if (_targetPlayer != null)
+        {
+            float playerX = _targetPlayer.position.x;
+            float botX = transform.position.x;
+
+            if (playerX > botX)
+            {
+                // Игрок справа - поворот на 0 градусов
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            else if (playerX < botX)
+            {
+                // Игрок слева - поворот на 180 градусов
+                transform.rotation = Quaternion.Euler(0, 180, 0);
+            }
+            // Если playerX == botX, оставляем текущий поворот
+        }
+
         _isAttacking = true;
 
         // Вызываем анимационный триггер атаки
