@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Collider2D))]
-public class BotBase : MonoBehaviour
+public abstract class BotBase : MonoBehaviour
 {
     //ScriptableObject
     [SerializeField] protected BotDataSO botDataSO;
@@ -13,10 +13,6 @@ public class BotBase : MonoBehaviour
     
     protected Rigidbody2D Rb2d;
     protected Transform Transf;
-    
-    //Transform игрока, чтобы бот знал координаты
-    protected Transform PlayerTransform;
-    protected Vector2 PlayerPosition => PlayerTransform != null ? PlayerTransform.position : Vector2.zero;
 
     protected float MaxHealth => this.botDataSO.maxHealth;
     protected float Damage => this.botDataSO.damage;
@@ -25,10 +21,6 @@ public class BotBase : MonoBehaviour
     protected float AttackDistance => this.botDataSO.attackDistance;
     
     protected float CurrentHealth;
-
-    // Ссылка на коллайдер для изменения радиуса
-    protected CircleCollider2D circleCollider;
-    protected float initialColliderRadius;
 
     protected virtual void Start()
     {
@@ -41,40 +33,13 @@ public class BotBase : MonoBehaviour
         Transf = GetComponent<Transform>();
         Rb2d = GetComponent<Rigidbody2D>();
         
-        // Получаем CircleCollider2D и сохраняем начальный радиус
-        circleCollider = GetComponent<CircleCollider2D>();
-        if (circleCollider != null)
-        {
-            initialColliderRadius = circleCollider.radius;
-        }
-        else
-        {
-            Debug.LogError($"{nameof(this.gameObject)} - CircleCollider2D not found!");
-        }
+        CurrentHealth = MaxHealth;
         
-        CurrentHealth = this.botDataSO.maxHealth;
-        
-        // Обновляем коллайдер при старте
-        UpdateColliderSize();
     }
 
     protected virtual void Update()
     {
-        // Обновляем размер коллайдера каждый кадр (если нужно динамическое изменение)
-        UpdateColliderSize();
-    }
-
-    /// <summary>
-    /// Обновляет размер коллайдера в соответствии с масштабом объекта
-    /// </summary>
-    protected virtual void UpdateColliderSize()
-    {
-        if (circleCollider != null)
-        {
-            // Используем среднее значение масштаба по осям X и Y для равномерного изменения
-            float averageScale = (Transf.localScale.x + Transf.localScale.y) / 2f;
-            circleCollider.radius = initialColliderRadius * averageScale;
-        }
+        
     }
 
     public virtual void TakeDamage(float damageInp)
@@ -95,17 +60,13 @@ public class BotBase : MonoBehaviour
         }
     }
 
-    public virtual void SetPlayerTransform(Transform player)
+    public void DealDamagePlayer(PlayerData playerData)
     {
-        if (player is not null)
-            PlayerTransform = player;
-        else
-            Debug.LogError($"{nameof(this.gameObject)}  - PlayerTransform is null! Error in SetPlayerTransform!");
+        playerData.ChangeValueResource(-Damage, PlayerDataStructures.ResourceType.Health, PlayerDataStructures.ResourceValueType.Current, true);
     }
     
     public float GetCurrentHealth() => CurrentHealth;
     public float GetMaxHealth() => MaxHealth;
-    public Transform GetPlayerTransform() => PlayerTransform;
     
     [ContextMenu("Kill Bot")]
     public void KillBot()
@@ -122,16 +83,12 @@ public class BotBase : MonoBehaviour
     [ContextMenu("Double Size")]
     public void DoubleSize()
     {
-        // Метод для тестирования изменения размера
         Transf.localScale *= 2f;
-        UpdateColliderSize();
     }
 
     [ContextMenu("Reset Size")]
     public void ResetSize()
     {
-        // Метод для сброса размера
         Transf.localScale = Vector3.one;
-        UpdateColliderSize();
     }
 }

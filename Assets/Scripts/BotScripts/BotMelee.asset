@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58247c15367e8af49b5f3e81b1aff279, type: 3}
-  m_Name: Dummy
+  m_Name: BotMelee
   m_EditorClassIdentifier: 
-  botName: Dummy
+  botName: 
   maxHealth: 100
   damage: 10
-  moveSpeed: 20
-  attackSpeed: 0
-  attackDistance: 0
+  moveSpeed: 5
+  attackSpeed: 1
+  attackDistance: 1.7
