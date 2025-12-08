@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7ebe16fc9d4e4334b9ffb361f9636b1e
+guid: e5774f573742ff74aab0591823f25ac5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3441286942925476899
-    second: Gemini_Generated_Image_t6o52st6o52st6o5_0
+      213: -1595082988959779324
+    second: "ChatGPT Image 6 \u0434\u0435\u043A. 2025 \u0433., 15_30_41_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Gemini_Generated_Image_t6o52st6o52st6o5_0
+      name: "ChatGPT Image 6 \u0434\u0435\u043A. 2025 \u0433., 15_30_41_0"
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 1536
-        height: 672
+        y: 1
+        width: 1524
+        height: 1023
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 324534bed38e1cf20800000000000000
-      internalID: 3441286942925476899
+      spriteID: 406b8cff8702dd9e0800000000000000
+      internalID: -1595082988959779324
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Gemini_Generated_Image_t6o52st6o52st6o5_0: 3441286942925476899
+      "ChatGPT Image 6 \u0434\u0435\u043A. 2025 \u0433., 15_30_41_0": -1595082988959779324
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
