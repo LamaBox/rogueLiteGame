@@ -1,0 +1,429 @@
+fileFormatVersion: 2
+guid: a62805d4abb00074ea981b783fa650a7
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2974181606477196536
+    second: bonfireOff_0
+  - first:
+      213: -8126684470856856473
+    second: bonfireOff_1
+  - first:
+      213: -3837482337127872436
+    second: bonfireOff_2
+  - first:
+      213: -1535990008751449834
+    second: bonfireOff_3
+  - first:
+      213: 1876774027838541832
+    second: bonfireOff_4
+  - first:
+      213: -2650686769654361800
+    second: bonfireOff_5
+  - first:
+      213: 4706766254180168942
+    second: bonfireOff_6
+  - first:
+      213: -2189940484003969963
+    second: bonfireOff_7
+  - first:
+      213: -3469470975104182752
+    second: bonfireOff_8
+  - first:
+      213: -1230504685466772116
+    second: bonfireOff_9
+  - first:
+      213: -657017174115778396
+    second: bonfireOff_10
+  - first:
+      213: 6695543640241262650
+    second: bonfireOff_11
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: bonfireOff_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 6
+        width: 59
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8031d68369599b6d0800000000000000
+      internalID: -2974181606477196536
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bonfireOff_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 6
+        width: 59
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76cc4e0e787383f80800000000000000
+      internalID: -8126684470856856473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bonfireOff_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 6
+        width: 59
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4848af65268ebac0800000000000000
+      internalID: -3837482337127872436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bonfireOff_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 6
+        width: 59
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61912dd99311faae0800000000000000
+      internalID: -1535990008751449834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bonfireOff_4
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 6
+        width: 59
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 800def4e804ab0a10800000000000000
+      internalID: 1876774027838541832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bonfireOff_5
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 6
+        width: 59
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8319ceb4d6ed63bd0800000000000000
+      internalID: -2650686769654361800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bonfireOff_6
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 6
+        width: 59
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee4743d78fac15140800000000000000
+      internalID: 4706766254180168942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bonfireOff_7
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 6
+        width: 59
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55442bb8bb4cb91e0800000000000000
+      internalID: -2189940484003969963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bonfireOff_8
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 6
+        width: 59
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 026136ab786f9dfc0800000000000000
+      internalID: -3469470975104182752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bonfireOff_9
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 6
+        width: 59
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6d9c40128e5ceee0800000000000000
+      internalID: -1230504685466772116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bonfireOff_10
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 6
+        width: 59
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a08f757c5ec1e6f0800000000000000
+      internalID: -657017174115778396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bonfireOff_11
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 6
+        width: 59
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a30d4be57795bec50800000000000000
+      internalID: 6695543640241262650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: c8ae354a5170e954d832cec1bcf9dac4
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      bonfireOff_0: -2974181606477196536
+      bonfireOff_1: -8126684470856856473
+      bonfireOff_10: -657017174115778396
+      bonfireOff_11: 6695543640241262650
+      bonfireOff_2: -3837482337127872436
+      bonfireOff_3: -1535990008751449834
+      bonfireOff_4: 1876774027838541832
+      bonfireOff_5: -2650686769654361800
+      bonfireOff_6: 4706766254180168942
+      bonfireOff_7: -2189940484003969963
+      bonfireOff_8: -3469470975104182752
+      bonfireOff_9: -1230504685466772116
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
