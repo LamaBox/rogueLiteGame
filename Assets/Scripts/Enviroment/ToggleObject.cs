@@ -10,7 +10,7 @@ public class Bonfire : MonoBehaviour
         if (collision.CompareTag("PlayerAttack"))
         {
             isOn = !isOn;
-            animator.SetBool("IsOn", false);
+            animator.SetBool("IsOn", isOn);
         }
     }
 }
