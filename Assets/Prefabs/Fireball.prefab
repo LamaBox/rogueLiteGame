@@ -112,6 +112,9 @@ MonoBehaviour:
   damage: 20
   hasExploded: 0
   debugMode: 0
+  damageLayer:
+    serializedVersion: 2
+    m_Bits: 499
 --- !u!58 &3325204565320416129
 CircleCollider2D:
   m_ObjectHideFlags: 0
