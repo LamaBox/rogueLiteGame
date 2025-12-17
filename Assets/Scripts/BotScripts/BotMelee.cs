@@ -16,9 +16,14 @@ public class BotMelee : BotBase
 
     private Animator _animator;
 
+    private bool _isStunned = false; // флаг стана
+
     private void Start()
     {
         base.Start();
+
+        OnDead += Death;
+        OnDamagedEvent += OnDamaged;
 
         if (_waypoints == null || _waypoints.Length == 0)
         {
@@ -44,6 +49,8 @@ public class BotMelee : BotBase
 
     private void Update()
     {
+        if (_isStunned) return; // НИЧЕГО не делаем, если в стане
+
         if (_isAttacking) return; // не двигаемся, если атакуем
 
         if (_targetPlayer != null)
@@ -103,7 +110,7 @@ public class BotMelee : BotBase
 
     private void StartAttack()
     {
-        if (_isAttacking) return; // уже атакуем
+        if (_isAttacking || _isStunned) return; // уже атакуем или в стане
 
         // Поворот в сторону игрока перед атакой
         if (_targetPlayer != null)
@@ -135,6 +142,8 @@ public class BotMelee : BotBase
 
     private void RotateToDirection()
     {
+        if (_isStunned) return; // не поворачиваем, если в стане
+
         // Получаем текущую скорость по X
         float velocityX = Rb2d.linearVelocity.x;
 
@@ -153,6 +162,8 @@ public class BotMelee : BotBase
 
     private void CheckForPlayerInVision()
     {
+        if (_isStunned) return; // не проверяем, если в стане
+
         if (_visionCollider == null) return;
 
         // Создаём ContactFilter2D и настраиваем его для фильтрации по слою "Player"
@@ -215,6 +226,8 @@ public class BotMelee : BotBase
 
     private void MoveToWaypoint()
     {
+        if (_isStunned) return; // не двигаемся, если в стане
+
         if (_waypoints.Length == 0) return;
 
         // Используем только X-координату точки
@@ -241,6 +254,8 @@ public class BotMelee : BotBase
 
     private void MoveToLastPlayerPosition()
     {
+        if (_isStunned) return; // не двигаемся, если в стане
+
         // Используем только X-координату последней позиции игрока
         float targetX = _lastPlayerPosition.x;
         float currentX = transform.position.x;
@@ -265,6 +280,8 @@ public class BotMelee : BotBase
 
     private void MoveTowardsPlayer()
     {
+        if (_isStunned) return; // не двигаемся, если в стане
+
         if (_targetPlayer == null) return;
 
         // Используем только X-координату игрока
@@ -294,6 +311,8 @@ public class BotMelee : BotBase
     // Публичный метод для вызова из анимации
     public void PerformAttack()
     {
+        if (_isStunned) return; // не атакуем, если в стане
+
         // ВАЖНО: Повторно проверяем, находится ли игрок в зоне атаки в момент вызова метода
         if (_targetPlayer != null && IsPlayerInAttackRange())
         {
@@ -308,6 +327,8 @@ public class BotMelee : BotBase
     // Публичный метод для вызова из анимации
     public void EndAttack()
     {
+        if (_isStunned) return; // не завершаем атаку, если в стане
+
         _isAttacking = false;
     }
 
@@ -323,6 +344,38 @@ public class BotMelee : BotBase
             return _attackCollider.IsTouching(playerCollider);
         }
         return false;
+    }
+
+    private void Death()
+    {
+        _animator.SetTrigger("IsDead");
+    }
+
+    public void OnDeath()
+    {
+        OnDead -= Death;
+        OnDamagedEvent -= OnDamaged;
+        Destroy(this.gameObject);
+    }
+
+    public void OnDamaged()
+    {
+        _isStunned = true;
+        _isAttacking = false; // Прерываем атаку
+        _targetPlayer = null; // Сбрасываем цель
+        _isMovingToPlayer = false;
+        _isMovingToLastPlayerPosition = false;
+
+        // Останавливаем движение
+        Rb2d.linearVelocity = Vector2.zero;
+        
+        _animator.SetTrigger("OnDamaged"); // или любой другой триггер для стана
+    }
+
+    // Публичный метод для вызова из анимации
+    public void EndStun()
+    {
+        _isStunned = false;
     }
 
     private void OnDrawGizmosSelected()
