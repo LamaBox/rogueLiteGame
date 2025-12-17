@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Collider2D))]
-public abstract class BotBase : MonoBehaviour
+public abstract class BotBase : MonoBehaviour, IDamageable
 {
     //ScriptableObject
     [SerializeField] protected BotDataSO botDataSO;

@@ -8,6 +8,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float damage = 20f;
     [SerializeField] private float attackSpeed = 1f; // attacks per second
     [SerializeField] private float attackRange = 1.5f;
+    [SerializeField] private LayerMask damageableLayers;
 
     [Header("Attack Direction")]
     [SerializeField] private Transform attackPoint; // точка, откуда идёт атака
@@ -77,14 +78,14 @@ public class PlayerAttack : MonoBehaviour
         OnAttackPerformed?.Invoke();
         
         // Находим всех врагов в радиусе
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, damageableLayers);
 
         foreach (Collider2D enemy in hitEnemies)
         {
-            if (enemy.CompareTag("Enemy"))
+            // Пытаемся получить интерфейс у объекта, в который попали
+            if (enemy.TryGetComponent(out IDamageable damageable))
             {
-                enemy.GetComponent<BotBase>()?.TakeDamage(damage);
-                
+                damageable.TakeDamage(damage);
                 // Для дебага:
                 Debug.Log($"Hit enemy: {enemy.name} with {damage} damage (commented out)");
             }

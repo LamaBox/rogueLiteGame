@@ -424,6 +424,9 @@ MonoBehaviour:
   damage: 20
   attackSpeed: 1
   attackRange: 1
+  damageableLayers:
+    serializedVersion: 2
+    m_Bits: 640
   attackPoint: {fileID: 6415143715428273727}
   enemyLayer:
     serializedVersion: 2
