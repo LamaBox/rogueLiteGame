@@ -18,7 +18,8 @@ public class BotHealthBar : MonoBehaviour
     }
     void Update()
     {
-        transf.position = new Vector3(botBase.transform.position.x, botBase.transform.position.y + 2, 0);
+        if (bot != null && botBase != null)
+            transf.position = new Vector3(botBase.transform.position.x, botBase.transform.position.y + 2, 0);
     }
 
     private void OnHealthChanged(float current, float max, float percentage)

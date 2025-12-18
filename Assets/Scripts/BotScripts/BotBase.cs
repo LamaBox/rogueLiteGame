@@ -4,12 +4,14 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Collider2D))]
-public abstract class BotBase : MonoBehaviour
+public abstract class BotBase : MonoBehaviour, IDamageable
 {
     //ScriptableObject
     [SerializeField] protected BotDataSO botDataSO;
     
     public event Action<float, float, float> OnHealthChanged; //current health, maximum health, percentage(current/max)
+    public event Action OnDead;
+    public event Action OnDamagedEvent;
     
     protected Rigidbody2D Rb2d;
     protected Transform Transf;
@@ -49,6 +51,7 @@ public abstract class BotBase : MonoBehaviour
             CurrentHealth -= damageInp;
             CurrentHealth = Mathf.Clamp(CurrentHealth, 0f, MaxHealth);
             OnHealthChanged?.Invoke(CurrentHealth, MaxHealth, CurrentHealth/MaxHealth);
+            OnDamagedEvent?.Invoke();
         }
         else
             Debug.LogError($"{nameof(this.gameObject)} - Damage is negative ({damageInp}), can't take!");
@@ -56,7 +59,7 @@ public abstract class BotBase : MonoBehaviour
         if (CurrentHealth == 0) //смерть
         {
             Debug.Log($"{nameof(this.gameObject)} Bot is dead");
-            CurrentHealth = MaxHealth;
+            OnDead?.Invoke();
         }
     }
 
