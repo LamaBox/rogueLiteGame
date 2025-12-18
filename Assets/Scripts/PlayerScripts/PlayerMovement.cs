@@ -195,6 +195,23 @@ public class PlayerMovement : MonoBehaviour
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
     }
+    
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            foreach (ContactPoint2D contact in collision.contacts)
+            {
+                if (contact.normal.y > 0.7f) // контакт сверху
+                {
+                    float lookDir = -Mathf.Sign(transform.localScale.x);
+                    var v = new Vector2(lookDir * 300f, 2f);
+                    rb2d.AddForce(v, ForceMode2D.Force);
+                    return; // хватит одного выталкивания
+                }
+            }
+        }
+    }
 
     #region EventsMetods
     // Метод для обработки изменений модификаторов движения
