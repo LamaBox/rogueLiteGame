@@ -1,0 +1,481 @@
+fileFormatVersion: 2
+guid: 926f4ed51137d0c40bb18d248475e2b2
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2127826406299523813
+    second: goodChext34x34_0
+  - first:
+      213: -3597721522085386517
+    second: goodChext34x34_1
+  - first:
+      213: 54256818765027105
+    second: goodChext34x34_2
+  - first:
+      213: -7331358861533344287
+    second: goodChext34x34_3
+  - first:
+      213: -4796396508260570868
+    second: goodChext34x34_4
+  - first:
+      213: -8988912317209442747
+    second: goodChext34x34_5
+  - first:
+      213: 6828138392927655487
+    second: goodChext34x34_6
+  - first:
+      213: -1227490279661754779
+    second: goodChext34x34_7
+  - first:
+      213: 4556054861450720997
+    second: goodChext34x34_8
+  - first:
+      213: -6883731244778303051
+    second: goodChext34x34_9
+  - first:
+      213: 911482010626200492
+    second: goodChext34x34_10
+  - first:
+      213: 4779599977216202252
+    second: goodChext34x34_11
+  - first:
+      213: -3126374559670238187
+    second: goodChext34x34_12
+  - first:
+      213: 7071420339966851434
+    second: goodChext34x34_13
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: goodChext34x34_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 36
+        width: 30
+        height: 24
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1522dc38217872e0800000000000000
+      internalID: -2127826406299523813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goodChext34x34_1
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 36
+        width: 30
+        height: 24
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be6a2535653521ec0800000000000000
+      internalID: -3597721522085386517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goodChext34x34_2
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 36
+        width: 30
+        height: 24
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 127d1290a42c0c000800000000000000
+      internalID: 54256818765027105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goodChext34x34_3
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 35
+        width: 30
+        height: 25
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ed846965f7c14a90800000000000000
+      internalID: -7331358861533344287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goodChext34x34_4
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 34
+        width: 33
+        height: 25
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c096433c9c6cf6db0800000000000000
+      internalID: -4796396508260570868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goodChext34x34_5
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 33
+        width: 32
+        height: 25
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 546099f6fd7f04380800000000000000
+      internalID: -8988912317209442747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goodChext34x34_6
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 33
+        width: 33
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f36d8abf0bb62ce50800000000000000
+      internalID: 6828138392927655487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goodChext34x34_7
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 0
+        width: 34
+        height: 33
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 566248b181417fee0800000000000000
+      internalID: -1227490279661754779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goodChext34x34_8
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 1
+        width: 34
+        height: 33
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e636f9e1cb5a3f30800000000000000
+      internalID: 4556054861450720997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goodChext34x34_9
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 2
+        width: 34
+        height: 28
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b15bb987e21870a0800000000000000
+      internalID: -6883731244778303051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goodChext34x34_10
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 1
+        width: 34
+        height: 29
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca398863f0c36ac00800000000000000
+      internalID: 911482010626200492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goodChext34x34_11
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 2
+        width: 34
+        height: 25
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c06df6a1bdc845240800000000000000
+      internalID: 4779599977216202252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goodChext34x34_12
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 2
+        width: 34
+        height: 25
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5148908f6e2ec94d0800000000000000
+      internalID: -3126374559670238187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goodChext34x34_13
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 2
+        width: 33
+        height: 25
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a69323d455bb22260800000000000000
+      internalID: 7071420339966851434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 7562fa26966847e4dbac9ec60369e835
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      goodChext34x34_0: -2127826406299523813
+      goodChext34x34_1: -3597721522085386517
+      goodChext34x34_10: 911482010626200492
+      goodChext34x34_11: 4779599977216202252
+      goodChext34x34_12: -3126374559670238187
+      goodChext34x34_13: 7071420339966851434
+      goodChext34x34_2: 54256818765027105
+      goodChext34x34_3: -7331358861533344287
+      goodChext34x34_4: -4796396508260570868
+      goodChext34x34_5: -8988912317209442747
+      goodChext34x34_6: 6828138392927655487
+      goodChext34x34_7: -1227490279661754779
+      goodChext34x34_8: 4556054861450720997
+      goodChext34x34_9: -6883731244778303051
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
