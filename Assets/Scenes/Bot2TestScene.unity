@@ -135,6 +135,14 @@ PrefabInstance:
       propertyPath: m_BodyType
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1781491036261023062, guid: 9d9cd1503b348334aa49b3ae7b1b0089, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1781491036261023062, guid: 9d9cd1503b348334aa49b3ae7b1b0089, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2994857769522188370, guid: 9d9cd1503b348334aa49b3ae7b1b0089, type: 3}
       propertyPath: m_LocalPosition.x
       value: -22.148941
