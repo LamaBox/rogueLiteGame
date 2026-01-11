@@ -9,7 +9,7 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneManager.LoadScene("ActualTestScene");
+        SceneManager.LoadScene("BotTestScene");
     }
 
     public void OpenSettings()
