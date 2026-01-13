@@ -162,7 +162,9 @@ namespace Magic
             if (hasExploded) return;
 
             // 1. Игнорируем игрока
-            if (other.CompareTag("Player") || other.CompareTag("Enviroment")) return;
+            if (other.CompareTag("Player") 
+                || other.CompareTag("Enviroment") 
+                || other.CompareTag("BotZone")) return;
 
             // 2. Взрыв об врага
             if (other.CompareTag("Enemy"))
