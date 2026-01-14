@@ -127,6 +127,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 685851473024584054, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
+      propertyPath: availableSpells.Array.data[0].spellPrefab
+      value: 
+      objectReference: {fileID: 4807444777455292811, guid: 3324c59d9573bb74bbe89d2884f2fcb8, type: 3}
     - target: {fileID: 1071408416926523717, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
       propertyPath: m_Name
       value: Player
@@ -196,7 +200,7 @@ GameObject:
   - component: {fileID: 89472552}
   m_Layer: 0
   m_Name: badChest
-  m_TagString: Untagged
+  m_TagString: Enviroment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -395,7 +399,7 @@ GameObject:
   - component: {fileID: 339884762}
   m_Layer: 0
   m_Name: goodChest
-  m_TagString: Untagged
+  m_TagString: Enviroment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
