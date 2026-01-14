@@ -484,7 +484,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableSpells:
   - spellName: Fireball
-    spellPrefab: {fileID: 8994849344751811872, guid: 44ab4247c68c2b64b844da366685c1c8, type: 3}
+    spellPrefab: {fileID: 4807444777455292811, guid: 3324c59d9573bb74bbe89d2884f2fcb8, type: 3}
   currentSpellIndex: 0
   spellCooldown: 1
   debugMode: 0
