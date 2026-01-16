@@ -40,7 +40,5 @@ public class PlayerAnimatorController : MonoBehaviour
         animator.SetBool("isFalling", isFalling);
         animator.SetBool("isAttacking", isAttacking);
         //Debug.Log($"isWalking: {isWalking}, isSprinting: {isSprinting}, isJumping: {isJumping}, isFalling: {isFalling}, isAttacking: {isAttacking}");
-
-        // Для Idle — можно не ставить отдельный параметр, он активен, когда остальные false
     }
 }

@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 5553597972708106522}
   m_Layer: 8
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38,7 +38,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.29, y: -2.88, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.33, y: 1.33, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3069431388513848076}
@@ -484,7 +484,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableSpells:
   - spellName: Fireball
-    spellPrefab: {fileID: 8994849344751811872, guid: 44ab4247c68c2b64b844da366685c1c8, type: 3}
+    spellPrefab: {fileID: 4807444777455292811, guid: 3324c59d9573bb74bbe89d2884f2fcb8, type: 3}
   currentSpellIndex: 0
   spellCooldown: 1
   debugMode: 0
