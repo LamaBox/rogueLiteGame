@@ -6,6 +6,7 @@ public class BotMelee : BotBase
     [SerializeField] private Transform[] _waypoints;
     [SerializeField] private Collider2D _visionCollider; // любой 2D коллайдер (дочерний объект)
     [SerializeField] private Collider2D _attackCollider; // любой 2D коллайдер (дочерний объект)
+    [SerializeField] private RoomExitController _roomExitController;
 
     private int _currentWaypointIndex = 0;
     private bool _isMovingToPlayer = false;
@@ -355,6 +356,12 @@ public class BotMelee : BotBase
     {
         OnDead -= Death;
         OnDamagedEvent -= OnDamaged;
+
+        if (_roomExitController != null)
+        {
+            _roomExitController.UpdateExitStates();
+        }
+        
         Destroy(this.gameObject);
     }
 

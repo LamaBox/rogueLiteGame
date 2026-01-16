@@ -294,6 +294,7 @@ GameObject:
   - component: {fileID: 814978095523409919}
   - component: {fileID: 2789102272172049793}
   - component: {fileID: 5702099535000348956}
+  - component: {fileID: 473407645488111229}
   m_Layer: 0
   m_Name: Room12
   m_TagString: Untagged
@@ -326,6 +327,7 @@ Transform:
   - {fileID: 4284968046175223012}
   - {fileID: 293817258294201863}
   - {fileID: 2245337871249546865}
+  - {fileID: 1092549103889440327}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!156049354 &2789102272172049793
@@ -378,6 +380,21 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &473407645488111229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3143736350372448763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f08bf3bb9db0431438808d638a69a088, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  exitTriggers:
+  - {fileID: 2880238606320093994}
+  enemyCount: 2
 --- !u!1 &3617673580291183759
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,7 +606,7 @@ GameObject:
   - component: {fileID: 381642146471703501}
   m_Layer: 0
   m_Name: SeeZone
-  m_TagString: Untagged
+  m_TagString: BotZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -658,7 +675,7 @@ GameObject:
   - component: {fileID: 685559057256244325}
   m_Layer: 0
   m_Name: AttackZone
-  m_TagString: Untagged
+  m_TagString: BotZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -820,7 +837,7 @@ GameObject:
   - component: {fileID: 1109289709910605197}
   m_Layer: 0
   m_Name: SeeZone
-  m_TagString: Untagged
+  m_TagString: BotZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1054,6 +1071,7 @@ MonoBehaviour:
   - {fileID: 2245337871249546865}
   _visionCollider: {fileID: 1109289709910605197}
   _attackCollider: {fileID: 685559057256244325}
+  _roomExitController: {fileID: 473407645488111229}
 --- !u!114 &3364089114246305284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3160,7 +3178,7 @@ GameObject:
   - component: {fileID: 2468451683448238653}
   m_Layer: 0
   m_Name: AttackZone
-  m_TagString: Untagged
+  m_TagString: BotZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4451,6 +4469,7 @@ MonoBehaviour:
   - {fileID: 4284968046175223012}
   _visionCollider: {fileID: 381642146471703501}
   _attackCollider: {fileID: 2468451683448238653}
+  _roomExitController: {fileID: 473407645488111229}
 --- !u!114 &3399740344523411401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4585,3 +4604,76 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1001 &3725265497257666583
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 814978095523409919}
+    m_Modifications:
+    - target: {fileID: 4367170732481820240, guid: 24acc225744eea843ae8e585a81afd69, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 4367170732481820240, guid: 24acc225744eea843ae8e585a81afd69, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -7.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 4367170732481820240, guid: 24acc225744eea843ae8e585a81afd69, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4367170732481820240, guid: 24acc225744eea843ae8e585a81afd69, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4367170732481820240, guid: 24acc225744eea843ae8e585a81afd69, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4367170732481820240, guid: 24acc225744eea843ae8e585a81afd69, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4367170732481820240, guid: 24acc225744eea843ae8e585a81afd69, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4367170732481820240, guid: 24acc225744eea843ae8e585a81afd69, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4367170732481820240, guid: 24acc225744eea843ae8e585a81afd69, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4367170732481820240, guid: 24acc225744eea843ae8e585a81afd69, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8433728161362863485, guid: 24acc225744eea843ae8e585a81afd69, type: 3}
+      propertyPath: m_Name
+      value: RoomExitDown
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 24acc225744eea843ae8e585a81afd69, type: 3}
+--- !u!4 &1092549103889440327 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4367170732481820240, guid: 24acc225744eea843ae8e585a81afd69, type: 3}
+  m_PrefabInstance: {fileID: 3725265497257666583}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2880238606320093994 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1462092058572137277, guid: 24acc225744eea843ae8e585a81afd69, type: 3}
+  m_PrefabInstance: {fileID: 3725265497257666583}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b549108f50f36d4692918883675af10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
