@@ -1,11 +1,11 @@
-using System;
+using System.Collections; // System.Random может конфликтовать с UnityEngine.Random, поэтому лучше не использовать using System; если не обязательно
 using UnityEngine;
 
 public class BotMelee : BotBase
 {
     [SerializeField] private Transform[] _waypoints;
-    [SerializeField] private Collider2D _visionCollider; // любой 2D коллайдер (дочерний объект)
-    [SerializeField] private Collider2D _attackCollider; // любой 2D коллайдер (дочерний объект)
+    [SerializeField] private Collider2D _visionCollider;
+    [SerializeField] private Collider2D _attackCollider;
     [SerializeField] private RoomExitController _roomExitController;
 
     private int _currentWaypointIndex = 0;
@@ -17,7 +17,10 @@ public class BotMelee : BotBase
 
     private Animator _animator;
 
-    private bool _isStunned = false; // флаг стана
+    private bool _isStunned = false;
+    
+    // Новая переменная для подсчета полученных ударов
+    private int _damageHitCounter = 0;
 
     private void Start()
     {
@@ -50,70 +53,58 @@ public class BotMelee : BotBase
 
     private void Update()
     {
-        if (_isStunned) return; // НИЧЕГО не делаем, если в стане
+        if (_isStunned) return;
 
-        if (_isAttacking) return; // не двигаемся, если атакуем
+        if (_isAttacking) return;
 
         if (_targetPlayer != null)
         {
-            // Проверяем, находится ли игрок всё ещё в зоне видимости
             if (IsPlayerInVision())
             {
-                // Проверяем, находится ли игрок в пределах дистанции атаки по X
                 if (IsPlayerInAttackDistance())
                 {
-                    // Запускаем анимацию атаки
                     StartAttack();
                 }
                 else
                 {
-                    // Если игрок не в зоне атаки - идём к нему
                     MoveTowardsPlayer();
                 }
             }
             else
             {
-                // Если игрок вышел из зоны видимости - сбрасываем цель
-                _lastPlayerPosition = _targetPlayer.position; // запоминаем последнюю позицию
+                _lastPlayerPosition = _targetPlayer.position;
                 _targetPlayer = null;
                 _isMovingToPlayer = false;
-                _isMovingToLastPlayerPosition = true; // переходим к последней позиции игрока
+                _isMovingToLastPlayerPosition = true;
             }
         }
         else
         {
-            // Проверяем, есть ли игрок в зоне видимости
             CheckForPlayerInVision();
 
             if (_isMovingToLastPlayerPosition)
             {
-                // Двигаемся к последней позиции игрока
                 MoveToLastPlayerPosition();
             }
             else if (!_isMovingToPlayer && _waypoints.Length > 0)
             {
-                // Двигаемся по точкам
                 MoveToWaypoint();
             }
         }
 
-        // Обновляем аниматор
         if (_animator != null)
         {
-            // Проверяем, движется ли бот (если скорость по X > 0.1f, считаем, что движется)
             bool isCurrentlyMoving = Mathf.Abs(Rb2d.linearVelocity.x) > 0.1f;
             _animator.SetBool("IsMoving", isCurrentlyMoving);
         }
 
-        // Поворачиваем бота в сторону движения
         RotateToDirection();
     }
 
     private void StartAttack()
     {
-        if (_isAttacking || _isStunned) return; // уже атакуем или в стане
+        if (_isAttacking || _isStunned) return;
 
-        // Поворот в сторону игрока перед атакой
         if (_targetPlayer != null)
         {
             float playerX = _targetPlayer.position.x;
@@ -121,20 +112,16 @@ public class BotMelee : BotBase
 
             if (playerX > botX)
             {
-                // Игрок справа - поворот на 0 градусов
                 transform.rotation = Quaternion.Euler(0, 0, 0);
             }
             else if (playerX < botX)
             {
-                // Игрок слева - поворот на 180 градусов
                 transform.rotation = Quaternion.Euler(0, 180, 0);
             }
-            // Если playerX == botX, оставляем текущий поворот
         }
 
         _isAttacking = true;
 
-        // Вызываем анимационный триггер атаки
         if (_animator != null)
         {
             _animator.SetTrigger("IsAttack");
@@ -143,38 +130,32 @@ public class BotMelee : BotBase
 
     private void RotateToDirection()
     {
-        if (_isStunned) return; // не поворачиваем, если в стане
+        if (_isStunned) return;
 
-        // Получаем текущую скорость по X
         float velocityX = Rb2d.linearVelocity.x;
 
         if (velocityX > 0.1f)
         {
-            // Движемся вправо - поворот на 0 градусов
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
         else if (velocityX < -0.1f)
         {
-            // Движемся влево - поворот на 180 градусов
             transform.rotation = Quaternion.Euler(0, 180, 0);
         }
-        // Если скорость близка к нулю, оставляем текущий поворот
     }
 
     private void CheckForPlayerInVision()
     {
-        if (_isStunned) return; // не проверяем, если в стане
+        if (_isStunned) return;
 
         if (_visionCollider == null) return;
 
-        // Создаём ContactFilter2D и настраиваем его для фильтрации по слою "Player"
         ContactFilter2D contactFilter = new ContactFilter2D();
         contactFilter.SetLayerMask(LayerMask.GetMask("Player"));
-        contactFilter.useTriggers = true; // если коллайдеры триггеры
+        contactFilter.useTriggers = true;
 
-        // Получаем все коллайдеры, пересекающиеся с _visionCollider
-        Collider2D[] overlappingColliders = new Collider2D[10]; // буфер для найденных коллайдеров
-        int numColliders = _visionCollider.Overlap(contactFilter, overlappingColliders); // исправлено
+        Collider2D[] overlappingColliders = new Collider2D[10];
+        int numColliders = _visionCollider.Overlap(contactFilter, overlappingColliders);
 
         for (int i = 0; i < numColliders; i++)
         {
@@ -183,7 +164,7 @@ public class BotMelee : BotBase
             {
                 _targetPlayer = col.transform;
                 _isMovingToPlayer = true;
-                _isMovingToLastPlayerPosition = false; // сбрасываем режим поиска
+                _isMovingToLastPlayerPosition = false;
                 return;
             }
         }
@@ -193,7 +174,6 @@ public class BotMelee : BotBase
     {
         if (_targetPlayer == null || _visionCollider == null) return false;
 
-        // Проверяем, всё ли ещё пересекаемся с коллайдером игрока
         Collider2D playerCollider = _targetPlayer.GetComponent<Collider2D>();
         if (playerCollider != null)
         {
@@ -202,7 +182,6 @@ public class BotMelee : BotBase
         return false;
     }
 
-    // Проверяем, находится ли игрок в пределах AttackDistance по X
     private bool IsPlayerInAttackDistance()
     {
         if (_targetPlayer == null) return false;
@@ -211,12 +190,10 @@ public class BotMelee : BotBase
         return distanceToPlayerX <= AttackDistance;
     }
 
-    // Проверяем, находится ли игрок в коллайдере атаки (для нанесения урона)
     private bool IsPlayerInAttackRange()
     {
         if (_targetPlayer == null || _attackCollider == null) return false;
 
-        // Проверяем, пересекаемся ли с коллайдером игрока
         Collider2D playerCollider = _targetPlayer.GetComponent<Collider2D>();
         if (playerCollider != null)
         {
@@ -227,65 +204,56 @@ public class BotMelee : BotBase
 
     private void MoveToWaypoint()
     {
-        if (_isStunned) return; // не двигаемся, если в стане
+        if (_isStunned) return;
 
         if (_waypoints.Length == 0) return;
 
-        // Используем только X-координату точки
         float targetX = _waypoints[_currentWaypointIndex].position.x;
         float currentX = transform.position.x;
 
         float directionX = targetX - currentX;
 
-        // Проверяем, достигли ли мы точки по оси X
-        if (Mathf.Abs(directionX) <= 0.1f) // достигли точки по X
+        if (Mathf.Abs(directionX) <= 0.1f)
         {
             _currentWaypointIndex = (_currentWaypointIndex + 1) % _waypoints.Length;
-            return; // выходим, чтобы не двигаться в этот кадр
+            return;
         }
 
-        // Направление: 1 или -1
         directionX = Mathf.Sign(directionX);
 
-        // Устанавливаем только X-составляющую скорости
         Vector2 newVelocity = Rb2d.linearVelocity;
         newVelocity.x = directionX * MoveSpeed;
-        Rb2d.linearVelocity = newVelocity; // используем velocity, а не linearVelocity
+        Rb2d.linearVelocity = newVelocity;
     }
 
     private void MoveToLastPlayerPosition()
     {
-        if (_isStunned) return; // не двигаемся, если в стане
+        if (_isStunned) return;
 
-        // Используем только X-координату последней позиции игрока
         float targetX = _lastPlayerPosition.x;
         float currentX = transform.position.x;
 
         float directionX = targetX - currentX;
 
-        // Проверяем, достигли ли мы точки по оси X
-        if (Mathf.Abs(directionX) <= 0.1f) // достигли точки по X
+        if (Mathf.Abs(directionX) <= 0.1f)
         {
-            _isMovingToLastPlayerPosition = false; // возвращаемся к патрулированию
-            return; // выходим, чтобы не двигаться в этот кадр
+            _isMovingToLastPlayerPosition = false;
+            return;
         }
 
-        // Направление: 1 или -1
         directionX = Mathf.Sign(directionX);
 
-        // Устанавливаем только X-составляющую скорости
         Vector2 newVelocity = Rb2d.linearVelocity;
         newVelocity.x = directionX * MoveSpeed;
-        Rb2d.linearVelocity = newVelocity; // используем velocity
+        Rb2d.linearVelocity = newVelocity;
     }
 
     private void MoveTowardsPlayer()
     {
-        if (_isStunned) return; // не двигаемся, если в стане
+        if (_isStunned) return;
 
         if (_targetPlayer == null) return;
 
-        // Используем только X-координату игрока
         float targetX = _targetPlayer.position.x;
         float currentX = transform.position.x;
 
@@ -294,27 +262,23 @@ public class BotMelee : BotBase
 
         if (distanceToPlayerX > AttackDistance)
         {
-            // Двигаемся к игроку только по X
             directionX = Mathf.Sign(directionX);
             Vector2 newVelocity = Rb2d.linearVelocity;
             newVelocity.x = directionX * MoveSpeed;
-            Rb2d.linearVelocity = newVelocity; // используем velocity
+            Rb2d.linearVelocity = newVelocity;
         }
         else
         {
-            // Если близко к игроку по X, останавливаем движение по X
             Vector2 newVelocity = Rb2d.linearVelocity;
             newVelocity.x = 0f;
             Rb2d.linearVelocity = newVelocity;
         }
     }
 
-    // Публичный метод для вызова из анимации
     public void PerformAttack()
     {
-        if (_isStunned) return; // не атакуем, если в стане
+        if (_isStunned) return;
 
-        // ВАЖНО: Повторно проверяем, находится ли игрок в зоне атаки в момент вызова метода
         if (_targetPlayer != null && IsPlayerInAttackRange())
         {
             PlayerData playerData = _targetPlayer.GetComponent<PlayerData>();
@@ -325,20 +289,17 @@ public class BotMelee : BotBase
         }
     }
 
-    // Публичный метод для вызова из анимации
     public void EndAttack()
     {
-        if (_isStunned) return; // не завершаем атаку, если в стане
+        if (_isStunned) return;
 
         _isAttacking = false;
     }
 
-    // Публичный метод для проверки, находится ли игрок в зоне атаки
     public bool IsPlayerInRangeForAttack()
     {
         if (_targetPlayer == null || _attackCollider == null) return false;
 
-        // Проверяем, пересекаемся ли с коллайдером игрока
         Collider2D playerCollider = _targetPlayer.GetComponent<Collider2D>();
         if (playerCollider != null)
         {
@@ -367,19 +328,54 @@ public class BotMelee : BotBase
 
     public void OnDamaged()
     {
-        _isStunned = true;
-        _isAttacking = false; // Прерываем атаку
-        _targetPlayer = null; // Сбрасываем цель
-        _isMovingToPlayer = false;
-        _isMovingToLastPlayerPosition = false;
+        _damageHitCounter++; // Увеличиваем счетчик ударов
 
-        // Останавливаем движение
-        Rb2d.linearVelocity = Vector2.zero;
-        
-        _animator.SetTrigger("OnDamaged"); // или любой другой триггер для стана
+        bool shouldStun = false;
+
+        if (_damageHitCounter == 2)
+        {
+            // 2-й удар: шанс 70% (0.7)
+            if (UnityEngine.Random.value <= 0.7f)
+            {
+                shouldStun = true;
+            }
+            // Если не повезло, счетчик остается 2, ждем 3-го удара
+        }
+        else if (_damageHitCounter >= 3)
+        {
+            // 3-й удар: шанс 30% (0.3)
+            if (UnityEngine.Random.value <= 0.3f)
+            {
+                shouldStun = true;
+            }
+            
+            // Если это был 3-й удар (или больше, для страховки) и мы не застанились,
+            // или если застанились - в любом случае сбрасываем счетчик после обработки,
+            // чтобы цикл начался заново со следующего удара.
+            if (!shouldStun) 
+            {
+                _damageHitCounter = 0;
+            }
+        }
+
+        // Применяем логику стана, если условия совпали
+        if (shouldStun)
+        {
+            _damageHitCounter = 0; // Сбрасываем счетчик при успешном стане
+            
+            _isStunned = true;
+            _isAttacking = false;
+            _targetPlayer = null;
+            _isMovingToPlayer = false;
+            _isMovingToLastPlayerPosition = false;
+
+            // Останавливаем движение
+            Rb2d.linearVelocity = Vector2.zero;
+            
+            _animator.SetTrigger("OnDamaged");
+        }
     }
 
-    // Публичный метод для вызова из анимации
     public void EndStun()
     {
         _isStunned = false;
@@ -406,7 +402,6 @@ public class BotMelee : BotBase
             }
         }
 
-        // Визуализация коллайдеров (опционально)
         if (_attackCollider != null)
         {
             Gizmos.color = Color.red;
