@@ -68,6 +68,11 @@ public abstract class BotBase : MonoBehaviour, IDamageable
         playerData.ChangeValueResource(-Damage, PlayerDataStructures.ResourceType.Health, PlayerDataStructures.ResourceValueType.Current, true);
     }
     
+    public void DealDamagePlayer(PlayerData playerData, float damageInp)
+    {
+        playerData.ChangeValueResource(-damageInp, PlayerDataStructures.ResourceType.Health, PlayerDataStructures.ResourceValueType.Current, true);
+    }
+    
     public float GetCurrentHealth() => CurrentHealth;
     public float GetMaxHealth() => MaxHealth;
     
