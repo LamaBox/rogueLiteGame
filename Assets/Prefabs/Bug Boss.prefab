@@ -313,7 +313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d06574fc3323b3a43b94d6c14450c419, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  botDataSO: {fileID: 11400000, guid: e5801afded43641478ea042ccb043f74, type: 2}
+  botDataSO: {fileID: 11400000, guid: 884320953a20d194188724208b533028, type: 2}
   _acidProjectilePrefab: {fileID: 4807444777455292811, guid: 8a93fc50d20350243a5543f690ce2908, type: 3}
   _firePoint: {fileID: 991524870118973700}
   _closeRange: 3.8
