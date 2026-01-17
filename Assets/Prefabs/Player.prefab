@@ -466,6 +466,7 @@ MonoBehaviour:
   - spellName: Fireball
     spellPrefab: {fileID: 4807444777455292811, guid: 3324c59d9573bb74bbe89d2884f2fcb8, type: 3}
   currentSpellIndex: 0
+  castDelay: 1
   spellCooldown: 1
   debugMode: 0
 --- !u!114 &5553597972708106522
@@ -615,7 +616,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &890961562696907792
 Transform:
   m_ObjectHideFlags: 0

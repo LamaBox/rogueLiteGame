@@ -4,6 +4,9 @@ using static PlayerDataStructures;
 
 public class PlayerAttack : MonoBehaviour
 {
+    [Header("Dependencies")]
+    [SerializeField] private PlayerMovement playerMovement; // Ссылка на скрипт движения
+
     [Header("Attack Settings (will be overridden by PlayerData)")]
     [SerializeField] private float damage = 20f;
     [SerializeField] private float attackSpeed = 1f; // attacks per second
@@ -21,6 +24,9 @@ public class PlayerAttack : MonoBehaviour
     private float attackTimer = 0f;
     private bool canAttack = true;
 
+    // Флаг блокировки атаки (для магии, катсцен и т.д.)
+    private bool isAttackLocked = false;
+
     public bool GetCanAttack()
     {
         return canAttack;
@@ -31,6 +37,10 @@ public class PlayerAttack : MonoBehaviour
     
     void Start()
     {
+        // Автоматически ищем скрипт движения, если не назначен
+        if (playerMovement == null)
+            playerMovement = GetComponent<PlayerMovement>();
+            
         // if (attackPoint == null)
         // {
         //     attackPoint = transform;
@@ -58,9 +68,33 @@ public class PlayerAttack : MonoBehaviour
 
     public void OnAttackInput(InputAction.CallbackContext context)
     {
-        if (context.performed && canAttack)
+        // Проверяем:
+        // 1. Кнопка нажата
+        // 2. Кулдаун прошел (canAttack)
+        // 3. Атака НЕ заблокирована (isAttackLocked)
+        // 4. Мы НЕ в рывке (нельзя бить во время дэша)
+        
+        bool isDashing = playerMovement != null && playerMovement.GetIsDashing();
+        
+        if (context.performed && canAttack && !isAttackLocked && !isDashing)
+        {
             PerformAttack();
+        }
     }
+
+    // --- ПУБЛИЧНЫЕ МЕТОДЫ БЛОКИРОВКИ ---
+    
+    public void LockAttack()
+    {
+        isAttackLocked = true;
+    }
+
+    public void UnlockAttack()
+    {
+        isAttackLocked = false;
+    }
+    
+    // ------------------------------------
 
     private void PerformAttack()
     {
