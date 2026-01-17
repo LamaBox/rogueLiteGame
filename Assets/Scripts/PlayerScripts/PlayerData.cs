@@ -34,6 +34,10 @@ public class PlayerData : MonoBehaviour
     [SerializeField] private float baseAttackSpeed = 1f;
     [SerializeField] private float baseAttackRange = 1.5f;
     
+    [Header("Heal Settings")]
+    [SerializeField] private float healHealthPerSec = 1f;
+    [SerializeField] private float healManaPerSec = 0f;
+    
     
     [Header("Debug Settings")]
     [SerializeField] private bool debugMode; // Новый параметр для отладки
@@ -57,6 +61,15 @@ public class PlayerData : MonoBehaviour
         {
             Debug.Log("PlayerData initialized with debug mode ON");
         }
+    }
+
+    private void Update()
+    {
+        currentHealth += healHealthPerSec * Time.deltaTime;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        
+        currentMana += healManaPerSec * Time.deltaTime;
+        currentMana = Mathf.Clamp(currentMana, 0, maxMana);
     }
 
     private void InitializeResources()

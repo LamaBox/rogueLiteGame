@@ -45,10 +45,17 @@ public class ScoreCounter : MonoBehaviour
     {
         return _currentScore;
     }
+
+    public void SetScore(int amount)
+    {
+        _currentScore = amount;
+        OnScoreChanged?.Invoke(_currentScore);
+    }
     
     // Опционально: Метод для полного сброса очков (если нужно)
     public void ResetScore()
     {
         _currentScore = 0;
+        OnScoreChanged?.Invoke(_currentScore);
     }
 }
