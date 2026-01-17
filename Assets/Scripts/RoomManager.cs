@@ -49,7 +49,7 @@ public class RoomManager : MonoBehaviour
         // Применяем импульс при прыжке вверх
         if (direction == "up" && player.TryGetComponent(out Rigidbody2D rb))
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y + 30f);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y + 10f);
         }
 
         // Центрируем камеру и фон
@@ -73,7 +73,7 @@ public class RoomManager : MonoBehaviour
         foreach (var bg in leftPictures)
         {
             if (bg == null) continue;
-            Vector3 newPos = new Vector3(currentRoom.transform.position.x - 27.2f, currentRoom.transform.position.y, bg.transform.position.z);
+            Vector3 newPos = new Vector3(currentRoom.transform.position.x - 27.2f, currentRoom.transform.position.y - 0.37f, bg.transform.position.z);
             bg.transform.position = newPos;
 
             Parallax p = bg.GetComponent<Parallax>();
@@ -85,7 +85,7 @@ public class RoomManager : MonoBehaviour
         foreach (var bg in centerPictures)
         {
             if (bg == null) continue;
-            Vector3 newPos = new Vector3(currentRoom.transform.position.x, currentRoom.transform.position.y, bg.transform.position.z);
+            Vector3 newPos = new Vector3(currentRoom.transform.position.x, currentRoom.transform.position.y - 0.37f, bg.transform.position.z);
             bg.transform.position = newPos;
 
             Parallax p = bg.GetComponent<Parallax>();
@@ -97,7 +97,7 @@ public class RoomManager : MonoBehaviour
         foreach (var bg in rightPictures)
         {
             if (bg == null) continue;
-            Vector3 newPos = new Vector3(currentRoom.transform.position.x + 27.2f, currentRoom.transform.position.y, bg.transform.position.z);
+            Vector3 newPos = new Vector3(currentRoom.transform.position.x + 27.2f, currentRoom.transform.position.y - 0.37f, bg.transform.position.z);
             bg.transform.position = newPos;
 
             Parallax p = bg.GetComponent<Parallax>();
