@@ -128,7 +128,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &3058404597238339919
 CapsuleCollider2D:
@@ -361,13 +361,15 @@ MonoBehaviour:
   maxStamina: 100
   baseMoveSpeed: 10
   baseSprintMultiplier: 1.6
-  baseJumpHeight: 30
-  baseDashSpeed: 50
+  baseJumpHeight: 38
+  baseDashSpeed: 35
   baseDashCooldown: 1
   baseGravityScale: 10
-  baseDamage: 10
+  baseDamage: 25
   baseAttackSpeed: 1
   baseAttackRange: 1
+  healHealthPerSec: 2
+  healManaPerSec: 0
   debugMode: 1
 --- !u!114 &5295230506063879410
 MonoBehaviour:
@@ -401,6 +403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 695e02ac53021454b8026c44e33060b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMovement: {fileID: 0}
   damage: 20
   attackSpeed: 1
   attackRange: 1
@@ -465,6 +468,7 @@ MonoBehaviour:
   availableSpells:
   - spellName: Fireball
     spellPrefab: {fileID: 4807444777455292811, guid: 3324c59d9573bb74bbe89d2884f2fcb8, type: 3}
+    manaCost: 10
   currentSpellIndex: 0
   castDelay: 1
   spellCooldown: 1

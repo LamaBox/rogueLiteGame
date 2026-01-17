@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   botName: 
   maxHealth: 100
-  damage: 10
+  damage: 20
   moveSpeed: 5
   attackSpeed: 1
   attackDistance: 1.7
