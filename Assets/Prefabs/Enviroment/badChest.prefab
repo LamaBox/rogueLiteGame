@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 708787912289934449}
   - component: {fileID: 177081659361361691}
   - component: {fileID: 279678769193027586}
-  - component: {fileID: 8237416284416382849}
-  m_Layer: 0
+  - component: {fileID: 587186061722985948}
+  m_Layer: 7
   m_Name: badChest
-  m_TagString: Enviroment
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -186,7 +186,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &8237416284416382849
+--- !u!114 &587186061722985948
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -195,7 +195,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8478843966522315414}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d967f24ffb6d13d41bce7322b03ce427, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d0e86281acc4ea1aeb171fa036c587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 708787912289934449}

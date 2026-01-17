@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6092953483848399409}
   m_Layer: 9
   m_Name: Barrel
-  m_TagString: Untagged
+  m_TagString: Enviroment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioClips:
-  - {fileID: 8300000, guid: 109fbc6e3ea1d0846ae01d17b377effa, type: 3}
+  - {fileID: 8300000, guid: c20ea45207aac95408110d080705cab8, type: 3}
 --- !u!82 &6092953483848399409
 AudioSource:
   m_ObjectHideFlags: 0

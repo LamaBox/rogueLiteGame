@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 5691109156098828110}
   - component: {fileID: 9037343411135648509}
   - component: {fileID: 5483967923167358239}
-  - component: {fileID: 8176211331874568906}
   - component: {fileID: 1717912486429731261}
   - component: {fileID: 4036917835249041601}
-  m_Layer: 0
+  - component: {fileID: -1521789765098492204}
+  m_Layer: 7
   m_Name: goodChest
-  m_TagString: Enviroment
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,19 +113,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8176211331874568906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3617673580291183759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d967f24ffb6d13d41bce7322b03ce427, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 5483967923167358239}
 --- !u!61 &1717912486429731261
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -199,3 +186,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-1521789765098492204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3617673580291183759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0e86281acc4ea1aeb171fa036c587d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 5483967923167358239}
