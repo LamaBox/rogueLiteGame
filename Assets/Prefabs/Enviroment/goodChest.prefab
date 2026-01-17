@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1717912486429731261}
   - component: {fileID: 4036917835249041601}
   - component: {fileID: -1521789765098492204}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: goodChest
   m_TagString: Enemy
   m_Icon: {fileID: 0}
