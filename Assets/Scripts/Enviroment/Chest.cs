@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Chest : MonoBehaviour, IDamageable
@@ -5,7 +6,14 @@ public class Chest : MonoBehaviour, IDamageable
     [SerializeField] private int scoreReward = 50; // Сколько очков давать за сундук
     
     public Animator animator;
-    private bool isOn = true; // true = сундук закрыт, false = открыт
+    private bool isOn = true; // true = сундук закрыт, false = открыт\
+    
+    private Collider2D col2d;
+
+    private void Start()
+    {
+        col2d = this.GetComponent<Collider2D>();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -28,6 +36,8 @@ public class Chest : MonoBehaviour, IDamageable
     {
         isOn = false;
         animator.SetBool("IsOn", isOn);
+        
+        col2d.enabled = false;
 
         // --- НАЧИСЛЕНИЕ ОЧКОВ ---
         if (ScoreCounter.Instance != null)

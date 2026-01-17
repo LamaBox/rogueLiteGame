@@ -26,7 +26,6 @@ public class BugBoss : BotBase
     [Header("AI Probabilities")]
     [Range(0f, 1f)] [SerializeField] private float _mediumRangeAcidChance = 0.5f;
 
-    // Снизил дефолтное значение, так как теперь это шанс срабатывания раз в секунду
     [Tooltip("Шанс сделать рывок при принятии решения на дальней дистанции")]
     [Range(0f, 1f)] [SerializeField] private float _farRangeChargeChance = 0.4f; 
     
@@ -59,7 +58,6 @@ public class BugBoss : BotBase
     private float _currentSpeedMultiplier = 1.0f; 
     private float _currentDelayMultiplier = 1.0f; 
 
-    // Таймер для принятия решений на дальней дистанции (чтобы не спамить проверками каждый кадр)
     private float _nextDecisionTime = 0f;
 
     private Coroutine _chargeCoroutine;
@@ -72,6 +70,9 @@ public class BugBoss : BotBase
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
         if (_acidProjectilePrefab == null) Debug.LogError("Acid Prefab is missing!");
+
+        // Подписываемся на событие смерти из BotBase
+        OnDead += Death;
         
         UpdateRageStats();
     }
@@ -79,6 +80,7 @@ public class BugBoss : BotBase
     protected override void Update()
     {
         base.Update(); 
+        // Если мертв — не выполняем поиск игрока и логику
         if (_isDead) return;
 
         if (Time.time < _recoveryTimer) return;
@@ -99,61 +101,90 @@ public class BugBoss : BotBase
         float distanceX = Mathf.Abs(transform.position.x - _targetPlayer.position.x);
         float distanceY = Mathf.Abs(transform.position.y - _targetPlayer.position.y);
 
-        // 1. Если игрок на другой высоте (платформе)
         if (distanceY > 3f) 
         {
             MoveTowardsPlayer();
-            // Пробуем ударить, если вдруг достаем вертикально
             if (IsPlayerInZone(_clawCollider)) StartSlashAttack(false); 
             return;
         }
 
-        // 2. Ближняя дистанция
         if (distanceX <= _closeRange) 
         {
             StartBiteAttack();
         }
-        // 3. Средняя дистанция
         else if (distanceX <= _mediumRange)
         {
             bool doAcidCombo = UnityEngine.Random.value <= _mediumRangeAcidChance;
             if (doAcidCombo) StartAcidAttack(true); 
             else StartSlashAttack(CheckLowHpCharge()); 
         }
-        // 4. ДАЛЬНЯЯ ДИСТАНЦИЯ (Исправленная логика)
         else
         {
-            // А. Сначала ВСЕГДА идем к игроку
             MoveTowardsPlayer();
 
-            // Б. Проверяем, пришло ли время "подумать" об атаке (например, раз в 1 сек * множитель ярости)
             if (Time.time >= _nextDecisionTime)
             {
-                // Ставим следующее время принятия решения
                 _nextDecisionTime = Time.time + (1.0f * _currentDelayMultiplier);
 
-                // В. Бросаем кубик
-                float roll = UnityEngine.Random.value; // 0.0 ... 1.0
+                float roll = UnityEngine.Random.value; 
 
-                // Шанс на Рывок
                 if (roll <= _farRangeChargeChance)
                 {
                     StartChargeAttack();
                 }
-                // Если рывок не выпал, проверяем шанс на Кислоту (отдельный бросок или else if)
                 else if (UnityEngine.Random.value <= _farRangeAcidChance)
                 {
                     StartAcidAttack(false);
                 }
-                
-                // Если ничего не выпало — босс просто продолжает идти до следующего _nextDecisionTime
-                // Это и создает поведение "Идет, идет, иногда стреляет"
             }
         }
     }
+    
+    // --- Метод, вызываемый при ХП <= 0 (из события BotBase) ---
+    private void Death()
+    {
+        // 1. Сразу отключаем "мозги", чтобы Update перестал работать
+        _isDead = true;
+
+        // 2. Останавливаем все таймеры и корутины (особенно рывок!)
+        StopAllCoroutines();
+        
+        // 3. Останавливаем движение физически
+        StopMovement();
+        _isCharging = false;
+        _isChargeMoving = false;
+        
+        // 4. Запускаем анимацию смерти
+        _animator.SetTrigger("IsDead");
+        
+        Debug.Log("BOSS: Death sequence started.");
+    }
+
+    // --- Метод, вызываемый ИЗ АНИМАЦИИ в самом конце (Event) ---
+    public void OnDeath()
+    {
+        // Отписываемся от событий, чтобы избежать ошибок памяти
+        OnDead -= Death;
+
+        // Отключаем основной коллайдер, чтобы сквозь труп можно было ходить
+        var col = GetComponent<Collider2D>();
+        if(col != null) col.enabled = false;
+        
+        // Отключаем физику полностью, чтобы труп не падал и не толкался
+        Rb2d.simulated = false;
+        Rb2d.linearVelocity = Vector2.zero;
+
+        Debug.Log("BOSS: Completely disabled.");
+    }
+
+    // --- Destroy почистил, удалил лишний HandleDeath ---
+    private void OnDestroy() 
+    { 
+        OnDead -= Death; 
+    }
 
     // --- ОСТАЛЬНОЙ КОД БЕЗ ИЗМЕНЕНИЙ ---
-    
+
     private void UpdateRageStats()
     {
         if (MaxHealth == 0) return; 
@@ -172,6 +203,8 @@ public class BugBoss : BotBase
 
     public override void TakeDamage(float damageInp)
     {
+        if (_isDead) return; // Не реагируем на урон, если уже умираем
+        
         base.TakeDamage(damageInp); 
         UpdateRageStats(); 
         _animator.SetTrigger("OnDamaged");
@@ -305,7 +338,7 @@ public class BugBoss : BotBase
             _queueChargeAfterSlash = false;
         }
     }
-
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!_isChargeMoving) return;
@@ -392,8 +425,6 @@ public class BugBoss : BotBase
         else transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, 1);
     }
     private bool IsPlayerInZone(Collider2D z) => _targetPlayer && z && z.IsTouching(_targetPlayer.GetComponent<Collider2D>());
-    private void OnDestroy() { OnDead -= HandleDeath; }
-    private void HandleDeath() { _isDead = true; StopMovement(); if(_chargeCoroutine!=null)StopCoroutine(_chargeCoroutine); GetComponent<Collider2D>().enabled = false; _animator.SetTrigger("IsDead"); }
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.yellow; Gizmos.DrawWireSphere(transform.position, _visionRadius);
         Gizmos.color = Color.red; Gizmos.DrawWireSphere(transform.position, _closeRange);
