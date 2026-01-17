@@ -1,9 +1,12 @@
 using UnityEngine;
+using System;
 
 public class ScoreCounter : MonoBehaviour
 {
     // Публичная статическая ссылка для доступа из любого скрипта
     public static ScoreCounter Instance { get; private set; }
+    
+    public event Action<int> OnScoreChanged;
 
     // Переменная для хранения текущего счета
     private int _currentScore = 0;
@@ -27,6 +30,8 @@ public class ScoreCounter : MonoBehaviour
     public void AddScore(int amount)
     {
         _currentScore += amount;
+        
+        OnScoreChanged?.Invoke(_currentScore);
         
         // Для удобства можно выводить в консоль
         Debug.Log($"Очки изменены. Текущий счет: {_currentScore}");
