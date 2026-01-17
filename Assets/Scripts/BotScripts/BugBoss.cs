@@ -1,289 +1,355 @@
+using System.Collections;
 using UnityEngine;
 
 public class BugBoss : BotBase
 {
     [Header("Boss Settings")]
-    [SerializeField] private GameObject _acidProjectilePrefab; // Префаб плевка
-    [SerializeField] private Transform _firePoint; // Точка вылета плевка (рот)
-    [SerializeField] private float _closeRange = 2.0f; // Дистанция укуса
-    [SerializeField] private float _mediumRange = 5.0f; // Дистанция удара когтем
-    [SerializeField] private float _chargeSpeed = 15f; // Скорость рывка
+    [SerializeField] private GameObject _acidProjectilePrefab;
+    [SerializeField] private Transform _firePoint;
+    
+    [Header("Distances (From collider edge!)")]
+    [SerializeField] private float _closeRange = 2.0f;
+    [SerializeField] private float _mediumRange = 5.0f;
+
+    [Header("Charge Settings")]
+    [SerializeField] private float _chargeSpeed = 15f; 
+    [SerializeField] private float _chargeDelay = 1.0f; 
+    [SerializeField] private float _chargeDuration = 3.0f; 
+    [SerializeField] private float _chargeDamage = 20f;
+    [SerializeField] private float _impactStunDuration = 0.7f; 
+    [SerializeField] private LayerMask _chargeStopLayers;
+    
+    [Header("Damage Settings")]
+    [SerializeField] private float _biteDamage = 10f;
+    [SerializeField] private float _slashDamage = 20f;
+
+    [Header("AI Probabilities")]
+    [Range(0f, 1f)] [SerializeField] private float _mediumRangeAcidChance = 0.5f;
+
+    // Снизил дефолтное значение, так как теперь это шанс срабатывания раз в секунду
+    [Tooltip("Шанс сделать рывок при принятии решения на дальней дистанции")]
+    [Range(0f, 1f)] [SerializeField] private float _farRangeChargeChance = 0.4f; 
+    
+    [Tooltip("Шанс плюнуть кислотой, если рывок не выпал")]
+    [Range(0f, 1f)] [SerializeField] private float _farRangeAcidChance = 0.3f;
+
+    [Range(0f, 1f)] [SerializeField] private float _chargeComboHpThreshold = 0.5f;
+    [Range(0f, 1f)] [SerializeField] private float _chargeComboChance = 0.6f;
 
     [Header("Child Colliders")]
-    [SerializeField] private Collider2D _biteCollider; // Коллайдер зоны укуса
-    [SerializeField] private Collider2D _clawCollider; // Коллайдер зоны удара когтем
+    [SerializeField] private Collider2D _biteCollider;
+    [SerializeField] private Collider2D _clawCollider;
     
-    // Для поиска игрока (можно использовать общий, можно отдельный огромный триггер)
     [SerializeField] private float _visionRadius = 20f; 
 
     private Transform _targetPlayer;
     private Animator _animator;
-    private SpriteRenderer _spriteRenderer; // Для разворота (или через transform)
+    private SpriteRenderer _spriteRenderer; 
 
-    // Состояния босса
     private bool _isAttacking = false;
-    private bool _isChasing = false;
-    private bool _isCharging = false;
+    private bool _isCharging = false; 
+    private bool _isChargeMoving = false; 
     private bool _isDead = false;
 
-    // Логические флаги для комбо
-    private bool _queueSlashAfterAction = false; // Нужно ли ударить когтем после текущего действия
-    private bool _queueChargeAfterSlash = false; // Нужно ли сделать рывок после удара когтем
+    private float _recoveryTimer = 0f;
+    private bool _queueSlashAfterAction = false; 
+    private bool _queueChargeAfterSlash = false; 
+
+    // --- НОВЫЕ ПЕРЕМЕННЫЕ ДЛЯ ЯРОСТИ ---
+    private float _currentSpeedMultiplier = 1.0f; 
+    private float _currentDelayMultiplier = 1.0f; 
+
+    // Таймер для принятия решений на дальней дистанции (чтобы не спамить проверками каждый кадр)
+    private float _nextDecisionTime = 0f;
+
+    private Coroutine _chargeCoroutine;
+    private Coroutine _watchdogCoroutine; 
 
     protected override void Start()
     {
-        base.Start(); // Инициализация BotBase (HP, RB и т.д.)
-        
+        base.Start(); 
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
         if (_acidProjectilePrefab == null) Debug.LogError("Acid Prefab is missing!");
-        if (_biteCollider == null) Debug.LogError("Bite Collider is missing!");
-        if (_clawCollider == null) Debug.LogError("Claw Collider is missing!");
+        
+        UpdateRageStats();
     }
 
     protected override void Update()
     {
-        base.Update(); // Если в BotBase есть логика в Update
-
+        base.Update(); 
         if (_isDead) return;
 
-        // Поиск игрока, если потеряли
-        if (_targetPlayer == null)
-        {
-            FindPlayer();
-        }
+        if (Time.time < _recoveryTimer) return;
 
-        if (_targetPlayer != null)
-        {
-            // Поворот к игроку (если не атакуем и не в рывке)
-            if (!_isAttacking && !_isCharging)
-            {
-                FaceTarget();
-            }
+        if (_targetPlayer == null) FindPlayer();
 
-            // Логика поведения
-            if (!_isAttacking && !_isCharging)
-            {
-                DecideNextAction();
-            }
+        if (_targetPlayer != null && !_isAttacking && !_isCharging)
+        {
+            FaceTarget();
+            DecideNextAction();
         }
     }
 
-    // --- ЛОГИКА ПОВЕДЕНИЯ ---
-
     private void DecideNextAction()
     {
+        if (Time.time < _recoveryTimer) return;
+
         float distanceX = Mathf.Abs(transform.position.x - _targetPlayer.position.x);
         float distanceY = Mathf.Abs(transform.position.y - _targetPlayer.position.y);
 
-        // 1. Если игрок выше (на другой платформе)
-        if (distanceY > 2.0f) // Условная высота
+        // 1. Если игрок на другой высоте (платформе)
+        if (distanceY > 3f) 
         {
-            // Идем к игроку по X
             MoveTowardsPlayer();
-
-            // Если попали в зону удара когтем по X, пробуем атаковать (вдруг достанем)
-            if (IsPlayerInZone(_clawCollider))
-            {
-                StartSlashAttack(false); // Просто удар, без комбо
-            }
+            // Пробуем ударить, если вдруг достаем вертикально
+            if (IsPlayerInZone(_clawCollider)) StartSlashAttack(false); 
             return;
         }
 
-        // 2. Ближняя дистанция (вплотную)
-        if (distanceX <= _closeRange)
+        // 2. Ближняя дистанция
+        if (distanceX <= _closeRange) 
         {
             StartBiteAttack();
         }
         // 3. Средняя дистанция
         else if (distanceX <= _mediumRange)
         {
-            // Шанс 50% плюнуть кислотой перед ударом
-            bool doAcidCombo = UnityEngine.Random.value > 0.5f;
-
-            if (doAcidCombo)
-            {
-                StartAcidAttack(true); // true = после плевка будет удар когтем
-            }
-            else
-            {
-                StartSlashAttack(CheckLowHpCharge()); // Проверяем, нужен ли рывок после удара
-            }
+            bool doAcidCombo = UnityEngine.Random.value <= _mediumRangeAcidChance;
+            if (doAcidCombo) StartAcidAttack(true); 
+            else StartSlashAttack(CheckLowHpCharge()); 
         }
-        // 4. Дальняя дистанция
+        // 4. ДАЛЬНЯЯ ДИСТАНЦИЯ (Исправленная логика)
         else
         {
-            // Просто плевок, либо рывок
-            bool doCharge = UnityEngine.Random.value > 0.3f; // Например, 70% шанс рывка издалека (или настрой сам)
-            
-            if (doCharge)
+            // А. Сначала ВСЕГДА идем к игроку
+            MoveTowardsPlayer();
+
+            // Б. Проверяем, пришло ли время "подумать" об атаке (например, раз в 1 сек * множитель ярости)
+            if (Time.time >= _nextDecisionTime)
             {
-                StartChargeAttack();
+                // Ставим следующее время принятия решения
+                _nextDecisionTime = Time.time + (1.0f * _currentDelayMultiplier);
+
+                // В. Бросаем кубик
+                float roll = UnityEngine.Random.value; // 0.0 ... 1.0
+
+                // Шанс на Рывок
+                if (roll <= _farRangeChargeChance)
+                {
+                    StartChargeAttack();
+                }
+                // Если рывок не выпал, проверяем шанс на Кислоту (отдельный бросок или else if)
+                else if (UnityEngine.Random.value <= _farRangeAcidChance)
+                {
+                    StartAcidAttack(false);
+                }
+                
+                // Если ничего не выпало — босс просто продолжает идти до следующего _nextDecisionTime
+                // Это и создает поведение "Идет, идет, иногда стреляет"
             }
-            else
-            {
-                StartAcidAttack(false);
-            }
-            
-            // Если ничего не выбрали (кулдауны и т.д.), просто идем
-            if (!_isAttacking) MoveTowardsPlayer();
         }
     }
 
-    // Проверка на < 50% HP для рывка после удара
+    // --- ОСТАЛЬНОЙ КОД БЕЗ ИЗМЕНЕНИЙ ---
+    
+    private void UpdateRageStats()
+    {
+        if (MaxHealth == 0) return; 
+
+        float hpPercent = CurrentHealth / MaxHealth; 
+        float lostHpPercent = 1.0f - hpPercent;      
+
+        int steps = Mathf.FloorToInt(lostHpPercent * 10f); 
+
+        _currentSpeedMultiplier = 1.0f + (steps * 0.1f);
+        _currentDelayMultiplier = 1.0f - (steps * 0.05f);
+        _currentDelayMultiplier = Mathf.Max(_currentDelayMultiplier, 0.1f);
+
+        if (_animator != null) _animator.speed = _currentSpeedMultiplier;
+    }
+
+    public override void TakeDamage(float damageInp)
+    {
+        base.TakeDamage(damageInp); 
+        UpdateRageStats(); 
+        _animator.SetTrigger("OnDamaged");
+    }
+
     private bool CheckLowHpCharge()
     {
         float hpPercent = CurrentHealth / MaxHealth;
-        if (hpPercent < 0.5f)
-        {
-            return UnityEngine.Random.value <= 0.6f; // 60% шанс
-        }
-        return false;
+        return hpPercent < _chargeComboHpThreshold && UnityEngine.Random.value <= _chargeComboChance;
     }
 
     private void MoveTowardsPlayer()
     {
         if (_targetPlayer == null) return;
-
         float direction = Mathf.Sign(_targetPlayer.position.x - transform.position.x);
-        Rb2d.linearVelocity = new Vector2(direction * MoveSpeed, Rb2d.linearVelocity.y);
-
-        // Анимация ходьбы
-        // _animator.SetBool("IsWalking", true);
+        
+        float finalSpeed = MoveSpeed * _currentSpeedMultiplier;
+        
+        Rb2d.linearVelocity = new Vector2(direction * finalSpeed, Rb2d.linearVelocity.y);
+        _animator.SetBool("IsMoving", true);
     }
 
     private void StopMovement()
     {
         Rb2d.linearVelocity = new Vector2(0, Rb2d.linearVelocity.y);
-        // _animator.SetBool("IsWalking", false);
+        _animator.SetBool("IsMoving", false);
     }
 
-    // --- ЗАПУСК АТАК (Вызываются из логики) ---
-
-    private void StartBiteAttack()
+    private void TriggerAttack(string triggerName)
     {
         StopMovement();
         _isAttacking = true;
         
-        // Запуск анимации укуса. Тайминг управляется анимацией.
-        // _animator.SetTrigger("CastBite");
+        _animator.ResetTrigger("IsBite");
+        _animator.ResetTrigger("IsSlashing");
+        _animator.ResetTrigger("IsAcid");
+        
+        _animator.SetTrigger(triggerName);
+
+        if (_watchdogCoroutine != null) StopCoroutine(_watchdogCoroutine);
+        _watchdogCoroutine = StartCoroutine(AttackWatchdog());
+    }
+
+    private void StartBiteAttack()
+    {
+        TriggerAttack("IsBite");
         Debug.Log("BOSS: Start Bite");
     }
 
     private void StartSlashAttack(bool queueCharge)
     {
-        StopMovement();
-        _isAttacking = true;
         _queueChargeAfterSlash = queueCharge;
-
-        // Запуск анимации когтя.
-        // _animator.SetTrigger("CastSlash");
-        Debug.Log($"BOSS: Start Slash (Charge next: {queueCharge})");
+        TriggerAttack("IsSlashing");
+        Debug.Log("BOSS: Start Slash");
     }
 
     private void StartAcidAttack(bool queueSlash)
     {
-        StopMovement();
-        _isAttacking = true;
         _queueSlashAfterAction = queueSlash;
-
-        // Запуск анимации плевка.
-        // _animator.SetTrigger("CastAcid");
-        Debug.Log($"BOSS: Start Acid (Slash next: {queueSlash})");
+        TriggerAttack("IsAcid");
+        Debug.Log("BOSS: Start Acid");
     }
 
     private void StartChargeAttack()
     {
         StopMovement();
-        _isAttacking = true;
-        _isCharging = true;
-
-        // Анимация подготовки к рывку
-        // _animator.SetTrigger("CastCharge");
-        Debug.Log("BOSS: Prepare Charge");
+        if (_chargeCoroutine != null) StopCoroutine(_chargeCoroutine);
+        _chargeCoroutine = StartCoroutine(ChargeRoutine());
     }
 
-
-    // --- СОБЫТИЯ АНИМАЦИИ (ANIMATION EVENTS) ---
-    // Эти методы ты должен добавить в Events внутри Animation Clip в Unity
-
-    // 1. Событие в момент укуса (кадр нанесения урона)
-    public void AnimEvent_BiteHit()
+    private IEnumerator ChargeRoutine()
     {
-        if (IsPlayerInZone(_biteCollider))
-        {
-            Debug.Log("BOSS: Bite Hit!");
-            
-            // Наносим урон
-            PlayerData player = _targetPlayer.GetComponent<PlayerData>();
-            if(player != null) DealDamagePlayer(player);
+        _isCharging = true; 
+        
+        float currentDelay = _chargeDelay * _currentDelayMultiplier;
+        
+        Debug.Log($"BOSS: Charge preparing... wait {currentDelay} sec (x{_currentDelayMultiplier})");
+        yield return new WaitForSeconds(currentDelay);
 
-            // Логика отбрасывания (Knockback)
-            Rigidbody2D playerRb = _targetPlayer.GetComponent<Rigidbody2D>();
-            if (playerRb != null)
+        _isChargeMoving = true;
+        _animator.SetBool("IsCharging", true); 
+        Debug.Log("BOSS: CHARGE GO!");
+
+        float dir = transform.localScale.x > 0 ? 1 : -1;
+        float timer = 0f;
+        
+        float finalChargeSpeed = _chargeSpeed * _currentSpeedMultiplier;
+
+        while (timer < _chargeDuration && _isChargeMoving)
+        {
+            Rb2d.linearVelocity = new Vector2(dir * finalChargeSpeed, Rb2d.linearVelocity.y);
+            timer += Time.deltaTime;
+            yield return null; 
+        }
+
+        StopCharge();
+    }
+
+    private void StopCharge()
+    {
+        if (!_isCharging) return;
+
+        if (_chargeCoroutine != null) StopCoroutine(_chargeCoroutine);
+
+        _isCharging = false;
+        _isChargeMoving = false;
+        _animator.SetBool("IsCharging", false);
+        
+        _animator.Play("Idle"); 
+
+        Rb2d.linearVelocity = Vector2.zero; 
+
+        float currentStun = _impactStunDuration * _currentDelayMultiplier;
+        _recoveryTimer = Time.time + currentStun;
+        
+        Debug.Log($"BOSS: Charge Stopped. Stunned for {currentStun} sec.");
+
+        AnimEvent_AttackFinished();
+    }
+
+    private IEnumerator AttackWatchdog()
+    {
+        yield return new WaitForSeconds(3.0f * _currentDelayMultiplier);
+        
+        if (_isAttacking)
+        {
+            Debug.LogWarning("BOSS: Attack Watchdog triggered! Force reseting state.");
+            _isAttacking = false;
+            _animator.Play("Idle");
+            _queueSlashAfterAction = false;
+            _queueChargeAfterSlash = false;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!_isChargeMoving) return;
+
+        if ((_chargeStopLayers.value & (1 << collision.gameObject.layer)) > 0)
+        {
+            Debug.Log($"BOSS: Hit wall, stopping.");
+            StopCharge();
+        }
+
+        if (collision.gameObject.TryGetComponent(out PlayerData player))
+        {
+            Debug.Log("BOSS: Ran over player!");
+            DealDamagePlayer(player, _chargeDamage); 
+            
+            Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
+            if (playerRb)
             {
-                Vector2 dir = (_targetPlayer.position - transform.position).normalized;
-                // playerRb.AddForce(dir * 10f + Vector2.up * 5f, ForceMode2D.Impulse); // Пример
-                // Или вызов метода: player.ApplyKnockback(...);
+                Vector2 dir = (player.transform.position - transform.position).normalized;
+                playerRb.AddForce(dir * 10f + Vector2.up * 5f, ForceMode2D.Impulse);
             }
+             StopCharge(); 
         }
     }
 
-    // 2. Событие в момент удара когтем
-    public void AnimEvent_SlashHit()
-    {
-        if (IsPlayerInZone(_clawCollider))
-        {
-            Debug.Log("BOSS: Slash Hit!");
-            
-            PlayerData player = _targetPlayer.GetComponent<PlayerData>();
-            if(player != null) DealDamagePlayer(player);
-
-            // Логика оглушения (Stun)
-            // player.ApplyStun(1.5f); // Твой метод стана игрока
-        }
-    }
-
-    // 3. Событие в момент вылета кислоты
-    public void AnimEvent_SpawnAcid()
-    {
-        if (_acidProjectilePrefab != null && _firePoint != null)
-        {
-            Debug.Log("BOSS: Acid Spit!");
-            // Создаем префаб
-            GameObject acid = Instantiate(_acidProjectilePrefab, _firePoint.position, Quaternion.identity);
-            
-            // Задаем направление (rotation). Например, в сторону игрока
-            Vector3 dir = (_targetPlayer.position - _firePoint.position).normalized;
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            acid.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        }
-    }
-
-    // 4. Событие начала движения рывка (после подготовки)
-    public void AnimEvent_StartChargeMovement()
-    {
-        // Придаем ускорение
-        float dir = transform.localScale.x > 0 ? 1 : -1; // Или использовать sprite flip
-        Rb2d.linearVelocity = new Vector2(dir * _chargeSpeed, 0); 
-    }
-
-    // 5. Событие ОКОНЧАНИЯ любой атаки (в самом конце анимации)
-    // ВАЖНО: Это событие должно быть в конце анимаций Bite, Slash, Acid, Charge (End)
     public void AnimEvent_AttackFinished()
     {
-        _isAttacking = false;
-        _isCharging = false;
-        Rb2d.linearVelocity = Vector2.zero; // Останавливаемся после рывка/атаки
+        if (_isCharging) return;
 
-        // Проверка очередей (Комбо)
+        _isAttacking = false;
+        Rb2d.linearVelocity = Vector2.zero; 
         
+        if (_watchdogCoroutine != null) StopCoroutine(_watchdogCoroutine);
+
+        if (Time.time < _recoveryTimer) 
+        {
+            _queueSlashAfterAction = false;
+            _queueChargeAfterSlash = false;
+            return;
+        }
+
         if (_queueSlashAfterAction)
         {
             _queueSlashAfterAction = false;
-            // Сразу переходим в атаку когтем, если было запланировано (Acid -> Slash)
-            // Проверяем, нужно ли добавить рывок после этого удара (HP < 50%)
             StartSlashAttack(CheckLowHpCharge()); 
             return; 
         }
@@ -294,79 +360,48 @@ public class BugBoss : BotBase
             StartChargeAttack();
             return;
         }
-
-        // Если очередей нет, босс возвращается в Idle/Move в следующем кадре Update
     }
 
+    public void AnimEvent_BiteHit() 
+    { 
+        if (IsPlayerInZone(_biteCollider)) 
+            DealDamagePlayer(_targetPlayer.GetComponent<PlayerData>(), _biteDamage); 
+    }
 
-    // --- ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ ---
+    public void AnimEvent_SlashHit() 
+    { 
+        if (IsPlayerInZone(_clawCollider)) 
+            DealDamagePlayer(_targetPlayer.GetComponent<PlayerData>(), _slashDamage); 
+    }
 
-    private void FindPlayer()
-    {
-        Collider2D hit = Physics2D.OverlapCircle(transform.position, _visionRadius, LayerMask.GetMask("Player"));
-        if (hit != null)
-        {
-            _targetPlayer = hit.transform;
+    public void AnimEvent_SpawnAcid() { 
+        if (_acidProjectilePrefab && _firePoint) {
+            var acid = Instantiate(_acidProjectilePrefab, _firePoint.position, Quaternion.identity);
+            Vector3 dir = (_targetPlayer.position - _firePoint.position).normalized;
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            acid.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
     }
 
-    private void FaceTarget()
-    {
-        if (_targetPlayer.position.x > transform.position.x)
-        {
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, 1);
-        }
-        else
-        {
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, 1);
-        }
+    private void FindPlayer() {
+        var hit = Physics2D.OverlapCircle(transform.position, _visionRadius, LayerMask.GetMask("Player"));
+        if (hit) _targetPlayer = hit.transform;
     }
-
-    // Проверка, попадает ли игрок в конкретный коллайдер атаки
-    private bool IsPlayerInZone(Collider2D attackZone)
-    {
-        if (_targetPlayer == null || attackZone == null) return false;
-
-        Collider2D playerCol = _targetPlayer.GetComponent<Collider2D>();
-        if (playerCol == null) return false;
-
-        return attackZone.IsTouching(playerCol);
+    private void FaceTarget() {
+        if (_targetPlayer.position.x > transform.position.x) transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, 1);
+        else transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, 1);
     }
-
-    // Переопределение получения урона для реакции
-    public override void TakeDamage(float damageInp)
-    {
-        base.TakeDamage(damageInp);
-        
-        // Тут можно добавить визуальный эффект попадания или звук
-        // _animator.SetTrigger("GetHit"); 
-    }
-
-    private void OnDestroy()
-    {
-        OnDead -= HandleDeath;
-    }
-
-    private void HandleDeath()
-    {
-        _isDead = true;
-        StopMovement();
-        GetComponent<Collider2D>().enabled = false; // Отключаем физику
-        
-        // _animator.SetTrigger("IsDead");
-        
-        // Спавн лужи яда (можно тоже через Animation Event в конце анимации смерти)
-        // Instantiate(_poisonPuddlePrefab, transform.position, Quaternion.identity);
+    private bool IsPlayerInZone(Collider2D z) => _targetPlayer && z && z.IsTouching(_targetPlayer.GetComponent<Collider2D>());
+    private void OnDestroy() { OnDead -= HandleDeath; }
+    private void HandleDeath() { _isDead = true; StopMovement(); if(_chargeCoroutine!=null)StopCoroutine(_chargeCoroutine); GetComponent<Collider2D>().enabled = false; _animator.SetTrigger("IsDead"); }
+    private void OnDrawGizmosSelected() {
+        Gizmos.color = Color.yellow; Gizmos.DrawWireSphere(transform.position, _visionRadius);
+        Gizmos.color = Color.red; Gizmos.DrawWireSphere(transform.position, _closeRange);
+        Gizmos.color = Color.blue; Gizmos.DrawWireSphere(transform.position, _mediumRange);
     }
     
-    // Для визуализации в редакторе
-    private void OnDrawGizmosSelected()
+    protected void DealDamagePlayer(PlayerData playerData, float damageAmount)
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, _visionRadius);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _closeRange);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, _mediumRange);
+         playerData.ChangeValueResource(-damageAmount, PlayerDataStructures.ResourceType.Health, PlayerDataStructures.ResourceValueType.Current, true);
     }
 }

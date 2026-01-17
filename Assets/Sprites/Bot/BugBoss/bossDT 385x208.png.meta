@@ -1,0 +1,528 @@
+fileFormatVersion: 2
+guid: d0633e4bc80756b449b32c0843d96f07
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8230217252221713784
+    second: bossDT 385x208_0
+  - first:
+      213: 1344561817562166979
+    second: bossDT 385x208_1
+  - first:
+      213: 7317492966038884598
+    second: bossDT 385x208_2
+  - first:
+      213: -195922923665546987
+    second: bossDT 385x208_3
+  - first:
+      213: -714461909268487244
+    second: bossDT 385x208_4
+  - first:
+      213: 2653308991038750201
+    second: bossDT 385x208_5
+  - first:
+      213: 6838700615441468726
+    second: bossDT 385x208_6
+  - first:
+      213: 5585620610714805572
+    second: bossDT 385x208_7
+  - first:
+      213: 9115655339678689673
+    second: bossDT 385x208_8
+  - first:
+      213: -4763188149081986858
+    second: bossDT 385x208_9
+  - first:
+      213: 3300458439474219873
+    second: bossDT 385x208_10
+  - first:
+      213: 6012041223863818102
+    second: bossDT 385x208_11
+  - first:
+      213: 84692679377401212
+    second: bossDT 385x208_12
+  - first:
+      213: -7979885503488157797
+    second: bossDT 385x208_13
+  - first:
+      213: 6259960078866543554
+    second: bossDT 385x208_14
+  - first:
+      213: 4214339666789108715
+    second: bossDT 385x208_15
+  - first:
+      213: 7542560033896201615
+    second: bossDT 385x208_16
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 25
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: bossDT 385x208_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 624
+        width: 385
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87d77fe3cfa973270800000000000000
+      internalID: 8230217252221713784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossDT 385x208_1
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 624
+        width: 385
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c6b85a69d7d8a210800000000000000
+      internalID: 1344561817562166979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossDT 385x208_2
+      rect:
+        serializedVersion: 2
+        x: 770
+        y: 624
+        width: 385
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f0da273515fc8560800000000000000
+      internalID: 7317492966038884598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossDT 385x208_3
+      rect:
+        serializedVersion: 2
+        x: 1155
+        y: 624
+        width: 385
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5112f839321f74df0800000000000000
+      internalID: -195922923665546987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossDT 385x208_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 416
+        width: 385
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b3218ccda8b516f0800000000000000
+      internalID: -714461909268487244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossDT 385x208_5
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 416
+        width: 385
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fdf632387272d420800000000000000
+      internalID: 2653308991038750201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossDT 385x208_6
+      rect:
+        serializedVersion: 2
+        x: 770
+        y: 416
+        width: 385
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63d42ac0af1f7ee50800000000000000
+      internalID: 6838700615441468726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossDT 385x208_7
+      rect:
+        serializedVersion: 2
+        x: 1155
+        y: 416
+        width: 385
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 445a1cff95c148d40800000000000000
+      internalID: 5585620610714805572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossDT 385x208_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 208
+        width: 385
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 989e0701c30518e70800000000000000
+      internalID: 9115655339678689673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossDT 385x208_9
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 208
+        width: 385
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d82e976d91c5edb0800000000000000
+      internalID: -4763188149081986858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossDT 385x208_10
+      rect:
+        serializedVersion: 2
+        x: 770
+        y: 208
+        width: 385
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16b0dc0d6759dcd20800000000000000
+      internalID: 3300458439474219873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossDT 385x208_11
+      rect:
+        serializedVersion: 2
+        x: 1155
+        y: 208
+        width: 385
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6775863d3af0f6350800000000000000
+      internalID: 6012041223863818102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossDT 385x208_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 385
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c75bd5d0b83ec2100800000000000000
+      internalID: 84692679377401212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossDT 385x208_13
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 0
+        width: 385
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b979c40f960c14190800000000000000
+      internalID: -7979885503488157797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossDT 385x208_14
+      rect:
+        serializedVersion: 2
+        x: 770
+        y: 0
+        width: 385
+        height: 208
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c377f86688dfd650800000000000000
+      internalID: 6259960078866543554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: ba3a73f4b0886444194ece4a17407d7f
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":4.0,"y":4.0},"gridSpriteSize":{"x":385.0,"y":208.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      bossDT 385x208_0: 8230217252221713784
+      bossDT 385x208_1: 1344561817562166979
+      bossDT 385x208_10: 3300458439474219873
+      bossDT 385x208_11: 6012041223863818102
+      bossDT 385x208_12: 84692679377401212
+      bossDT 385x208_13: -7979885503488157797
+      bossDT 385x208_14: 6259960078866543554
+      bossDT 385x208_2: 7317492966038884598
+      bossDT 385x208_3: -195922923665546987
+      bossDT 385x208_4: -714461909268487244
+      bossDT 385x208_5: 2653308991038750201
+      bossDT 385x208_6: 6838700615441468726
+      bossDT 385x208_7: 5585620610714805572
+      bossDT 385x208_8: 9115655339678689673
+      bossDT 385x208_9: -4763188149081986858
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

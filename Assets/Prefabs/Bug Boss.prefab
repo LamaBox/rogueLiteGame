@@ -16,9 +16,9 @@ GameObject:
   - component: {fileID: 7775971883987973197}
   - component: {fileID: 5758142333976376952}
   - component: {fileID: 8892762660227847930}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: Bug Boss
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,8 +32,8 @@ Transform:
   m_GameObject: {fileID: 505513076880264005}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.58912, y: 0.28242, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1414804544026810589}
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -8433004046687784934, guid: 6102c28f5cbbc3d4b82abdbe04e7dcf1, type: 3}
+  m_Sprite: {fileID: 4351030438869612114, guid: e2e2dc1fc2811e943aae91acb4ca4cbb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -108,7 +108,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 300
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
@@ -157,8 +157,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.0441473, y: -0.05150614}
-  m_Size: {x: 1.4320011, y: 2.4274344}
+  m_Offset: {x: -0.3730483, y: -0.9854634}
+  m_Size: {x: 4.055025, y: 5.3250966}
   m_Direction: 0
 --- !u!95 &1311316527971404856
 Animator:
@@ -170,7 +170,7 @@ Animator:
   m_GameObject: {fileID: 505513076880264005}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8af8768e445b8cb46a085201529d28b5, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -291,7 +291,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d052140be8c7ebc48836629d70dcdde9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioClips: []
+  audioClips:
+  - {fileID: 8300000, guid: 99bcab87a33739f4da1cf85d9d9d24d9, type: 3}
+  - {fileID: 8300000, guid: 0f4c2d173a22a924c93f92fac6ffd43a, type: 3}
+  - {fileID: 8300000, guid: 64cd117c69d0e9f4cbe5b86f4cecaeb9, type: 3}
+  - {fileID: 8300000, guid: 271384060350b3e499589afab7a702b6, type: 3}
+  - {fileID: 8300000, guid: 0317a276a90759346bb871551631b05c, type: 3}
 --- !u!114 &8892762660227847930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,14 +310,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   botDataSO: {fileID: 11400000, guid: e5801afded43641478ea042ccb043f74, type: 2}
-  _acidProjectilePrefab: {fileID: 8994849344751811872, guid: 44ab4247c68c2b64b844da366685c1c8, type: 3}
+  _acidProjectilePrefab: {fileID: 4807444777455292811, guid: 8a93fc50d20350243a5543f690ce2908, type: 3}
   _firePoint: {fileID: 991524870118973700}
-  _closeRange: 2
-  _mediumRange: 5
+  _closeRange: 3.8
+  _mediumRange: 6
   _chargeSpeed: 15
+  _chargeDelay: 1
+  _chargeDuration: 3
+  _chargeDamage: 20
+  _impactStunDuration: 0.7
+  _chargeStopLayers:
+    serializedVersion: 2
+    m_Bits: 1280
+  _biteDamage: 10
+  _slashDamage: 20
+  _mediumRangeAcidChance: 0.3
+  _farRangeChargeChance: 0.25
+  _farRangeAcidChance: 0.3
+  _chargeComboHpThreshold: 0.5
+  _chargeComboChance: 0.6
   _biteCollider: {fileID: 4844504370090874208}
   _clawCollider: {fileID: 3583701027469973177}
-  _visionRadius: 20
+  _visionRadius: 40
 --- !u!1 &3034794162800297093
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,9 +342,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1414804544026810589}
   - component: {fileID: 4844504370090874208}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: BiteCollider
-  m_TagString: Untagged
+  m_TagString: BotZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -339,7 +358,7 @@ Transform:
   m_GameObject: {fileID: 3034794162800297093}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.555, y: -0.505, z: 0}
+  m_LocalPosition: {x: 2.157, y: -2.64, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -375,11 +394,11 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.29355282, y: 0.15315795}
+  m_Offset: {x: 0.4994383, y: 1.6616259}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -389,7 +408,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.5871056, y: 1.8066316}
+  m_Size: {x: 1.9988761, y: 4.8235664}
   m_EdgeRadius: 0
 --- !u!1 &6579961343434450431
 GameObject:
@@ -401,9 +420,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7069104066168715250}
   - component: {fileID: 3583701027469973177}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: ClawCollider
-  m_TagString: Untagged
+  m_TagString: BotZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -417,7 +436,7 @@ Transform:
   m_GameObject: {fileID: 6579961343434450431}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.132, y: -0.51, z: 0}
+  m_LocalPosition: {x: 4.59, y: -2.62, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -453,11 +472,11 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.058710515, y: 0.2705791}
+  m_Offset: {x: 0.17421281, y: 1.5876989}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -467,7 +486,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.3114213, y: 2.051684}
+  m_Size: {x: 2.2134688, y: 4.6859226}
   m_EdgeRadius: 0
 --- !u!1 &9110597915208472769
 GameObject:
@@ -478,9 +497,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 991524870118973700}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: FirePoint
-  m_TagString: Untagged
+  m_TagString: BotZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -494,7 +513,7 @@ Transform:
   m_GameObject: {fileID: 9110597915208472769}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.301, y: 0.214, z: 0}
+  m_LocalPosition: {x: 0.81, y: -0.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
