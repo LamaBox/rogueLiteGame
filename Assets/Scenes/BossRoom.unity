@@ -1131,7 +1131,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1167415069746879326, guid: 0478f3863fe22454484fba25bcb1911d, type: 3}
       propertyPath: _farRangeChargeChance
-      value: 0.343
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 1670902516449466960, guid: 0478f3863fe22454484fba25bcb1911d, type: 3}
       propertyPath: m_Name
@@ -1276,6 +1276,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1218802669571184301, guid: 8700bda35faa5c64c93702d681da1ead, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3444840431061821245, guid: 8700bda35faa5c64c93702d681da1ead, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7434006523312136027, guid: 8700bda35faa5c64c93702d681da1ead, type: 3}
