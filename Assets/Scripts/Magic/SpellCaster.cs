@@ -12,12 +12,15 @@ public class SpellCaster : MonoBehaviour
     [SerializeField]
     private int currentSpellIndex = 0;
 
-    [Header("Перезарядка")]
+    [Header("Тайминги")]
+    [SerializeField]
+    private float castDelay = 0.5f; // ЗАДЕРЖКА ПЕРЕД КАСТОМ (Время произнесения)
     [SerializeField]
     private float spellCooldown = 1f; // Общее время перезарядки
-    private float currentCooldown = 0f; // Текущее оставшееся время перезарядки
     
-    private bool canCast = true;
+    private float currentCooldown = 0f; // Текущее оставшееся время перезарядки
+    private bool canCast = true;        // Флаг перезарядки
+    private bool isCasting = false;     // Флаг: идет ли сейчас подготовка к выстрелу?
 
     // Событие для каста заклинания
     public delegate void SpellCastEventHandler(SpellCastData spellData);
@@ -28,79 +31,72 @@ public class SpellCaster : MonoBehaviour
     
     private Mouse mouse;
     private float scrollAccumulator;
+    
+    private PlayerMovement playerMovement;
+    private PlayerAttack playerAttack;
 
     void Start()
     {
         mouse = Mouse.current;
-        currentCooldown = 0f; // Инициализируем перезарядку
+        currentCooldown = 0f;
+        
+        playerMovement = GetComponent<PlayerMovement>();
+        playerAttack = GetComponent<PlayerAttack>();
     }
 
     void Update()
     {
         if (mouse == null) return;
 
-        // Обновление перезарядки
         UpdateCooldown();
 
-        // Обработка прокрутки колесика - накапливаем значение
-        Vector2 scroll = mouse.scroll.ReadValue();
-        scrollAccumulator += scroll.y;
-
-        // Если накопилось достаточно для смены заклинания
-        if (Mathf.Abs(scrollAccumulator) >= 0.1f)
+        // Обработка прокрутки (смены заклинания)
+        // Разрешаем менять заклинание только если НЕ кастуем сейчас
+        if (!isCasting) 
         {
-            int direction = scrollAccumulator > 0 ? 1 : -1;
-            ChangeSpell(direction);
-            scrollAccumulator = 0f; // Сбрасываем аккумулятор
-        }
+            Vector2 scroll = mouse.scroll.ReadValue();
+            scrollAccumulator += scroll.y;
 
-        // Обработка ПКМ (теперь проверяем canCast)
-        if (mouse.rightButton.wasPressedThisFrame && canCast && availableSpells.Length > 0)
-        {
-            CastSpell();
-        }
-    }
-
-    void UpdateCooldown()
-    {
-        if (currentCooldown > 0f)
-        {
-            currentCooldown -= Time.deltaTime;
-            
-            // Если перезарядка закончилась
-            if (currentCooldown <= 0f)
+            if (Mathf.Abs(scrollAccumulator) >= 0.1f)
             {
-                currentCooldown = 0f;
-                canCast = true;
-                
-                if (debugMode)
-                    Debug.Log("Перезарядка завершена, можно кастовать заклинания");
+                int direction = scrollAccumulator > 0 ? 1 : -1;
+                ChangeSpell(direction);
+                scrollAccumulator = 0f;
             }
         }
+
+        // Обработка ПКМ
+        // Проверяем: нажата кнопка + нет КД + не кастуем прямо сейчас + есть заклинания
+        if (mouse.rightButton.wasPressedThisFrame && canCast && !isCasting && availableSpells.Length > 0)
+        {
+            StartCoroutine(CastSpellRoutine());
+        }
     }
 
-    void ChangeSpell(int direction)
+    // Корутина с задержкой
+    IEnumerator CastSpellRoutine()
     {
-        if (availableSpells.Length == 0) return;
-        
-        int newIndex = currentSpellIndex + direction;
-        
-        // Зацикливание индекса
-        if (newIndex < 0)
-            newIndex = availableSpells.Length - 1;
-        else if (newIndex >= availableSpells.Length)
-            newIndex = 0;
-        
-        currentSpellIndex = newIndex;
-        
-        if (debugMode)
-            Debug.Log($"Выбрано заклинание: {availableSpells[currentSpellIndex].spellName}, индекс: {currentSpellIndex}");
+        isCasting = true;
+
+        // БЛОКИРУЕМ ВСЁ
+        if (playerMovement != null) playerMovement.LockMovement();
+        if (playerAttack != null) playerAttack.LockAttack();
+
+        yield return new WaitForSeconds(castDelay);
+
+        PerformSpellCast();
+        StartCooldown();
+
+        // РАЗБЛОКИРУЕМ ВСЁ
+        if (playerMovement != null) playerMovement.UnlockMovement();
+        if (playerAttack != null) playerAttack.UnlockAttack();
+    
+        isCasting = false;
     }
 
-    void CastSpell()
+    // Метод, который непосредственно отправляет событие
+    void PerformSpellCast()
     {
-        if (availableSpells.Length == 0 || !canCast) return;
-
         SpellData selectedSpell = availableSpells[currentSpellIndex];
         
         SpellCastData spellData = new SpellCastData
@@ -111,38 +107,59 @@ public class SpellCaster : MonoBehaviour
 
         OnSpellCast?.Invoke(spellData);
         
-        // Запускаем перезарядку
-        StartCooldown();
-        
         if (debugMode)
-            Debug.Log($"Создано событие создания заклинания: {availableSpells[currentSpellIndex].spellName}");
+            Debug.Log($"Заклинание ВЫПУЩЕНО: {selectedSpell.spellName}");
+    }
+
+    void UpdateCooldown()
+    {
+        if (currentCooldown > 0f)
+        {
+            currentCooldown -= Time.deltaTime;
+            
+            if (currentCooldown <= 0f)
+            {
+                currentCooldown = 0f;
+                canCast = true;
+                
+                if (debugMode) Debug.Log("Перезарядка завершена");
+            }
+        }
+    }
+
+    void ChangeSpell(int direction)
+    {
+        if (availableSpells.Length == 0) return;
+        
+        int newIndex = currentSpellIndex + direction;
+        
+        if (newIndex < 0) newIndex = availableSpells.Length - 1;
+        else if (newIndex >= availableSpells.Length) newIndex = 0;
+        
+        currentSpellIndex = newIndex;
+        
+        if (debugMode) Debug.Log($"Выбрано заклинание: {availableSpells[currentSpellIndex].spellName}");
     }
 
     void StartCooldown()
     {
         canCast = false;
         currentCooldown = spellCooldown;
-        
-        if (debugMode)
-            Debug.Log($"Начата перезарядка: {spellCooldown} секунд");
     }
 
-    // Метод для получения информации о перезарядке (может пригодиться для UI)
     public float GetCooldownProgress()
     {
         if (spellCooldown <= 0f) return 1f;
         return 1f - (currentCooldown / spellCooldown);
     }
-
-    public bool IsOnCooldown()
+    
+    // Полезно для UI: показываем, что идет каст или кулдаун
+    public bool IsBusy() 
     {
-        return !canCast;
+        return !canCast || isCasting;
     }
 
-    public float GetRemainingCooldown()
-    {
-        return currentCooldown;
-    }
+    public float GetRemainingCooldown() => currentCooldown;
 }
 
 [System.Serializable]

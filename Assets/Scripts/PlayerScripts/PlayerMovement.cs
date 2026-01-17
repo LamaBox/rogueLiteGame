@@ -20,10 +20,13 @@ public class PlayerMovement : MonoBehaviour
     private float axis = 0; 
     private bool isFacingRight = true; 
 
+    // БЛОКИРОВКА ДВИЖЕНИЯ
+    private bool isMovementLocked = false; 
+
     // Переменные рывка
     private float dashCooldownTimer = 0f;
     
-    // Глобальный флаг "Мы в режиме рывка" (блокирует управление, включает анимацию)
+    // Глобальный флаг "Мы в режиме рывка" (блокирует управление, включаем анимацию)
     private bool isDashing = false; 
     
     // Флаг физики "Прикладываем силу" (включается Ивентом)
@@ -40,6 +43,9 @@ public class PlayerMovement : MonoBehaviour
 
     public bool GetIsDashing() => isDashing;
     public float GetAxis() => axis;
+
+    // Геттер для аниматора или других систем, чтобы знать, заблокированы ли мы
+    public bool IsMovementLocked() => isMovementLocked;
 
     void Start()
     {
@@ -69,6 +75,22 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        // 1. Если движение заблокировано (каст магии, стан и т.д.)
+        if (isMovementLocked)
+        {
+            // Если мы в этот момент НЕ в рывке (рывок имеет инерцию, его лучше не стопорить резко, если не надо)
+            if (!isDashing)
+            {
+                rb2d.linearVelocityX = 0; // Останавливаемся по горизонтали
+                // Гравитация (VelocityY) продолжает работать штатно
+                return;
+            }
+            // Если мы заблокировали движение ВО ВРЕМЯ рывка, можно либо прервать рывок (StopDash),
+            // либо дать ему долететь. Обычно при стане рывок прерывают, при касте - каст не должен работать в рывке.
+            // Пока оставим выполнение рывка, если он уже начался.
+        }
+
+        // 2. Логика рывка
         if (isDashing)
         {
             // Если физика активирована ивентом - летим
@@ -78,17 +100,44 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                // Фаза "Замаха" (Wind-up): Анимация уже идет, но движения еще нет.
-                // Останавливаем персонажа, чтобы он не скользил по инерции.
+                // Фаза "Замаха"
                 rb2d.linearVelocity = Vector2.zero;
-                rb2d.gravityScale = 0f; // Висим в воздухе во время подготовки
+                rb2d.gravityScale = 0f; 
             }
         }
+        // 3. Обычное движение
         else
         {
             Move();
         }
     }
+
+    // --- ПУБЛИЧНЫЕ МЕТОДЫ БЛОКИРОВКИ ---
+
+    /// <summary>
+    /// Запрещает двигаться, прыгать и делать рывок.
+    /// Вызывать перед началом каста.
+    /// </summary>
+    public void LockMovement()
+    {
+        isMovementLocked = true;
+        // Сразу гасим инерцию, чтобы персонаж не "скользил" во время каста
+        if (rb2d != null && !isDashing) 
+        {
+            rb2d.linearVelocityX = 0;
+        }
+    }
+
+    /// <summary>
+    /// Разрешает движение.
+    /// Вызывать после окончания каста или прерывания.
+    /// </summary>
+    public void UnlockMovement()
+    {
+        isMovementLocked = false;
+    }
+
+    // ------------------------------------
 
     public void Move()
     {
@@ -113,7 +162,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
-        if (context.performed && CheckGround() && !isDashing)
+        // Добавил проверку !isMovementLocked
+        if (context.performed && CheckGround() && !isDashing && !isMovementLocked)
         {
             rb2d.linearVelocityY = playerJumpSpeed;
         }
@@ -131,37 +181,31 @@ public class PlayerMovement : MonoBehaviour
 
     private void TryStartDash()
     {
-        // Проверки: не дешим сейчас и кулдаун прошел
-        if (!isDashing && dashCooldownTimer <= 0)
+        // Добавил проверку !isMovementLocked
+        // Проверки: не дешим сейчас, кулдаун прошел, движение разрешено
+        if (!isDashing && dashCooldownTimer <= 0 && !isMovementLocked)
         {
-            // 1. Включаем режим рывка (блокируем управление, включаем анимацию в контроллере)
             isDashing = true;
-            isDashPhysicsActive = false; // Физика пока выключена, ждем ивента!
+            isDashPhysicsActive = false; 
             
             dashCooldownTimer = playerdashCooldown;
             dashSafetyTimer = MAX_DASH_SAFETY_TIME;
 
-            // 2. Фиксируем направление строго в момент нажатия
-            // isFacingRight == true -> спрайт смотрит влево (из-за инверсии) -> летим влево (-1)
-            // isFacingRight == false -> спрайт смотрит вправо -> летим вправо (1)
             lockedDashDirection = isFacingRight ? -1f : 1f;
         }
     }
 
     // --- EVENTS FOR ANIMATION ---
 
-    // СОБЫТИЕ 1: Поставить в НАЧАЛО момента движения в анимации
     public void StartDashPhysics()
     {
-        if (!isDashing) return; // Если рывок уже отменился, не запускаем
+        if (!isDashing) return; 
         
         isDashPhysicsActive = true;
         rb2d.gravityScale = 0f; 
         rb2d.linearVelocityY = 0f;
-        // Debug.Log("Dash Physics Started via Event");
     }
 
-    // СОБЫТИЕ 2: Поставить в КОНЕЦ анимации рывка
     public void StopDash()
     {
         if (!isDashing) return;
@@ -171,7 +215,6 @@ public class PlayerMovement : MonoBehaviour
         
         rb2d.gravityScale = playergravityScale; 
         rb2d.linearVelocity = Vector2.zero; 
-        // Debug.Log("Dash Stopped via Event");
     }
 
     // --- REST OF THE CODE ---
