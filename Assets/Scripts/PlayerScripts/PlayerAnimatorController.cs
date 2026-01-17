@@ -26,19 +26,22 @@ public class PlayerAnimatorController : MonoBehaviour
 
     private void UpdateAnimations()
     {
-        // Получаем текущие состояния
-        bool isWalking = Mathf.Abs(playerMovement.GetAxis()) > 0.1f && !playerMovement.GetIsDashing();
-        bool isSprinting = isWalking && playerMovement.GetSpeedUp();
-        bool isJumping = rb2d.linearVelocityY > 0.1f;
-        bool isFalling = rb2d.linearVelocityY < -0.1f;
-        bool isAttacking = playerAttack != null && !playerAttack.GetCanAttack(); // если атака в кулдауне — значит, она выполняется
+        bool isDashing = playerMovement.GetIsDashing();
 
-        // Передаём в аниматор
+        // Если мы в рывке, ходьба и прыжки не должны перебивать анимацию
+        bool isWalking = Mathf.Abs(playerMovement.GetAxis()) > 0.1f && !isDashing;
+        bool isJumping = rb2d.linearVelocityY > 0.1f && !isDashing;
+        bool isFalling = rb2d.linearVelocityY < -0.1f && !isDashing;
+        bool isAttacking = playerAttack != null && !playerAttack.GetCanAttack();
+
+        // Передаем параметры в аниматор
+        animator.SetBool("isDashing", isDashing);
         animator.SetBool("isWalking", isWalking);
-        animator.SetBool("isSprinting", isSprinting);
         animator.SetBool("isJumping", isJumping);
         animator.SetBool("isFalling", isFalling);
         animator.SetBool("isAttacking", isAttacking);
-        //Debug.Log($"isWalking: {isWalking}, isSprinting: {isSprinting}, isJumping: {isJumping}, isFalling: {isFalling}, isAttacking: {isAttacking}");
+        
+        // Важно: в Аниматоре должен быть Bool параметр "isDashing".
+        // Переход в Dash происходит, когда true. Обратно, когда false.
     }
 }

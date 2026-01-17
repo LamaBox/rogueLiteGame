@@ -5,58 +5,46 @@ using static PlayerDataStructures;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    // [SerializeField] private float playerSpeed = 10; //обычная скорость
-    // [SerializeField] private float playerSprintMult = 1.3f; //модификатор ускорения
-    // [SerializeField] private float playerJumpSpeed = 15; //скорость прыжка
-    // [SerializeField] private float playerDashSpeed = 50; //скорость рывка
-    [SerializeField] private float dashDuration = 0.13f; //длительность дэша
-    // [SerializeField] private float playerdashCooldown = 1f; //кулдаун рывка
-    // [SerializeField] private float playergravityScale = 10f; //множитель гравитаци
+    [SerializeField] private float playerDashSpeed = 0; 
+    [SerializeField] private float playerdashCooldown = 0; 
+    [SerializeField] private float playergravityScale = 0; 
 
     [Header("GroundCheck Settings")]
-    [SerializeField] private Transform groundCheck; //местоположение объекта для проверки земли под ногами
-    [SerializeField] private float groundCheckRadius = 0.2f; //радиус проверки земли
-    [SerializeField] private LayerMask groundLayer = 1; //слои земли
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundCheckRadius = 0.2f;
+    [SerializeField] private LayerMask groundLayer = 1;
 
-    private Rigidbody2D rb2d; //переменная для физического компонента игрока
+    private Rigidbody2D rb2d;
+    
+    // Переменные движения
+    private float axis = 0; 
+    private bool isFacingRight = true; 
 
-    //переменные связанные с перемещением
-    private float axis = 0; //переменная для определения направления движения. -1 влево, 1 вправо
-    private bool speedUp = false; //флаг для спринта
+    // Переменные рывка
+    private float dashCooldownTimer = 0f;
+    
+    // Глобальный флаг "Мы в режиме рывка" (блокирует управление, включает анимацию)
+    private bool isDashing = false; 
+    
+    // Флаг физики "Прикладываем силу" (включается Ивентом)
+    private bool isDashPhysicsActive = false;
 
-    //переменные связанные в рывком
-    private float dashDirection = 0; //-1 влево, 1 вправо
-    private float dashTimer = 0f; //таймер для рывка
-    private float dashCooldownTimer = 0f; //таймер кулдауна для рывка
-    private bool isDashing = false; //флаг для рывка
-
+    private float lockedDashDirection = 0f; 
+    
+    // Страховка
+    private float dashSafetyTimer = 0f; 
+    private const float MAX_DASH_SAFETY_TIME = 0.5f; 
+    
     private float playerSpeed = 0;
-    private float playerSprintMult = 0;
     private float playerJumpSpeed = 0;
-    private float playerDashSpeed = 0;
-    private float playerdashCooldown = 0;
-    private float playergravityScale = 0;
 
-    public bool GetIsDashing()
-    {
-        return isDashing;
-    }
-
-    public bool GetSpeedUp()
-    {
-        return speedUp;
-    }
-
-    public float GetAxis()
-    {
-        return axis;
-    }
-
+    public bool GetIsDashing() => isDashing;
+    public float GetAxis() => axis;
 
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        rb2d.gravityScale = playergravityScale; //устанавливаем гравитацию
+        if(rb2d != null) rb2d.gravityScale = playergravityScale;
 
         if (groundCheck == null)
             Debug.LogError("GroundCheck object not assigned to " + gameObject.name);
@@ -64,46 +52,65 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        UpdateTimers();
+        if (dashCooldownTimer > 0)
+            dashCooldownTimer -= Time.deltaTime;
+
+        // Страховка: если анимация зависла и не вызвала StopDash
+        if (isDashing)
+        {
+            dashSafetyTimer -= Time.deltaTime;
+            if (dashSafetyTimer <= 0)
+            {
+                Debug.LogWarning("Dash Safety Triggered! Stop Event missed.");
+                StopDash();
+            }
+        }
     }
 
     void FixedUpdate()
     {
-        Move();
-    }
-
-    //метод движения влево/вправо.
-    public void Move()
-    {
-        //движение во время рывка
         if (isDashing)
         {
-            // Во время рывка двигаемся с постоянной скоростью
-            rb2d.linearVelocityX = dashDirection * playerDashSpeed;
-            rb2d.linearVelocityY = 0;
+            // Если физика активирована ивентом - летим
+            if (isDashPhysicsActive)
+            {
+                rb2d.linearVelocity = new Vector2(lockedDashDirection * playerDashSpeed, 0);
+            }
+            else
+            {
+                // Фаза "Замаха" (Wind-up): Анимация уже идет, но движения еще нет.
+                // Останавливаем персонажа, чтобы он не скользил по инерции.
+                rb2d.linearVelocity = Vector2.zero;
+                rb2d.gravityScale = 0f; // Висим в воздухе во время подготовки
+            }
         }
-        //обычное передвижение
         else
         {
-            float currentSpeed = speedUp ? playerSpeed * playerSprintMult : playerSpeed;
-            rb2d.linearVelocityX = axis * currentSpeed;
-        }
-        if (axis != 0f)
-        {
-            // Меняем масштаб по X, чтобы "перевернуть" спрайт
-            Vector3 scale = transform.localScale;
-            scale.x = -(Mathf.Sign(axis) * Mathf.Abs(scale.x));
-            transform.localScale = scale;
+            Move();
         }
     }
 
-    //метод получения информации о направлении движения(-1, 0, 1)
+    public void Move()
+    {
+        rb2d.linearVelocityX = axis * playerSpeed;
+
+        if (axis > 0 && isFacingRight) Flip();
+        else if (axis < 0 && !isFacingRight) Flip();
+    }
+
+    private void Flip()
+    {
+        isFacingRight = !isFacingRight;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
+    }
+
     public void MoveInput(InputAction.CallbackContext context)
     {
         axis = context.ReadValue<float>();
     }
 
-    //метод получения информации о прыжке(0, 1)
     public void Jump(InputAction.CallbackContext context)
     {
         if (context.performed && CheckGround() && !isDashing)
@@ -112,85 +119,75 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    //метод получения информации об ускорении(0, 1)
     public void Sprint(InputAction.CallbackContext context)
     {
-        speedUp = context.performed;
+        if (context.performed) TryStartDash();
     }
-
-    //метод, который отвечает за получение данных для рывка
+    
     public void DashInput(InputAction.CallbackContext context)
     {
-        if (context.started && !isDashing)
-        {
-            dashDirection = context.ReadValue<float>();
-            //Debug.Log("started" + dashDirection);
-        }
+        if (context.performed) TryStartDash();
+    }
 
-        if (context.performed && !isDashing)
+    private void TryStartDash()
+    {
+        // Проверки: не дешим сейчас и кулдаун прошел
+        if (!isDashing && dashCooldownTimer <= 0)
         {
-            //Debug.Log("performed" + dashDirection);
-            if (dashCooldownTimer <= 0)
-            {
-                StartDash();
-            }
+            // 1. Включаем режим рывка (блокируем управление, включаем анимацию в контроллере)
+            isDashing = true;
+            isDashPhysicsActive = false; // Физика пока выключена, ждем ивента!
+            
+            dashCooldownTimer = playerdashCooldown;
+            dashSafetyTimer = MAX_DASH_SAFETY_TIME;
+
+            // 2. Фиксируем направление строго в момент нажатия
+            // isFacingRight == true -> спрайт смотрит влево (из-за инверсии) -> летим влево (-1)
+            // isFacingRight == false -> спрайт смотрит вправо -> летим вправо (1)
+            lockedDashDirection = isFacingRight ? -1f : 1f;
         }
     }
 
-    //метод запускающий рывок
-    private void StartDash()
+    // --- EVENTS FOR ANIMATION ---
+
+    // СОБЫТИЕ 1: Поставить в НАЧАЛО момента движения в анимации
+    public void StartDashPhysics()
     {
-        isDashing = true;
-        dashTimer = dashDuration;
-        dashCooldownTimer = playerdashCooldown;
-        rb2d.gravityScale = 0.2f; // отключаем гравитацию во время рывка
-        //Debug.Log("Dash started!");
+        if (!isDashing) return; // Если рывок уже отменился, не запускаем
+        
+        isDashPhysicsActive = true;
+        rb2d.gravityScale = 0f; 
+        rb2d.linearVelocityY = 0f;
+        // Debug.Log("Dash Physics Started via Event");
     }
 
-    //обновляеет таймеры для рывка(в будущем можно сделать не только для рывка)
-    private void UpdateTimers()
+    // СОБЫТИЕ 2: Поставить в КОНЕЦ анимации рывка
+    public void StopDash()
     {
-        // Обновляем таймер рывка
-        if (dashTimer > 0)
-        {
-            dashTimer -= Time.deltaTime;
-            if (dashTimer <= 0)
-            {
-                EndDash();
-            }
-        }
+        if (!isDashing) return;
 
-        // Обновляем cooldown рывка
-        if (dashCooldownTimer > 0)
-        {
-            dashCooldownTimer -= Time.deltaTime;
-        }
-    }
-
-    private void EndDash()
-    {
         isDashing = false;
-        dashTimer = 0f;
-        rb2d.gravityScale = playergravityScale; // Восстанавливаем гравитацию
-        //Debug.Log("Dash ended!");
+        isDashPhysicsActive = false;
+        
+        rb2d.gravityScale = playergravityScale; 
+        rb2d.linearVelocity = Vector2.zero; 
+        // Debug.Log("Dash Stopped via Event");
     }
 
-    //проверка на наличие земли под ногами
+    // --- REST OF THE CODE ---
+
     private bool CheckGround()
     {
         if (groundCheck != null)
             return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-
         return false;
     }
 
-    //Визуализация зоны проверки на землю
     private void OnDrawGizmosSelected()
     {
         if (groundCheck != null)
         {
-            bool isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius,
-                groundLayer);
+            bool isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
             Gizmos.color = isGrounded ? Color.green : Color.red;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
@@ -202,35 +199,31 @@ public class PlayerMovement : MonoBehaviour
         {
             foreach (ContactPoint2D contact in collision.contacts)
             {
-                if (contact.normal.y > 0.7f) // контакт сверху
+                if (contact.normal.y > 0.7f) 
                 {
-                    float lookDir = -Mathf.Sign(transform.localScale.x);
-                    var v = new Vector2(lookDir * 300f, 2f);
+                    float pushDir = isFacingRight ? 1 : -1; 
+                    var v = new Vector2(pushDir * 300f, 2f);
                     rb2d.AddForce(v, ForceMode2D.Force);
-                    return; // хватит одного выталкивания
+                    return; 
                 }
             }
         }
     }
 
     #region EventsMetods
-    // Метод для обработки изменений модификаторов движения
     public void OnMovementModifiersChanged(MovementModifiersData data)
     {
         UpdateMovementValues(data);
     }
 
-    // Обновляем локальные переменные из данных PlayerData
     private void UpdateMovementValues(MovementModifiersData data)
     {
         playerSpeed = data.PlayerSpeed;
-        playerSprintMult = data.SprintMultiplier;
         playerJumpSpeed = data.JumpHeight;
         playerDashSpeed = data.DashSpeed;
         playerdashCooldown = data.DashCooldown;
         playergravityScale = data.GravityScale;
 
-        // Обновляем гравитацию в реальном времени
         if (rb2d != null && !isDashing)
         {
             rb2d.gravityScale = playergravityScale;
