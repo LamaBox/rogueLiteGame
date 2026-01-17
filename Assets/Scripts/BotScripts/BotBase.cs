@@ -15,6 +15,7 @@ public abstract class BotBase : MonoBehaviour, IDamageable
     
     protected Rigidbody2D Rb2d;
     protected Transform Transf;
+    protected Collider2D col2d;
 
     protected float MaxHealth => this.botDataSO.maxHealth;
     protected float Damage => this.botDataSO.damage;

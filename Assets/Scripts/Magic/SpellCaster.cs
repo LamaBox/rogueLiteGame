@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
+using static PlayerDataStructures; // Чтобы видеть типы ресурсов
 
 public class SpellCaster : MonoBehaviour
 {
@@ -14,15 +15,14 @@ public class SpellCaster : MonoBehaviour
 
     [Header("Тайминги")]
     [SerializeField]
-    private float castDelay = 0.5f; // ЗАДЕРЖКА ПЕРЕД КАСТОМ (Время произнесения)
+    private float castDelay = 0.5f; 
     [SerializeField]
-    private float spellCooldown = 1f; // Общее время перезарядки
+    private float spellCooldown = 1f; 
     
-    private float currentCooldown = 0f; // Текущее оставшееся время перезарядки
-    private bool canCast = true;        // Флаг перезарядки
-    private bool isCasting = false;     // Флаг: идет ли сейчас подготовка к выстрелу?
+    private float currentCooldown = 0f; 
+    private bool canCast = true;        
+    private bool isCasting = false;     
 
-    // Событие для каста заклинания
     public delegate void SpellCastEventHandler(SpellCastData spellData);
     public static event SpellCastEventHandler OnSpellCast;
     
@@ -32,8 +32,10 @@ public class SpellCaster : MonoBehaviour
     private Mouse mouse;
     private float scrollAccumulator;
     
+    // Ссылки на компоненты
     private PlayerMovement playerMovement;
     private PlayerAttack playerAttack;
+    private PlayerData playerData; // Ссылка на данные игрока (Мана)
 
     void Start()
     {
@@ -42,6 +44,10 @@ public class SpellCaster : MonoBehaviour
         
         playerMovement = GetComponent<PlayerMovement>();
         playerAttack = GetComponent<PlayerAttack>();
+        playerData = GetComponent<PlayerData>(); // Получаем компонент PlayerData
+
+        if (playerData == null)
+            Debug.LogError("SpellCaster: PlayerData не найден на объекте!");
     }
 
     void Update()
@@ -50,8 +56,6 @@ public class SpellCaster : MonoBehaviour
 
         UpdateCooldown();
 
-        // Обработка прокрутки (смены заклинания)
-        // Разрешаем менять заклинание только если НЕ кастуем сейчас
         if (!isCasting) 
         {
             Vector2 scroll = mouse.scroll.ReadValue();
@@ -66,39 +70,68 @@ public class SpellCaster : MonoBehaviour
         }
 
         // Обработка ПКМ
-        // Проверяем: нажата кнопка + нет КД + не кастуем прямо сейчас + есть заклинания
         if (mouse.rightButton.wasPressedThisFrame && canCast && !isCasting && availableSpells.Length > 0)
         {
-            StartCoroutine(CastSpellRoutine());
+            // ПРОВЕРКА МАНЫ ПЕРЕД ЗАПУСКОМ
+            if (HasEnoughMana())
+            {
+                StartCoroutine(CastSpellRoutine());
+            }
+            else
+            {
+                if (debugMode) Debug.Log("Недостаточно маны!");
+                // Здесь можно добавить проигрывание звука ошибки или UI эффект
+            }
         }
     }
 
-    // Корутина с задержкой
+    // Проверка, хватает ли маны на текущее заклинание
+    private bool HasEnoughMana()
+    {
+        if (playerData == null) return false;
+
+        float cost = availableSpells[currentSpellIndex].manaCost;
+        return playerData.GetCurrentMana() >= cost;
+    }
+
     IEnumerator CastSpellRoutine()
     {
         isCasting = true;
 
-        // БЛОКИРУЕМ ВСЁ
         if (playerMovement != null) playerMovement.LockMovement();
         if (playerAttack != null) playerAttack.LockAttack();
 
         yield return new WaitForSeconds(castDelay);
 
-        PerformSpellCast();
-        StartCooldown();
+        // Еще раз проверяем ману (на случай, если за время каста её сняли чем-то другим)
+        if (HasEnoughMana())
+        {
+            PerformSpellCast();
+            StartCooldown();
+        }
+        else
+        {
+            if (debugMode) Debug.Log("Мана закончилась во время каста!");
+        }
 
-        // РАЗБЛОКИРУЕМ ВСЁ
         if (playerMovement != null) playerMovement.UnlockMovement();
         if (playerAttack != null) playerAttack.UnlockAttack();
     
         isCasting = false;
     }
 
-    // Метод, который непосредственно отправляет событие
     void PerformSpellCast()
     {
         SpellData selectedSpell = availableSpells[currentSpellIndex];
         
+        // 1. СПИСЫВАЕМ МАНУ
+        // isAddition = true, значение отрицательное (-cost), чтобы отнять
+        if (playerData != null)
+        {
+            playerData.ChangeValueResource(-selectedSpell.manaCost, ResourceType.Mana, ResourceValueType.Current, true);
+        }
+
+        // 2. Создаем заклинание
         SpellCastData spellData = new SpellCastData
         {
             spellPrefab = selectedSpell.spellPrefab,
@@ -108,7 +141,7 @@ public class SpellCaster : MonoBehaviour
         OnSpellCast?.Invoke(spellData);
         
         if (debugMode)
-            Debug.Log($"Заклинание ВЫПУЩЕНО: {selectedSpell.spellName}");
+            Debug.Log($"Заклинание ВЫПУЩЕНО: {selectedSpell.spellName}. Потрачено маны: {selectedSpell.manaCost}");
     }
 
     void UpdateCooldown()
@@ -116,13 +149,10 @@ public class SpellCaster : MonoBehaviour
         if (currentCooldown > 0f)
         {
             currentCooldown -= Time.deltaTime;
-            
             if (currentCooldown <= 0f)
             {
                 currentCooldown = 0f;
                 canCast = true;
-                
-                if (debugMode) Debug.Log("Перезарядка завершена");
             }
         }
     }
@@ -153,7 +183,6 @@ public class SpellCaster : MonoBehaviour
         return 1f - (currentCooldown / spellCooldown);
     }
     
-    // Полезно для UI: показываем, что идет каст или кулдаун
     public bool IsBusy() 
     {
         return !canCast || isCasting;
@@ -167,6 +196,10 @@ public class SpellData
 {
     public string spellName;
     public GameObject spellPrefab;
+    
+    [Header("Цена маны")]
+    [Min(0)]
+    public float manaCost = 10f; // Новое поле для настройки цены
 }
 
 public struct SpellCastData
