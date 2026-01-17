@@ -309,7 +309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f354c5ff56b1e9b408624f4f36b785f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  botDataSO: {fileID: 11400000, guid: e5801afded43641478ea042ccb043f74, type: 2}
+  botDataSO: {fileID: 11400000, guid: 551d9f0942b71c840822433d04584ef2, type: 2}
   _waypoints:
   - {fileID: 0}
   - {fileID: 0}

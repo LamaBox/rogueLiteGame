@@ -12,8 +12,16 @@ public class Parallax : MonoBehaviour
     {
         if (playerTransform == null)
         {
-            Debug.LogError($"[Parallax] Player Transform не назначен на объекте {name}!");
-            return;
+            GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        
+            if (playerObject == null)
+            {
+                Debug.LogError($"[Parallax] Игрок с тегом 'Player' не найден на сцене! Объект: {name}");
+                return;
+            }
+
+            playerTransform = playerObject.transform;
+            Debug.Log($"[Parallax] Игрок найден: {playerObject.name}");
         }
 
         // Сохраняем начальную позицию как базовую
