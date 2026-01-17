@@ -159,7 +159,7 @@ MonoBehaviour:
   explosionDuration: 0.3
   explosionScale: 1
   explosionRadius: 0.4
-  damage: 20
+  damage: 40
   debugMode: 0
 --- !u!58 &-4975447566278698453
 CircleCollider2D:
@@ -311,4 +311,4 @@ MonoBehaviour:
   playDetached: 1
   volumeMult: 0.6
   spatialBlend: 1
-  maxDistance: 10
+  maxDistance: 15

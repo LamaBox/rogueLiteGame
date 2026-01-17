@@ -7341,7 +7341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _crossfadeDuration: 1
-  _masterVolume: 0.5
+  _masterVolume: 0.302
   _musicTracks:
   - {fileID: 8300000, guid: 16472ae5d53292c4c87ef9a1dbd6bc3b, type: 3}
   - {fileID: 8300000, guid: fbdf0fcd0f3904b4ab30b10bf53e6ac0, type: 3}

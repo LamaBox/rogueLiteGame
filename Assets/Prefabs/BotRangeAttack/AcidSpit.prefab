@@ -198,7 +198,7 @@ MonoBehaviour:
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 256
-  damage: 15
+  damage: 25
   debugMode: 0
 --- !u!114 &-3391663151369982614
 MonoBehaviour:

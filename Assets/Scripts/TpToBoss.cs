@@ -11,6 +11,10 @@ public class TpToBoss : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (RunContextSystem.Instance != null)
+            {
+                RunContextSystem.Instance.SaveRunContext();
+            }
             TeleportToScene();
         }
     }

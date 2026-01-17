@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: BotMelee 2
   m_EditorClassIdentifier: 
   botName: 
-  maxHealth: 100
-  damage: 10
+  maxHealth: 150
+  damage: 25
   moveSpeed: 5
   attackSpeed: 1
   attackDistance: 1.7
