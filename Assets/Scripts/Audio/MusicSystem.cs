@@ -42,6 +42,11 @@ public class MusicSystem : MonoBehaviour
         _audioSource.volume = _masterVolume;
     }
 
+    void Start()
+    {
+        PlayMusic(0);
+    }
+    
     /// <summary>
     /// Запускает музыку по индексу с плавным переходом.
     /// </summary>
