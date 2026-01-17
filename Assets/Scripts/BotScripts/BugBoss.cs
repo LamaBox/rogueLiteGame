@@ -96,50 +96,79 @@ public class BugBoss : BotBase
         float distanceX = Mathf.Abs(transform.position.x - _targetPlayer.position.x);
         float distanceY = Mathf.Abs(transform.position.y - _targetPlayer.position.y);
 
-        // 1. ПРОВЕРКА ВЕРХНЕЙ АТАКИ (Если игрок на платформе)
-        // Если игрок касается верхнего коллайдера - бьем мечом
+        // 1. ВЕРХНИЙ УДАР (Приоритет №1: если игрок стоит на голове)
         if (IsPlayerInZone(_upperSlashCollider))
         {
-            StopMovement(); // Остановиться, чтобы ударить точно
+            StopMovement();
             StartSlashAttack(false);
             return;
         }
 
-        // Если игрок просто высоко (но не в зоне удара), пытаемся подойти под него
-        if (distanceY > 2.0f) // Чуть снизил порог высоты
+        // 2. ЕСЛИ ИГРОК ВЫСОКО (Платформы)
+        // Раньше тут был просто Move и Return, что блокировало стрельбу.
+        if (distanceY > 2.5f) // Немного увеличил порог, чтобы мелкие прыжки не считались "высотой"
         {
+            // Пытаемся плюнуть кислотой (как ПВО), даже если игрок высоко
+            // Используем таймер принятия решений, чтобы не спамить
+            if (Time.time >= _nextDecisionTime)
+            {
+                // Шанс плюнуть чуть выше, так как достать мечом нельзя
+                if (UnityEngine.Random.value <= 0.6f) 
+                {
+                    StartAcidAttack(false);
+                    // Ставим кулдаун на следующее решение
+                    _nextDecisionTime = Time.time + (1.5f * _currentDelayMultiplier); 
+                    return;
+                }
+                _nextDecisionTime = Time.time + 0.5f; // Если не плюнули, пробуем снова скоро
+            }
+
+            // Если не стреляем - идем под игрока
             MoveTowardsPlayer();
-            // Если в процессе движения мы зацепили игрока обычным когтем (вдруг он низко висит)
+            
+            // Если случайно достали когтем в прыжке
             if (IsPlayerInZone(_clawCollider)) StartSlashAttack(false); 
-            return;
+            return; // Выходим, так как Charge (Рывок) по воздуху делать нельзя
         }
 
-        // 2. Ближняя дистанция (по X)
+        // 3. ЕСЛИ ИГРОК НА ОДНОМ УРОВНЕ (Обычный бой)
+        
+        // Ближняя дистанция
         if (distanceX <= _closeRange) 
         {
-            // Если мы близко, проверяем, можем ли ударить
             if (IsPlayerInZone(_clawCollider)) StartSlashAttack(false);
             else StartBiteAttack();
         }
-        // 3. Средняя дистанция
+        // Средняя дистанция
         else if (distanceX <= _mediumRange)
         {
+            // Тут 50% шанс Кислоты или Удара
             bool doAcidCombo = UnityEngine.Random.value <= _mediumRangeAcidChance;
             if (doAcidCombo) StartAcidAttack(true); 
             else StartSlashAttack(CheckLowHpCharge()); 
         }
-        // 4. Дальняя дистанция
+        // Дальняя дистанция (Тут живут Charge и Acid)
         else
         {
             MoveTowardsPlayer();
 
+            // Таймер нужен, чтобы босс не менял решение каждый кадр
             if (Time.time >= _nextDecisionTime)
             {
                 _nextDecisionTime = Time.time + (1.0f * _currentDelayMultiplier);
+
                 float roll = UnityEngine.Random.value; 
 
-                if (roll <= _farRangeChargeChance) StartChargeAttack();
-                else if (UnityEngine.Random.value <= _farRangeAcidChance) StartAcidAttack(false);
+                // Проверка на Рывок
+                if (roll <= _farRangeChargeChance)
+                {
+                    StartChargeAttack();
+                }
+                // Проверка на Кислоту
+                else if (UnityEngine.Random.value <= _farRangeAcidChance)
+                {
+                    StartAcidAttack(false);
+                }
             }
         }
     }
