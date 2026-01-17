@@ -132,14 +132,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 998556758112230356, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
-      propertyPath: hp
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 998556758112230356, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
-      propertyPath: maxHp
-      value: 100
-      objectReference: {fileID: 0}
     - target: {fileID: 1301738329084056741, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -156,14 +148,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 759195339}
-    - target: {fileID: 4495980295143952196, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
-      propertyPath: stamina
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 4495980295143952196, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
-      propertyPath: maxStamina
-      value: 100
-      objectReference: {fileID: 0}
     - target: {fileID: 4633040518775792010, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -252,14 +236,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6395436905414920043, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
-      propertyPath: manna
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 6395436905414920043, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
-      propertyPath: maxManna
-      value: 100
-      objectReference: {fileID: 0}
+    - target: {fileID: 6430657872918712114, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
+      propertyPath: playerData
+      value: 
+      objectReference: {fileID: 1310781404}
     - target: {fileID: 7927990743997332901, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -267,30 +247,6 @@ PrefabInstance:
     - target: {fileID: 7927990743997332901, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8244341094394405818, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8244341094394405818, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
-      propertyPath: m_Pivot.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8244341094394405818, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8244341094394405818, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8244341094394405818, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0.33000183
-      objectReference: {fileID: 0}
-    - target: {fileID: 8244341094394405818, guid: 465c5afa5478de8499b0d1feab9238a1, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -30.00003
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -714,6 +670,9 @@ MonoBehaviour:
   damage: 20
   attackSpeed: 1
   attackRange: 1.5
+  damageableLayers:
+    serializedVersion: 2
+    m_Bits: 0
   attackPoint: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
@@ -731,7 +690,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a33d7225c9ae5074d8023e40a6f0ddcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashDuration: 0.13
+  playerDashSpeed: 0
+  playerdashCooldown: 0
+  playergravityScale: 0
   groundCheck: {fileID: 617053026}
   groundCheckRadius: 0.4
   groundLayer:

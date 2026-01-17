@@ -403,6 +403,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bug Boss
       objectReference: {fileID: 0}
+    - target: {fileID: 505513076880264005, guid: dfa108ba0594d2347a8371d57817a0e2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4311964075762415531, guid: dfa108ba0594d2347a8371d57817a0e2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -922,6 +926,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5029188927157953567, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
+      propertyPath: 'audioClips.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 1357f4e212941fe4bb384f6801b21136, type: 3}
     - target: {fileID: 5295230506063879410, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
       propertyPath: fallGravityMultiplier
       value: 1
@@ -1186,6 +1194,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3664998804203225426, guid: f789c03e2d6bfbb4eb2d383048d6a91d, type: 3}
+      propertyPath: volumeMult
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3785382727854421968, guid: f789c03e2d6bfbb4eb2d383048d6a91d, type: 3}
+      propertyPath: MaxDistance
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 3785382727854421968, guid: f789c03e2d6bfbb4eb2d383048d6a91d, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4204356307546943017, guid: f789c03e2d6bfbb4eb2d383048d6a91d, type: 3}
       propertyPath: '_waypoints.Array.data[0]'
       value: 
@@ -1216,7 +1236,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7054313877150331006, guid: f789c03e2d6bfbb4eb2d383048d6a91d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
