@@ -3,8 +3,8 @@ guid: 76bd35e3776c9ac47a2d9c250ea164a0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8149466545395619702
-    second: "ChatGPT Image 26 \u043D\u043E\u044F\u0431. 2025 \u0433., 16_04_28_0"
+      213: 4101569229153058147
+    second: Settings Image_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,13 +46,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
-  spriteBorder: {x: 224, y: 327, z: 288, w: 324}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "ChatGPT Image 26 \u043D\u043E\u044F\u0431. 2025 \u0433., 16_04_28_0"
+      name: Settings Image_0
       rect:
         serializedVersion: 2
-        x: 11
-        y: 0
-        width: 1502
-        height: 1024
+        x: 217
+        y: 328
+        width: 1034
+        height: 372
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6775c3335a8b81170800000000000000
-      internalID: 8149466545395619702
+      spriteID: 36d375d9b73bbe830800000000000000
+      internalID: 4101569229153058147
       vertices: []
       indices: 
       edges: []
@@ -125,8 +138,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    spriteID: b6f6e273096277d4ba247326831e11f5
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "ChatGPT Image 26 \u043D\u043E\u044F\u0431. 2025 \u0433., 16_04_28_0": 8149466545395619702
+      Settings Image_0: 4101569229153058147
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
