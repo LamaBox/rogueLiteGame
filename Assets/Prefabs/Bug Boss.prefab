@@ -297,6 +297,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 24c02d3ec1378364cbf0ee3612a895f9, type: 3}
   - {fileID: 8300000, guid: b0ce8d768b5a65c4e9d609a010f86420, type: 3}
   - {fileID: 8300000, guid: 0317a276a90759346bb871551631b05c, type: 3}
+  playDetached: 0
+  volumeMult: 0.3
+  spatialBlend: 1
+  maxDistance: 40
 --- !u!114 &8892762660227847930
 MonoBehaviour:
   m_ObjectHideFlags: 0

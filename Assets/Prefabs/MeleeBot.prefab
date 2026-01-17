@@ -264,8 +264,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioClips:
-  - {fileID: 8300000, guid: f53544c22c663f84b852c05591e59e94, type: 3}
-  - {fileID: 8300000, guid: 109fbc6e3ea1d0846ae01d17b377effa, type: 3}
+  - {fileID: 8300000, guid: dcab09c8db348a24897baa892cbdf9fd, type: 3}
+  - {fileID: 8300000, guid: c46925d8e8638a24198c4f59a292615b, type: 3}
+  - {fileID: 8300000, guid: 3ad9b980bf502904eb4e9bf0d2ee9afe, type: 3}
+  - {fileID: 8300000, guid: 5833b5fd5ffb86549aefa01c0f140c0b, type: 3}
+  - {fileID: 8300000, guid: 8e9369a555164f94cae12e3be83f70bb, type: 3}
+  playDetached: 0
+  volumeMult: 0.1
+  spatialBlend: 1
+  maxDistance: 30
 --- !u!95 &8976805439672732424
 Animator:
   serializedVersion: 7
@@ -310,7 +317,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 2
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
