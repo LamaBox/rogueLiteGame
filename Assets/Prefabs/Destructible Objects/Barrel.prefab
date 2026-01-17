@@ -185,7 +185,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioClips:
-  - {fileID: 8300000, guid: 109fbc6e3ea1d0846ae01d17b377effa, type: 3}
+  - {fileID: 8300000, guid: c090b7cac61b53341ba48198eba6d1da, type: 3}
+  playDetached: 0
+  volumeMult: 0.1
+  spatialBlend: 1
+  maxDistance: 30
 --- !u!82 &6092953483848399409
 AudioSource:
   m_ObjectHideFlags: 0

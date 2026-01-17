@@ -12,11 +12,30 @@ public class PlayerAnimatorController : MonoBehaviour
 
     private void Start()
     {
-        if (animator == null)
-            animator = GetComponent<Animator>();
-        
-        if (rb2d == null)
-            rb2d = GetComponent<Rigidbody2D>();
+        if (animator == null) animator = GetComponent<Animator>();
+        if (rb2d == null) rb2d = GetComponent<Rigidbody2D>();
+
+        // ПОДПИСЫВАЕМСЯ НА СОБЫТИЕ АТАКИ
+        // Как только в PlayerAttack произойдет атака, мы дернем триггер
+        if (playerAttack != null)
+        {
+            playerAttack.OnAttackPerformed += PlayAttackAnimation;
+        }
+    }
+
+    private void OnDestroy() // Обязательно отписываемся при уничтожении
+    {
+        if (playerAttack != null)
+        {
+            playerAttack.OnAttackPerformed -= PlayAttackAnimation;
+        }
+    }
+
+    private void PlayAttackAnimation()
+    {
+        // Используем SetTrigger вместо SetBool
+        // Убедись, что в Аниматоре создан параметр "Attack" (Trigger)
+        animator.SetTrigger("Attack"); 
     }
 
     private void Update()
@@ -27,21 +46,15 @@ public class PlayerAnimatorController : MonoBehaviour
     private void UpdateAnimations()
     {
         bool isDashing = playerMovement.GetIsDashing();
-
-        // Если мы в рывке, ходьба и прыжки не должны перебивать анимацию
         bool isWalking = Mathf.Abs(playerMovement.GetAxis()) > 0.1f && !isDashing;
         bool isJumping = rb2d.linearVelocityY > 0.1f && !isDashing;
         bool isFalling = rb2d.linearVelocityY < -0.1f && !isDashing;
-        bool isAttacking = playerAttack != null && !playerAttack.GetCanAttack();
 
-        // Передаем параметры в аниматор
-        animator.SetBool("isDashing", isDashing);
+        // Мы УБРАЛИ отсюда isAttacking, так как теперь это событие, а не состояние
+        
         animator.SetBool("isWalking", isWalking);
         animator.SetBool("isJumping", isJumping);
         animator.SetBool("isFalling", isFalling);
-        animator.SetBool("isAttacking", isAttacking);
-        
-        // Важно: в Аниматоре должен быть Bool параметр "isDashing".
-        // Переход в Dash происходит, когда true. Обратно, когда false.
+        animator.SetBool("isDashing", isDashing);
     }
 }
