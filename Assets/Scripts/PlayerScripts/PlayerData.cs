@@ -48,6 +48,8 @@ public class PlayerData : MonoBehaviour
     private float currentMana;
     private float currentStamina;
     #endregion
+    
+    private float _regenTimer = 0f;
 
     #region Жизненный цикл
     private void Awake()
@@ -65,11 +67,34 @@ public class PlayerData : MonoBehaviour
 
     private void Update()
     {
-        currentHealth += healHealthPerSec * Time.deltaTime;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        
-        currentMana += healManaPerSec * Time.deltaTime;
-        currentMana = Mathf.Clamp(currentMana, 0, maxMana);
+        // Накапливаем время
+        _regenTimer += Time.deltaTime;
+
+        // Если прошла 1 секунда
+        if (_regenTimer >= 1f)
+        {
+            _regenTimer = 0f; // Сбрасываем таймер
+
+            // --- ХИЛ (Выполняем, только если здоровье не полное) ---
+            if (currentHealth < maxHealth && healHealthPerSec > 0 && currentHealth > 0)
+            {
+                // Тут уже не умножаем на Time.deltaTime, так как мы ждали ровно 1 секунду
+                currentHealth += healHealthPerSec; 
+                currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+                
+                // Отправляем событие только раз в секунду и только если что-то изменилось
+                BroadcastResourceChange(currentHealth, maxHealth, ResourceType.Health);
+            }
+            
+            // --- МАНА (Выполняем, только если мана не полная) ---
+            if (currentMana < maxMana && healManaPerSec > 0)
+            {
+                currentMana += healManaPerSec;
+                currentMana = Mathf.Clamp(currentMana, 0, maxMana);
+                
+                BroadcastResourceChange(currentMana, maxMana, ResourceType.Mana);
+            }
+        }
     }
 
     private void InitializeResources()
