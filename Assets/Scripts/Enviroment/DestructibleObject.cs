@@ -26,6 +26,20 @@ public class DestructibleObject : MonoBehaviour, IDamageable
     //public void TakeDamage
     public void TakeDamage(float damage)
     {
+        BreakObject();
+    }
+    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // Проверяем, что это атака игрока И что сундук еще закрыт (isOn)
+        if (collision.CompareTag("PlayerAttack"))
+        {
+            BreakObject();
+        }
+    }
+
+    private void BreakObject()
+    {
         if (!isDestroyed)
         {
             animator.SetTrigger("IsDestroy");
@@ -33,6 +47,5 @@ public class DestructibleObject : MonoBehaviour, IDamageable
             audioEffectSystem?.PlayAudioClip(0);
             col2d.enabled = false;
         }
-        Debug.Log($"{this.name} damaged {damage}!");
     }
 }
