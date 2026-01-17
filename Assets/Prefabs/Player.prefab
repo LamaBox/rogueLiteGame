@@ -368,7 +368,7 @@ MonoBehaviour:
   baseDamage: 25
   baseAttackSpeed: 1
   baseAttackRange: 1
-  healHealthPerSec: 2
+  healHealthPerSec: 0.5
   healManaPerSec: 0
   debugMode: 1
 --- !u!114 &5295230506063879410
