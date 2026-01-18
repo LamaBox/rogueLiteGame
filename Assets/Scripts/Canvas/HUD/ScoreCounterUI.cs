@@ -9,9 +9,8 @@ public class ScoreCounterUI : MonoBehaviour
         if (ScoreCounter.Instance != null)
         {
             ScoreCounter.Instance.OnScoreChanged += ScoreUpdate;
+            ScoreUpdate(ScoreCounter.Instance.GetScore());
         }
-
-        scoreText.text = "0";
     }
 
     private void ScoreUpdate(int score)

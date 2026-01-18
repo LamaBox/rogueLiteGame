@@ -6,9 +6,10 @@ public class AudioEffectSystem : MonoBehaviour
     [SerializeField] private AudioClip[] audioClips;
 
     [Header("Settings")]
-    [Tooltip("Если true, звук создается в точке пространства и продолжает играть после уничтожения объекта. Если false - играет на этом объекте.")]
+    [Tooltip("Если true, звук создается в точке пространства и продолжает играть после уничтожения объекта.")]
     [SerializeField] private bool playDetached = false;
     
+    [Tooltip("Локальный множитель громкости для этого конкретного объекта")]
     [Range(0f, 1f)]
     [SerializeField] private float volumeMult = 0.6f;
     
@@ -24,40 +25,70 @@ public class AudioEffectSystem : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null)
         {
-            // Если компонента нет, добавим его, чтобы хранить в нем настройки громкости
             _audioSource = gameObject.AddComponent<AudioSource>();
         }
         
         _audioSource.spatialBlend = spatialBlend;
-        _audioSource.minDistance = 10f;
+        _audioSource.minDistance = 1f; // Чуть увеличил minDistance, чтобы не глохло в упор
         _audioSource.maxDistance = maxDistance;
-        _audioSource.volume *= volumeMult;
         _audioSource.rolloffMode = AudioRolloffMode.Linear;
+
+        // --- ИНТЕГРАЦИЯ С VOLUMESETTINGS ---
+        if (VolumeSettings.Instance != null)
+        {
+            // 1. Подписка на изменение громкости звуков (SFX)
+            VolumeSettings.Instance.OnSFXVolumeChanged += OnGlobalSFXChanged;
+            
+            // 2. Инициализация (берем глобальную громкость и умножаем на локальный множитель)
+            UpdateVolume(VolumeSettings.Instance.GetSFXVolume());
+        }
+        else
+        {
+            // Если настроек нет, просто ставим по локальному множителю
+            _audioSource.volume = volumeMult;
+        }
     }
 
-    /// <summary>
-    /// Устанавливает громкость эффектов.
-    /// </summary>
-    /// <param name="volume">Значение от 0.0 до 1.0</param>
+    private void OnDestroy()
+    {
+        // Отписка
+        if (VolumeSettings.Instance != null)
+        {
+            VolumeSettings.Instance.OnSFXVolumeChanged -= OnGlobalSFXChanged;
+        }
+    }
+
+    // Обработчик события
+    private void OnGlobalSFXChanged(float globalVolume)
+    {
+        UpdateVolume(globalVolume);
+    }
+
+    private void UpdateVolume(float globalVolume)
+    {
+        if (_audioSource != null)
+        {
+            // Итоговая громкость = НастройкаМеню * НастройкаОбъекта
+            _audioSource.volume = Mathf.Clamp01(globalVolume * volumeMult);
+        }
+    }
+
+    // Этот метод можно оставить для ручного управления (например, затухание при удалении)
     public void SetVolume(float volume)
     {
         if (_audioSource != null)
         {
-            _audioSource.volume = Mathf.Clamp01(volume * volumeMult);
+            _audioSource.volume = Mathf.Clamp01(volume);
         }
     }
 
     public void PlayAudioClip(int clipIndex)
     {
-        if (audioClips == null || audioClips.Length == 0)
-        {
-            Debug.LogWarning("AudioEffectPlayer: AudioClips array is empty or null.");
-            return;
-        }
+        if (audioClips == null || audioClips.Length == 0) return;
 
         if (clipIndex < 0 || clipIndex >= audioClips.Length)
         {
-            Debug.LogWarning($"AudioEffectPlayer: Index {clipIndex} is out of range for audio clips array (length: {audioClips.Length}).");
+            Debug.LogWarning($"AudioEffectPlayer: Index {clipIndex} out of range.");
             return;
         }
 
@@ -66,20 +97,15 @@ public class AudioEffectSystem : MonoBehaviour
         {
             if (playDetached)
             {
-                // Создает временный объект AudioSource в точке взрыва.
-                // Он автоматически уничтожится после проигрывания.
-                // Громкость берем из нашего AudioSource.
+                // PlayClipAtPoint создает новый временный AudioSource.
+                // Мы передаем ему текущую громкость нашего _audioSource, 
+                // которая уже настроена правильно (Глобальная * Локальная).
                 AudioSource.PlayClipAtPoint(clip, transform.position, _audioSource.volume);
             }
             else
             {
-                // Стандартный способ (звук прервется, если объект уничтожить)
                 _audioSource.PlayOneShot(clip);
             }
-        }
-        else
-        {
-            Debug.LogWarning($"AudioEffectPlayer: AudioClip at index {clipIndex} is null.");
         }
     }
 }
