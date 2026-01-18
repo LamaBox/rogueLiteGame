@@ -7,7 +7,7 @@ public class PlayMusic2 : MonoBehaviour
     {
         if (RunContextSystem.Instance != null)
         {
-            MusicSystem.Instance.PlayMusic(3);
+            MusicSystem.Instance.PlayMusic(2);
         }
     }
 

@@ -105,4 +105,10 @@ public class RoomManager : MonoBehaviour
                 p.basePosition = newPos;
         }
     }
+    
+    public void ResetRun()
+    {
+        Debug.Log("RunContextSystem: Контекст забега уничтожен.");
+        Destroy(gameObject);
+    }
 }

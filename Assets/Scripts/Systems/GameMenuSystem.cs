@@ -115,6 +115,7 @@ public class GameMenuSystem : MonoBehaviour
     public void Quit()
     {
         ResumeGamePhysics(); // Важно!
+        if (RoomManager.Instance != null) RoomManager.Instance.ResetRun();
         if (RunContextSystem.Instance != null) RunContextSystem.Instance.ResetRun();
         SceneManager.LoadScene("MainMenu");
     }
