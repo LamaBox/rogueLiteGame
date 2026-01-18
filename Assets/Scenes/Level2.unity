@@ -1633,6 +1633,14 @@ PrefabInstance:
       propertyPath: playerSpawnPosition
       value: 
       objectReference: {fileID: 872707477}
+    - target: {fileID: 8115572356167145524, guid: b96bc07f6eabfae45b514ae03ec4b03e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 8115572356167145524, guid: b96bc07f6eabfae45b514ae03ec4b03e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.57
+      objectReference: {fileID: 0}
     - target: {fileID: 8149536106871306972, guid: b96bc07f6eabfae45b514ae03ec4b03e, type: 3}
       propertyPath: targetRoom
       value: 
@@ -1724,6 +1732,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room4
       objectReference: {fileID: 0}
+    - target: {fileID: 5692085634913533627, guid: f3e97dd9fb15de544b6cb3587142d1ec, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.12
+      objectReference: {fileID: 0}
     - target: {fileID: 5712499864919989331, guid: f3e97dd9fb15de544b6cb3587142d1ec, type: 3}
       propertyPath: targetRoom
       value: 
@@ -1740,6 +1752,14 @@ PrefabInstance:
       propertyPath: playerSpawnPosition
       value: 
       objectReference: {fileID: 1070746461}
+    - target: {fileID: 7855776046159159780, guid: f3e97dd9fb15de544b6cb3587142d1ec, type: 3}
+      propertyPath: m_Size.x
+      value: 4.086157
+      objectReference: {fileID: 0}
+    - target: {fileID: 7855776046159159780, guid: f3e97dd9fb15de544b6cb3587142d1ec, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.4298067
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2008,6 +2028,14 @@ PrefabInstance:
       propertyPath: playerSpawnPosition
       value: 
       objectReference: {fileID: 2011593451}
+    - target: {fileID: 8115572356167145524, guid: b96bc07f6eabfae45b514ae03ec4b03e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8115572356167145524, guid: b96bc07f6eabfae45b514ae03ec4b03e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.42
+      objectReference: {fileID: 0}
     - target: {fileID: 8149536106871306972, guid: b96bc07f6eabfae45b514ae03ec4b03e, type: 3}
       propertyPath: targetRoom
       value: 
