@@ -245,6 +245,7 @@ public class BugBoss : BotBase
     public void OnDeath()
     {
         OnDead -= Death;
+        ScoreCounter.Instance.AddScore(200);
         var col = GetComponent<Collider2D>();
         if(col != null) col.enabled = false;
         Rb2d.simulated = false;

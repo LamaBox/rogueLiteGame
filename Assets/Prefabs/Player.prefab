@@ -423,7 +423,7 @@ MonoBehaviour:
   playerMovement: {fileID: 0}
   damage: 20
   attackSpeed: 1
-  attackRange: 1
+  attackRange: 1.2
   damageableLayers:
     serializedVersion: 2
     m_Bits: 2688
