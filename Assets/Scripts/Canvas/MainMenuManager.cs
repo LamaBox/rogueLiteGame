@@ -11,6 +11,7 @@ public class MainMenu : MonoBehaviour
     {
         mainMenuCanvas.SetActive(true);
         settingsCanvas.SetActive(false);
+        MusicSystem.Instance.PlayMusic(0);
     }
     
     public void PlayGame()

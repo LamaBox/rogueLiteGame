@@ -10,7 +10,6 @@ public class MusicSystem : MonoBehaviour
     [Tooltip("Время плавного перехода между треками (секунды)")]
     [SerializeField] private float _crossfadeDuration = 1.0f;
     
-    // Это значение теперь будет обновляться из VolumeSettings
     [SerializeField] private float _masterVolume = 0.5f;
 
     [Header("Tracks Collection")]
@@ -39,50 +38,31 @@ public class MusicSystem : MonoBehaviour
 
     void Start()
     {
-        // --- ИНТЕГРАЦИЯ С VOLUMESETTINGS ---
-        if (VolumeSettings.Instance != null)
-        {
-            // 1. Подписываемся на событие изменения громкости музыки
-            VolumeSettings.Instance.OnMusicVolumeChanged += OnVolumeChanged;
-            
-            // 2. Инициализируем громкость текущим значением из настроек
-            _masterVolume = VolumeSettings.Instance.GetMusicVolume();
-        }
-        else
-        {
-            Debug.LogError("VolumeSettings не обнаружен");
-        }
+        // Убрали всю логику поиска VolumeSettings.
+        // Теперь MusicSystem просто ждет команд.
         
+        // Применяем локальную громкость (на случай если VolumeSettings еще не проинициализировал нас)
         _audioSource.volume = _masterVolume;
         
         PlayMusic(0);
     }
-
-    private void OnDestroy()
+    
+    // Этот метод вызывается снаружи (из VolumeSettings)
+    public void SetVolume(float volume)
     {
-        // Обязательно отписываемся, чтобы избежать ошибок при перезагрузке
-        if (VolumeSettings.Instance != null)
+        _masterVolume = Mathf.Clamp01(volume);
+        
+        if (_fadeCoroutine == null)
         {
-            VolumeSettings.Instance.OnMusicVolumeChanged -= OnVolumeChanged;
+            _audioSource.volume = _masterVolume;
         }
-    }
-
-    // Обработчик события (подписчик)
-    private void OnVolumeChanged(float newVolume)
-    {
-        SetVolume(newVolume);
     }
 
     public void PlayMusic(int trackIndex)
     {
-        if (trackIndex < 0 || trackIndex >= _musicTracks.Length)
-        {
-            Debug.LogWarning($"MusicSystem: Track index {trackIndex} out of range.");
-            return;
-        }
+        if (trackIndex < 0 || trackIndex >= _musicTracks.Length) return;
 
         AudioClip nextClip = _musicTracks[trackIndex];
-
         if (_audioSource.clip == nextClip && _audioSource.isPlaying) return;
 
         if (_fadeCoroutine != null) StopCoroutine(_fadeCoroutine);
@@ -93,18 +73,6 @@ public class MusicSystem : MonoBehaviour
     {
         if (_fadeCoroutine != null) StopCoroutine(_fadeCoroutine);
         _fadeCoroutine = StartCoroutine(FadeToNewTrack(null));
-    }
-
-    public void SetVolume(float volume)
-    {
-        _masterVolume = Mathf.Clamp01(volume);
-        
-        // Если сейчас НЕ идет плавный переход, меняем громкость AudioSource напрямую
-        if (_fadeCoroutine == null)
-        {
-            _audioSource.volume = _masterVolume;
-        }
-        // Если переход идет, корутина сама подхватит новое значение _masterVolume в процессе Lerp
     }
 
     private IEnumerator FadeToNewTrack(AudioClip newClip)

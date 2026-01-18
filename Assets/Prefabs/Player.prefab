@@ -521,8 +521,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 238d3be4da9957e47b2932424309a934, type: 3}
   - {fileID: 8300000, guid: 65bfaca5139f7a244bddee39b71ab4e5, type: 3}
   playDetached: 0
-  volumeMult: 0.1
-  spatialBlend: 1
+  volumeMult: 0.2
+  spatialBlend: 0
   maxDistance: 10
 --- !u!82 &6672027658816211536
 AudioSource:
@@ -546,9 +546,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 30
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0

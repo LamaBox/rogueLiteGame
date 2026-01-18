@@ -14,7 +14,7 @@ public class VolumeSettings : MonoBehaviour
     private const string MusicKey = "MusicVolume";
     private const string SFXKey = "SFXVolume";
 
-    // События, на которые подпишутся MusicSystem и AudioEffectSystem
+    // События
     public event Action<float> OnMusicVolumeChanged;
     public event Action<float> OnSFXVolumeChanged;
 
@@ -29,38 +29,52 @@ public class VolumeSettings : MonoBehaviour
             return;
         }
         Instance = this;
-        // Если настройки должны жить между сценами вместе с UI, раскомментируй:
-        // DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
     {
         LoadValues();
         InitializeSliders();
+        
+        // --- ЛОГИКА ПОДПИСКИ MUSICSYSTEM ---
+        // Так как VolumeSettings пересоздается на новой сцене, он сам ищет MusicSystem
+        if (MusicSystem.Instance != null)
+        {
+            // 1. Подписываем MusicSystem на изменения
+            OnMusicVolumeChanged += MusicSystem.Instance.SetVolume;
+            
+            // 2. СРАЗУ отправляем актуальную громкость (синхронизация при смене сцены)
+            MusicSystem.Instance.SetVolume(_currentMusicVolume);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // Обязательно отписываем MusicSystem, когда этот UI уничтожается (при смене сцены)
+        if (MusicSystem.Instance != null)
+        {
+            OnMusicVolumeChanged -= MusicSystem.Instance.SetVolume;
+        }
     }
 
     private void LoadValues()
     {
-        // Загружаем из PlayerPrefs, по умолчанию 1.0 (максимум)
         _currentMusicVolume = PlayerPrefs.GetFloat(MusicKey, 1f);
         _currentSFXVolume = PlayerPrefs.GetFloat(SFXKey, 1f);
         
-        // Сразу отправляем события, чтобы системы звука обновились при старте игры
-        // (даже если меню настроек еще не открывали)
+        // Уведомляем остальных подписчиков (например, SFX), если они есть
         OnMusicVolumeChanged?.Invoke(_currentMusicVolume);
         OnSFXVolumeChanged?.Invoke(_currentSFXVolume);
     }
 
     private void InitializeSliders()
     {
-        // Настраиваем слайдер музыки
         if (_musicSlider != null)
         {
             _musicSlider.value = _currentMusicVolume;
             _musicSlider.onValueChanged.AddListener(SetMusicVolume);
         }
 
-        // Настраиваем слайдер звуков
         if (_sfxSlider != null)
         {
             _sfxSlider.value = _currentSFXVolume;
@@ -68,31 +82,20 @@ public class VolumeSettings : MonoBehaviour
         }
     }
 
-    // Метод, вызываемый слайдером Музыки
     public void SetMusicVolume(float value)
     {
         _currentMusicVolume = value;
-        
-        // Сохраняем
         PlayerPrefs.SetFloat(MusicKey, _currentMusicVolume);
-        
-        // Уведомляем подписчиков
         OnMusicVolumeChanged?.Invoke(_currentMusicVolume);
     }
 
-    // Метод, вызываемый слайдером Звуков
     public void SetSFXVolume(float value)
     {
         _currentSFXVolume = value;
-        
-        // Сохраняем
         PlayerPrefs.SetFloat(SFXKey, _currentSFXVolume);
-        
-        // Уведомляем подписчиков
         OnSFXVolumeChanged?.Invoke(_currentSFXVolume);
     }
 
-    // Публичные методы для получения текущих значений (на всякий случай)
     public float GetMusicVolume() => _currentMusicVolume;
     public float GetSFXVolume() => _currentSFXVolume;
 }
