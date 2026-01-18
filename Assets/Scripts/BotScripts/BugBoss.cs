@@ -251,6 +251,10 @@ public class BugBoss : BotBase
         Rb2d.simulated = false;
         Rb2d.linearVelocity = Vector2.zero;
         Debug.Log("BOSS: Completely disabled.");
+        if (GameMenuSystem.Instance != null)
+        {
+            GameMenuSystem.Instance.WinGame();
+        }
     }
 
     private void OnDestroy() { OnDead -= Death; }
