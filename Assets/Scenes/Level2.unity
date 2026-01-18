@@ -257,7 +257,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7634005721631637053, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
       propertyPath: baseDamage
-      value: 1000
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7634005721631637053, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
       propertyPath: baseJumpHeight
@@ -265,7 +265,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8645514019898811448, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.08
+      value: 7.85
       objectReference: {fileID: 0}
     - target: {fileID: 8645514019898811448, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
       propertyPath: m_LocalPosition.y
