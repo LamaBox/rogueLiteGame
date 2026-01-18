@@ -5,7 +5,7 @@ public class PlayMusic : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        MusicSystem.Instance.PlayMusic(2);
+        MusicSystem.Instance.PlayMusic(1);
     }
 
     // Update is called once per frame

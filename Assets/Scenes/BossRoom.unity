@@ -1150,6 +1150,10 @@ PrefabInstance:
       value: 1.45
       objectReference: {fileID: 0}
     - target: {fileID: 7634005721631637053, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
+      propertyPath: baseDamage
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7634005721631637053, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
       propertyPath: baseJumpHeight
       value: 42
       objectReference: {fileID: 0}
