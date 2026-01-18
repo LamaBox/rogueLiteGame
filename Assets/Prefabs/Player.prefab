@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 5553597972708106522}
   - component: {fileID: 5029188927157953567}
   - component: {fileID: 6672027658816211536}
+  - component: {fileID: 2838301802815024892}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -324,6 +325,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 14daad3a-39a1-423f-954a-cd4303584589
     m_ActionName: 'Player/RightDash[/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2838301802815024892}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnPauseInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 755ff926-bd73-4b7e-9fe7-686741f47744
+    m_ActionName: 'Player/Exit[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -604,6 +621,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2838301802815024892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071408416926523717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b5d844c727cca84d8894dc7b3e5e87d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2654698922897046685
 GameObject:
   m_ObjectHideFlags: 0

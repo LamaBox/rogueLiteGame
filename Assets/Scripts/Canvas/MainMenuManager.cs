@@ -7,6 +7,12 @@ public class MainMenu : MonoBehaviour
     public GameObject mainMenuCanvas;
     public GameObject settingsCanvas;
 
+    void Start()
+    {
+        mainMenuCanvas.SetActive(true);
+        settingsCanvas.SetActive(false);
+    }
+    
     public void PlayGame()
     {
         SceneManager.LoadScene("Level");

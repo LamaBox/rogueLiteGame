@@ -12,7 +12,8 @@ public class PlayerData : MonoBehaviour
     public event Action<ResourceData> OnResourceChanged;
     public event Action<MovementModifiersData> OnMovementModifiersChanged;
     public event Action OnDataInitialized;
-    public event Action<AttackModifiersData> OnAttackModifiersChanged; 
+    public event Action<AttackModifiersData> OnAttackModifiersChanged;
+    public event Action OnDead;
     #endregion
 
     #region Инспекторные поля - базовые значения
@@ -137,6 +138,11 @@ public class PlayerData : MonoBehaviour
                 if (debugMode)
                     Debug.Log($"Health changed: {this.currentHealth} -> {this.maxHealth}");
                 BroadcastResourceChange(this.currentHealth, this.maxHealth, ResourceType.Health);
+
+                if (currentHealth == 0)
+                {
+                    OnDead?.Invoke();
+                }
                 break;
             
             case ResourceType.Mana:

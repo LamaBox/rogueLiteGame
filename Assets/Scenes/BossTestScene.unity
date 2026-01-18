@@ -403,6 +403,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bug Boss
       objectReference: {fileID: 0}
+    - target: {fileID: 505513076880264005, guid: dfa108ba0594d2347a8371d57817a0e2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4311964075762415531, guid: dfa108ba0594d2347a8371d57817a0e2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1117,13 +1121,21 @@ PrefabInstance:
       propertyPath: fallGravityMultiplier
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7445071285931882722, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
+      propertyPath: damage
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7634005721631637053, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
+      propertyPath: baseDamage
+      value: 10000
+      objectReference: {fileID: 0}
     - target: {fileID: 8645514019898811448, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.04
+      value: 13.4
       objectReference: {fileID: 0}
     - target: {fileID: 8645514019898811448, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.89
+      value: -1.7
       objectReference: {fileID: 0}
     - target: {fileID: 8645514019898811448, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1529,10 +1541,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1218802669571184301, guid: 8700bda35faa5c64c93702d681da1ead, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3444840431061821245, guid: 8700bda35faa5c64c93702d681da1ead, type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7434006523312136027, guid: 8700bda35faa5c64c93702d681da1ead, type: 3}
