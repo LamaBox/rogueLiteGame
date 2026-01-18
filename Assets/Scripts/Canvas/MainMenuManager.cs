@@ -15,7 +15,19 @@ public class MainMenu : MonoBehaviour
     
     public void PlayGame()
     {
-        SceneManager.LoadScene("Level");
+        // Бросаем монетку: выпадет 0 или 1
+        int roll = Random.Range(0, 2); 
+
+        if (roll == 0)
+        {
+            Debug.Log("Загрузка Level");
+            SceneManager.LoadScene("Level");
+        }
+        else
+        {
+            Debug.Log("Загрузка Level2");
+            SceneManager.LoadScene("Level2");
+        }
     }
 
     public void OpenSettings()
