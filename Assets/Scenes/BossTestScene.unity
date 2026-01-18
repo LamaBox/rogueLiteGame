@@ -1121,6 +1121,14 @@ PrefabInstance:
       propertyPath: fallGravityMultiplier
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7445071285931882722, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
+      propertyPath: damage
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7634005721631637053, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
+      propertyPath: baseDamage
+      value: 10000
+      objectReference: {fileID: 0}
     - target: {fileID: 8645514019898811448, guid: 9368354bd8923fe4788f4a462fc9d838, type: 3}
       propertyPath: m_LocalPosition.x
       value: 13.4
